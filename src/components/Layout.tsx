@@ -12,6 +12,7 @@ export default function Layout({ children }: { children: ReactNode }) {
     { href: "/", label: t.nav.trip },
     { href: "/verify", label: t.nav.verify },
     { href: "/guides", label: t.nav.guides },
+    { href: "/faq", label: "FAQ & Помощь" },
   ];
 
   const languages: { code: Language; label: string }[] = [

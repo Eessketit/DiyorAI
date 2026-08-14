@@ -205,7 +205,8 @@ export const translations: Record<Language, Translations> = {
       samarkand: "Самарканд",
       bukhara: "Бухара",
       khiva: "Хива",
-      tashkent: "Ташкент",
+      tashkent: "Ташкент (Город)",
+      tashkent_region: "Ташкентская область (Горы / Чарвак / Амирсой)",
     },
     paces: {
       relaxed: "Спокойный (2 объекта в день)",
@@ -325,7 +326,8 @@ export const translations: Record<Language, Translations> = {
       samarkand: "Samarqand",
       bukhara: "Buxoro",
       khiva: "Xiva",
-      tashkent: "Toshkent",
+      tashkent: "Toshkent shahri",
+      tashkent_region: "Toshkent viloyati (Tog'lar / Chorvoq / Amirsoy)",
     },
     paces: {
       relaxed: "Xotirjam (kuniga 2 ta obyekt)",
@@ -445,7 +447,8 @@ export const translations: Record<Language, Translations> = {
       samarkand: "Samarkand",
       bukhara: "Bukhara",
       khiva: "Khiva",
-      tashkent: "Tashkent",
+      tashkent: "Tashkent City",
+      tashkent_region: "Tashkent Region (Mountains / Charvak / Amirsoy)",
     },
     paces: {
       relaxed: "Relaxed (2 stops / day)",

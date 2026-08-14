@@ -25,6 +25,7 @@ export const REGION_COORDINATES: Record<Region, { lat: number; lon: number }> = 
   bukhara: { lat: 39.7747, lon: 64.4286 },
   khiva: { lat: 41.3783, lon: 60.3639 },
   tashkent: { lat: 41.2995, lon: 69.2401 },
+  tashkent_region: { lat: 41.5273, lon: 70.0768 },
 };
 
 function getWeatherCondition(code: number, tempMax: number, lang: Language): { condition: string; icon: DayWeather["icon"] } {
@@ -165,6 +166,7 @@ export async function fetchWeatherForTrip(
       bukhara: { max: 34, min: 21 },
       khiva: { max: 35, min: 20 },
       tashkent: { max: 31, min: 18 },
+      tashkent_region: { max: 26, min: 14 },
     };
 
     const climate = fallbackTemps[region] || { max: 31, min: 19 };

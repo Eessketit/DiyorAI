@@ -1,6 +1,18 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { planTrip } from "@/lib/tripPlanner";
-import { Budget, Category, GroupType, Pace, Region, TripPlan } from "@/lib/types";
+import { createBudgetModel, createDurationModel, createTravelersModel } from "@/lib/tripState";
+import {
+  BudgetRange,
+  Category,
+  Pace,
+  Region,
+  SelectedHotel,
+  SelectedTransfer,
+  SelectedTransport,
+  TravelerType,
+  TripPlan,
+  TripPreferences,
+} from "@/lib/types";
 
 type Data = TripPlan | { error: string };
 
@@ -10,21 +22,53 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Data>)
     return;
   }
 
-  const { region, interests, days, pace, groupType, budget, soloTraveler } = req.body ?? {};
+  const {
+    region,
+    interests,
+    travelers,
+    duration,
+    pace,
+    budget,
+    // Legacy support
+    days,
+    groupType,
+    soloTraveler,
+    selectedServices,
+  } = req.body ?? {};
 
-  if (!region || !Array.isArray(interests) || !days || !pace) {
+  if (!region || !Array.isArray(interests)) {
     res.status(400).json({ error: "Не хватает обязательных параметров" });
     return;
   }
 
-  const plan = planTrip({
+  const normalizedTravelers = travelers?.type
+    ? travelers
+    : createTravelersModel((groupType || (soloTraveler ? "solo" : "couple")) as TravelerType);
+
+  const totalDays = duration?.totalDays ?? (typeof days === "number" ? days : 3);
+  const activeDays = duration?.activeDays ?? totalDays;
+  const normalizedDuration = duration?.totalDays
+    ? duration
+    : createDurationModel(totalDays, activeDays);
+
+  const normalizedBudget = budget?.range
+    ? budget
+    : createBudgetModel((budget === "budget" ? "under_200" : budget === "luxury" ? "over_1000" : "under_500") as BudgetRange);
+
+  const prefs: TripPreferences = {
     region: region as Region,
     interests: interests as Category[],
-    days: Math.min(Math.max(Number(days), 1), 7),
-    pace: pace as Pace,
-    groupType: (groupType || (soloTraveler ? "solo" : "couple")) as GroupType,
-    budget: (budget || "medium") as Budget,
-    soloTraveler: Boolean(soloTraveler || groupType === "solo"),
+    travelers: normalizedTravelers,
+    duration: normalizedDuration,
+    pace: (pace || "balanced") as Pace,
+    budget: normalizedBudget,
+    soloTraveler: Boolean(soloTraveler || normalizedTravelers.type === "solo"),
+  };
+
+  const plan = planTrip(prefs, selectedServices as {
+    transport?: SelectedTransport;
+    transfer?: SelectedTransfer;
+    hotel?: SelectedHotel;
   });
 
   res.status(200).json(plan);
