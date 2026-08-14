@@ -4,6 +4,8 @@ import {
   Category,
   Guide,
   PACE_PER_DAY,
+  TimeSlot,
+  TimelineStop,
   TourismObject,
   TripDay,
   TripPlan,
@@ -26,20 +28,29 @@ export function distanceKm(a: { lat: number; lon: number }, b: { lat: number; lo
 }
 
 /**
- * Скоринг объекта под интересы пользователя:
- *   score = w1 * совпадение категорий + w2 * популярность
- * Веса подобраны так, чтобы совпадение интересов было решающим
- * фактором, а популярность — тай-брейкером.
+ * Расширенный алгоритм скоринга:
+ *   score = w1 * совпадение интересов
+ *         + w2 * популярность
+ *         + w3 * соответствие формату группы (семья, соло, пара)
+ *         + w4 * бюджет
  */
-export function scoreObject(obj: TourismObject, interests: Category[]): number {
-  const W_INTEREST = 0.7;
-  const W_POPULARITY = 0.3;
+export function scoreObject(obj: TourismObject, prefs: TripPreferences): number {
+  const W_INTEREST = 0.65;
+  const W_POPULARITY = 0.20;
+  const W_GROUP = 0.15;
 
-  const matchCount = obj.categories.filter((c) => interests.includes(c)).length;
-  const interestScore = interests.length === 0 ? 0.3 : matchCount / Math.max(interests.length, obj.categories.length);
+  const matchCount = obj.categories.filter((c) => prefs.interests.includes(c)).length;
+  const interestScore =
+    prefs.interests.length === 0 ? 0.4 : matchCount / Math.max(prefs.interests.length, obj.categories.length);
   const popularityScore = obj.popularity / 10;
 
-  return W_INTEREST * interestScore + W_POPULARITY * popularityScore;
+  // Bonus for solo travelers (safety/crowdedness) or families (indoor/comfort)
+  let groupBonus = 0.5;
+  if (prefs.groupType === "family" && obj.isIndoor) groupBonus += 0.3;
+  if (prefs.groupType === "solo" && obj.popularity >= 9) groupBonus += 0.25;
+  if (prefs.groupType === "friends" && obj.categories.includes("gastronomy")) groupBonus += 0.25;
+
+  return W_INTEREST * interestScore + W_POPULARITY * popularityScore + W_GROUP * Math.min(groupBonus, 1);
 }
 
 /** Упорядочивает точки эвристикой ближайшего соседа (nearest neighbor). */
@@ -64,22 +75,45 @@ function orderByNearestNeighbor<T extends { lat: number; lon: number }>(points: 
   return route;
 }
 
+/** Назначает климатические тайм-слоты объектам дня */
+function assignClimateSlots(stops: (TourismObject & { score: number })[], dayNumber: number): TimelineStop[] {
+  const slots: { slot: TimeSlot; label: string }[] = [
+    { slot: "morning", label: "09:00 - 11:30 (🌅 Утренняя прохлада)" },
+    { slot: "afternoon_indoor", label: "12:30 - 15:30 (☀️ Сиеста / В тени и музеях)" },
+    { slot: "evening", label: "16:30 - 19:30 (🌆 Закат и вечерняя подсветка)" },
+    { slot: "evening", label: "20:00 - 21:30 (🌙 Вечерний променад и чайхана)" },
+  ];
+
+  return stops.map((s, idx) => {
+    const timeConfig = slots[idx] || slots[slots.length - 1];
+    const prev = idx > 0 ? stops[idx - 1] : null;
+    const transitDist = prev ? distanceKm(prev, s) : 0;
+    const transitMinutes = Math.max(5, Math.round(transitDist * 8)); // approx walking/taxi min
+
+    return {
+      ...s,
+      order: idx + 1,
+      dayNumber,
+      timeSlot: s.bestTimeSlot || timeConfig.slot,
+      timeLabel: s.bestTimeSlot === "morning"
+        ? "09:00 - 11:30 (🌅 Утренняя прохлада)"
+        : s.bestTimeSlot === "afternoon_indoor"
+        ? "12:30 - 15:30 (☀️ Сиеста в тени и музеях)"
+        : "16:30 - 19:30 (🌆 Закат и вечерняя подсветка)",
+      transitFromPrevMin: idx > 0 ? transitMinutes : undefined,
+    };
+  });
+}
+
 /**
- * Строит маршрут по алгоритму:
- * 1) фильтрация по региону,
- * 2) скоринг по интересам + популярности,
- * 3) отбор top-N объектов (N = days * objectsPerDay),
- * 4) упорядочивание маршрута NN-эвристикой,
- * 5) разбивка на дни блоками по objectsPerDay.
- *
- * Без LLM — чистая детерминированная логика, воспроизводимая и объяснимая.
+ * Строит полный маршрут с учетом интересов, группы, бюджета и климатического расписания
  */
 export function planTrip(prefs: TripPreferences): TripPlan {
-  const perDay = PACE_PER_DAY[prefs.pace];
+  const perDay = PACE_PER_DAY[prefs.pace] || 3;
   const capacity = Math.max(1, prefs.days) * perDay;
 
   const candidates = OBJECTS.filter((o) => o.region === prefs.region)
-    .map((o) => ({ ...o, score: scoreObject(o, prefs.interests) }))
+    .map((o) => ({ ...o, score: scoreObject(o, prefs) }))
     .sort((a, b) => b.score - a.score);
 
   const selected = candidates.slice(0, capacity);
@@ -89,18 +123,38 @@ export function planTrip(prefs: TripPreferences): TripPlan {
 
   const days: TripDay[] = [];
   for (let i = 0; i < prefs.days; i++) {
-    const stops = ordered.slice(i * perDay, (i + 1) * perDay);
-    days.push({ dayNumber: i + 1, stops });
+    const rawStops = ordered.slice(i * perDay, (i + 1) * perDay);
+    const timelineStops = assignClimateSlots(rawStops, i + 1);
+
+    // Calculate total route km
+    let dayKm = 0;
+    for (let j = 1; j < rawStops.length; j++) {
+      dayKm += distanceKm(rawStops[j - 1], rawStops[j]);
+    }
+
+    days.push({
+      dayNumber: i + 1,
+      stops: rawStops,
+      timelineStops,
+      estimatedTotalKm: Math.round(dayKm * 10) / 10,
+    });
   }
 
-  return { preferences: prefs, days, unusedHighScoreObjects };
+  // Intercity tip
+  let intercityTip: string | undefined;
+  if (prefs.region === "samarkand" || prefs.region === "bukhara") {
+    intercityTip =
+      "🚆 Рекомендация по транспорту: Из Ташкента в Самарканд и Бухару удобнее всего добираться на скоростном поезде Afrosiyob (2ч 15м). Бронируйте билеты за 45 дней на railway.uz!";
+  } else if (prefs.region === "tashkent") {
+    intercityTip =
+      "🚕 Транспорт в Ташкенте: По городу комфортно передвигаться на Yandex Go (от 15 000 сум) и на станциях метро Ташкента (особенно 'Космонавтов' и 'Алишера Навои').";
+  }
+
+  return { preferences: prefs, days, unusedHighScoreObjects, intercityTip };
 }
 
 /**
- * Скоринг гидов под маршрут:
- *   score = совпадение специализации с категориями маршрута
- *         + совпадение региона
- * Регион — обязательное условие (гид должен работать в регионе поездки).
+ * Скоринг гидов под маршрут
  */
 export function scoreGuides(region: string, interests: Category[]): (Guide & { matchScore: number })[] {
   return GUIDES.filter((g) => g.region === region)

@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import factsData from "@/data/facts.json";
 import { MATCH_THRESHOLD, similarity } from "@/lib/textMatch";
-import { ObjectFact } from "@/lib/types";
+import { FactVerdict, ObjectFact } from "@/lib/types";
 
 const FACTS = factsData as ObjectFact[];
 
@@ -9,6 +9,7 @@ interface VerifyResponse {
   objectId: string;
   query: string | null;
   status: "matched" | "no-match" | "listed";
+  verdict?: FactVerdict;
   results: (ObjectFact & { matchScore: number })[];
 }
 
@@ -26,7 +27,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Verify
 
   const objectFacts = FACTS.filter((f) => f.objectId === objectId);
 
-  // Без запроса — просто отдаём весь проверенный набор фактов об объекте.
+  // Без запроса — просто отдаём все проверенные факты об объекте
   if (!query || String(query).trim().length === 0) {
     res.status(200).json({
       objectId,
@@ -42,11 +43,13 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Verify
     .sort((a, b) => b.matchScore - a.matchScore);
 
   const matched = scored.filter((f) => f.matchScore >= MATCH_THRESHOLD);
+  const bestMatch = matched[0];
 
   res.status(200).json({
     objectId,
     query: String(query),
     status: matched.length > 0 ? "matched" : "no-match",
+    verdict: bestMatch ? bestMatch.verdict : undefined,
     results: matched.length > 0 ? matched : scored.slice(0, 3),
   });
 }

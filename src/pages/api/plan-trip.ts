@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { planTrip } from "@/lib/tripPlanner";
-import { Category, Pace, Region, TripPlan } from "@/lib/types";
+import { Budget, Category, GroupType, Pace, Region, TripPlan } from "@/lib/types";
 
 type Data = TripPlan | { error: string };
 
@@ -10,10 +10,10 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Data>)
     return;
   }
 
-  const { region, interests, days, pace, soloTraveler } = req.body ?? {};
+  const { region, interests, days, pace, groupType, budget, soloTraveler } = req.body ?? {};
 
   if (!region || !Array.isArray(interests) || !days || !pace) {
-    res.status(400).json({ error: "Не хватает параметров: region, interests, days, pace обязательны" });
+    res.status(400).json({ error: "Не хватает обязательных параметров" });
     return;
   }
 
@@ -22,7 +22,9 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Data>)
     interests: interests as Category[],
     days: Math.min(Math.max(Number(days), 1), 7),
     pace: pace as Pace,
-    soloTraveler: Boolean(soloTraveler),
+    groupType: (groupType || (soloTraveler ? "solo" : "couple")) as GroupType,
+    budget: (budget || "medium") as Budget,
+    soloTraveler: Boolean(soloTraveler || groupType === "solo"),
   });
 
   res.status(200).json(plan);

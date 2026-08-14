@@ -1,7 +1,16 @@
 import { Category } from "@/lib/types";
 import { useTranslation } from "@/lib/i18n";
 
-const ALL_CATEGORIES: Category[] = ["history", "architecture", "pilgrimage", "nature", "gastronomy"];
+const ALL_CATEGORIES: Category[] = [
+  "history",
+  "architecture",
+  "pilgrimage",
+  "gastronomy",
+  "crafts_bazaars",
+  "soviet_modernism",
+  "nature_hiking",
+  "nature",
+];
 
 export default function InterestChips({
   selected,
@@ -30,13 +39,13 @@ export default function InterestChips({
             type="button"
             onClick={() => toggle(cat)}
             aria-pressed={active}
-            className={`px-4 py-2 rounded-full text-sm font-medium border transition-colors ${
+            className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold border transition-all ${
               active
-                ? "bg-clay text-plaster border-clay shadow-xs"
-                : "bg-transparent text-ink border-sand hover:border-clay"
+                ? "bg-clay text-plaster border-clay shadow-xs scale-105"
+                : "bg-plaster/40 text-ink border-sand hover:border-clay hover:bg-white"
             }`}
           >
-            {t.categories[cat]}
+            {t.categories[cat] || cat}
           </button>
         );
       })}
