@@ -1,0 +1,164 @@
+[
+  {
+    "id": "f1",
+    "objectId": "reg-registan",
+    "factText": "Площадь Регистан образована тремя медресе: Улугбека (1420), Шердор (1636) и Тилля-Кари (1660).",
+    "sourceName": "Wikipedia",
+    "sourceUrl": "https://ru.wikipedia.org/wiki/Регистан",
+    "trustLevel": "high",
+    "verifiedAt": "2025-11-01"
+  },
+  {
+    "id": "f2",
+    "objectId": "reg-registan",
+    "factText": "Название «Регистан» переводится как «песчаное место» — так называли главную рыночную площадь города.",
+    "sourceName": "Wikidata",
+    "sourceUrl": "https://www.wikidata.org/wiki/Q1067823",
+    "trustLevel": "high",
+    "verifiedAt": "2025-11-01"
+  },
+  {
+    "id": "f3",
+    "objectId": "reg-shahizinda",
+    "factText": "Некрополь Шахи-Зинда складывался на протяжении почти девяти веков — с XI по конец XIX века.",
+    "sourceName": "Wikipedia",
+    "sourceUrl": "https://ru.wikipedia.org/wiki/Шахи-Зинда",
+    "trustLevel": "high",
+    "verifiedAt": "2025-11-01"
+  },
+  {
+    "id": "f4",
+    "objectId": "reg-shahizinda",
+    "factText": "По преданию, в комплексе похоронен Кусам ибн Аббас — двоюродный брат пророка Мухаммада, отсюда и статус места паломничества.",
+    "sourceName": "Wikipedia",
+    "sourceUrl": "https://ru.wikipedia.org/wiki/Шахи-Зинда",
+    "trustLevel": "medium",
+    "verifiedAt": "2025-11-01"
+  },
+  {
+    "id": "f5",
+    "objectId": "reg-gur-emir",
+    "factText": "Гур-Эмир построен в 1403–1404 годах как усыпальница внука Тамерлана, Мухаммад-Султана.",
+    "sourceName": "Wikipedia",
+    "sourceUrl": "https://ru.wikipedia.org/wiki/Гур-Эмир",
+    "trustLevel": "high",
+    "verifiedAt": "2025-11-01"
+  },
+  {
+    "id": "f6",
+    "objectId": "reg-gur-emir",
+    "factText": "Архитектурная композиция мавзолея с ребристым бирюзовым куполом впоследствии повлияла на строительство Тадж-Махала.",
+    "sourceName": "Wikidata",
+    "sourceUrl": "https://www.wikidata.org/wiki/Q1499409",
+    "trustLevel": "medium",
+    "verifiedAt": "2025-11-01"
+  },
+  {
+    "id": "f7",
+    "objectId": "reg-bibikhanym",
+    "factText": "Мечеть Биби-Ханым задумывалась как крупнейшая мечеть исламского мира своего времени.",
+    "sourceName": "Wikipedia",
+    "sourceUrl": "https://ru.wikipedia.org/wiki/Мечеть_Биби-Ханым",
+    "trustLevel": "medium",
+    "verifiedAt": "2025-11-01"
+  },
+  {
+    "id": "f8",
+    "objectId": "buk-poikalon",
+    "factText": "Минарет Калян был возведён в 1127 году и, по легенде, уцелел при монгольском нашествии, поразив хана Чингисхана своей высотой.",
+    "sourceName": "Wikipedia",
+    "sourceUrl": "https://ru.wikipedia.org/wiki/Минарет_Калян",
+    "trustLevel": "medium",
+    "verifiedAt": "2025-11-01"
+  },
+  {
+    "id": "f9",
+    "objectId": "buk-poikalon",
+    "factText": "Высота минарета Калян — около 47 метров, долгое время он служил маяком для караванов в пустыне.",
+    "sourceName": "Wikidata",
+    "sourceUrl": "https://www.wikidata.org/wiki/Q1136651",
+    "trustLevel": "high",
+    "verifiedAt": "2025-11-01"
+  },
+  {
+    "id": "f10",
+    "objectId": "buk-ark",
+    "factText": "Крепость Арк использовалась как резиденция правителей Бухары вплоть до 1920 года.",
+    "sourceName": "Wikipedia",
+    "sourceUrl": "https://ru.wikipedia.org/wiki/Арк_(Бухара)",
+    "trustLevel": "high",
+    "verifiedAt": "2025-11-01"
+  },
+  {
+    "id": "f11",
+    "objectId": "buk-lyabihauz",
+    "factText": "Ляби-Хауз в переводе означает «у пруда» — ансамбль сложился вокруг водоёма 1620 года постройки.",
+    "sourceName": "Wikipedia",
+    "sourceUrl": "https://ru.wikipedia.org/wiki/Ляби-Хауз",
+    "trustLevel": "high",
+    "verifiedAt": "2025-11-01"
+  },
+  {
+    "id": "f12",
+    "objectId": "buk-bahauddin",
+    "factText": "Бахауддин Накшбанди — основатель суфийского братства Накшбандия, один из самых почитаемых святых Центральной Азии.",
+    "sourceName": "Wikipedia",
+    "sourceUrl": "https://ru.wikipedia.org/wiki/Бахауддин_Накшбанди",
+    "trustLevel": "medium",
+    "verifiedAt": "2025-11-01"
+  },
+  {
+    "id": "f13",
+    "objectId": "khi-itchankala",
+    "factText": "Ичан-Кала стала первым объектом в Узбекистане, включённым в список Всемирного наследия ЮНЕСКО — в 1990 году.",
+    "sourceName": "Wikipedia",
+    "sourceUrl": "https://ru.wikipedia.org/wiki/Ичан-Кала",
+    "trustLevel": "high",
+    "verifiedAt": "2025-11-01"
+  },
+  {
+    "id": "f14",
+    "objectId": "khi-kunya-ark",
+    "factText": "Куня-Арк строился с XVII века и включал мечеть, монетный двор и гарем правителя.",
+    "sourceName": "Wikipedia",
+    "sourceUrl": "https://ru.wikipedia.org/wiki/Куня-Арк",
+    "trustLevel": "medium",
+    "verifiedAt": "2025-11-01"
+  },
+  {
+    "id": "f15",
+    "objectId": "khi-islomhoja",
+    "factText": "Высота минарета Ислам-Ходжа — около 57 метров, это самый высокий минарет в Узбекистане.",
+    "sourceName": "Wikipedia",
+    "sourceUrl": "https://ru.wikipedia.org/wiki/Минарет_Ислам-Ходжа",
+    "trustLevel": "high",
+    "verifiedAt": "2025-11-01"
+  },
+  {
+    "id": "f16",
+    "objectId": "tash-khastimam",
+    "factText": "В комплексе Хазрати Имам хранится Коран Усмана — один из старейших сохранившихся списков Корана в мире.",
+    "sourceName": "Wikipedia",
+    "sourceUrl": "https://ru.wikipedia.org/wiki/Хазрати_Имам",
+    "trustLevel": "medium",
+    "verifiedAt": "2025-11-01"
+  },
+  {
+    "id": "f17",
+    "objectId": "tash-chorsu",
+    "factText": "Рынок Чорсу расположен на месте старого городского торгового центра, известного с домонгольских времён.",
+    "sourceName": "Wikipedia",
+    "sourceUrl": "https://ru.wikipedia.org/wiki/Чорсу_(рынок)",
+    "trustLevel": "medium",
+    "verifiedAt": "2025-11-01"
+  },
+  {
+    "id": "f18",
+    "objectId": "tash-independence",
+    "factText": "Площадь Независимости — центральная площадь Ташкента, ранее носившая название площадь Ленина.",
+    "sourceName": "Wikipedia",
+    "sourceUrl": "https://ru.wikipedia.org/wiki/Площадь_Независимости_(Ташкент)",
+    "trustLevel": "high",
+    "verifiedAt": "2025-11-01"
+  }
+]

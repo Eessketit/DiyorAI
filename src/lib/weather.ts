@@ -1,0 +1,198 @@
+import { Language } from "./i18n";
+import { Region } from "./types";
+
+export interface DayWeather {
+  dayNumber: number;
+  date: string;
+  tempMax: number;
+  tempMin: number;
+  weatherCode: number;
+  condition: string;
+  icon: "sun" | "cloud-sun" | "cloud" | "rain" | "hot";
+}
+
+export interface WeatherReport {
+  region: Region;
+  currentTemp: number;
+  days: DayWeather[];
+  advice: string;
+  isHot: boolean;
+  isRainy: boolean;
+}
+
+export const REGION_COORDINATES: Record<Region, { lat: number; lon: number }> = {
+  samarkand: { lat: 39.6542, lon: 66.9597 },
+  bukhara: { lat: 39.7747, lon: 64.4286 },
+  khiva: { lat: 41.3783, lon: 60.3639 },
+  tashkent: { lat: 41.2995, lon: 69.2401 },
+};
+
+function getWeatherCondition(code: number, tempMax: number, lang: Language): { condition: string; icon: DayWeather["icon"] } {
+  if (tempMax >= 33) {
+    const titles = {
+      ru: "Жарко и солнечно",
+      uz: "Issiq va quyoshli",
+      en: "Hot & Sunny",
+    };
+    return { condition: titles[lang], icon: "hot" };
+  }
+
+  if (code === 0 || code === 1) {
+    const titles = {
+      ru: "Ясно, солнечно",
+      uz: "Ochiq, quyoshli",
+      en: "Clear & Sunny",
+    };
+    return { condition: titles[lang], icon: "sun" };
+  }
+
+  if (code === 2) {
+    const titles = {
+      ru: "Переменная облачность",
+      uz: "O'zgaruvchan bulutli",
+      en: "Partly Cloudy",
+    };
+    return { condition: titles[lang], icon: "cloud-sun" };
+  }
+
+  if (code === 3) {
+    const titles = {
+      ru: "Пасмурно",
+      uz: "Bulutli",
+      en: "Overcast",
+    };
+    return { condition: titles[lang], icon: "cloud" };
+  }
+
+  if (code >= 51 && code <= 67) {
+    const titles = {
+      ru: "Возможен дождь",
+      uz: "Yomg'ir yog'ishi mumkin",
+      en: "Light Rain",
+    };
+    return { condition: titles[lang], icon: "rain" };
+  }
+
+  const defaultTitles = {
+    ru: "Комфортная погода",
+    uz: "Qulay ob-havo",
+    en: "Pleasant Weather",
+  };
+  return { condition: defaultTitles[lang], icon: "sun" };
+}
+
+function generateSmartAdvice(avgTempMax: number, hasRain: boolean, lang: Language): string {
+  if (avgTempMax >= 32) {
+    const advice = {
+      ru: "☀️ Высокая дневная температура (+32°C и выше). Рекомендуем посещать открытые ансамбли (Регистан, Ичан-Кала) утром (до 11:00) или на закате. В полуденные часы (12:00–16:00) отдайте предпочтение крытым музеям, мавзолеям и тенистым чайханам.",
+      uz: "☀️ Kunduzi yuqori harorat (+32°C va undan yuqori). Ochiq maydonlarni (Registon, Ichan-Qal'a) ertalab (11:00 gacha) yoki quyosh botishida ziyorat qilishni tavsiya qilamiz. Tush paytida (12:00–16:00) yopiq muzeylar va salqin choyxonalarni tanlang.",
+      en: "☀️ High daytime temperature (+32°C and above). We recommend visiting open architectural squares (Registan, Ichan-Kala) in the early morning (before 11:00) or at sunset. Visit indoor museums and shaded tea-houses during the midday heat (12:00–16:00).",
+    };
+    return advice[lang];
+  }
+
+  if (hasRain) {
+    const advice = {
+      ru: "🌧️ Возможны осадки во время поездки. Рекомендуем взять зонт и включить в дневной план больше музейных комплексов и крытых ремесленных мастерских.",
+      uz: "🌧️ Sayohat davomida yomg'ir yog'ishi ehtimoli bor. Soyabon olishni va muzeylar hamda yopiq ustaxonalarga ko'proq vaqt ajratishni tavsiya etamiz.",
+      en: "🌧️ Rain is possible during the trip. We recommend packing an umbrella and scheduling more indoor museum visits and covered craft workshops.",
+    };
+    return advice[lang];
+  }
+
+  const advice = {
+    ru: "🌤️ Идеальные погодные условия для пеших экскурсий (+24…+28°C). Маршрут оптимизирован для непрерывных комфортных прогулок между объектами.",
+    uz: "🌤️ Piyoda sayr qilish uchun ideal ob-havo sharoiti (+24…+28°C). Yo'nalish obyektlar o'rtasida qulay sayohat qilish uchun moslashtirilgan.",
+    en: "🌤️ Ideal weather conditions for walking tours (+24…+28°C). The itinerary is well-balanced for comfortable walking between stops.",
+  };
+  return advice[lang];
+}
+
+export async function fetchWeatherForTrip(
+  region: Region,
+  daysCount: number,
+  lang: Language = "ru"
+): Promise<WeatherReport> {
+  const coords = REGION_COORDINATES[region] || REGION_COORDINATES.samarkand;
+  const count = Math.min(Math.max(daysCount, 1), 7);
+
+  try {
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${coords.lat}&longitude=${coords.lon}&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error("Weather API failed");
+    const data = await res.json();
+
+    const daily = data.daily;
+    const days: DayWeather[] = [];
+
+    let totalMax = 0;
+    let hasRain = false;
+
+    for (let i = 0; i < count; i++) {
+      const tempMax = Math.round(daily.temperature_2m_max[i] ?? 31);
+      const tempMin = Math.round(daily.temperature_2m_min[i] ?? 19);
+      const code = daily.weather_code[i] ?? 0;
+      const { condition, icon } = getWeatherCondition(code, tempMax, lang);
+
+      if (code >= 51 && code <= 67) hasRain = true;
+      totalMax += tempMax;
+
+      days.push({
+        dayNumber: i + 1,
+        date: daily.time[i] ?? `День ${i + 1}`,
+        tempMax,
+        tempMin,
+        weatherCode: code,
+        condition,
+        icon,
+      });
+    }
+
+    const avgMax = Math.round(totalMax / count);
+
+    return {
+      region,
+      currentTemp: days[0]?.tempMax ?? 30,
+      days,
+      advice: generateSmartAdvice(avgMax, hasRain, lang),
+      isHot: avgMax >= 32,
+      isRainy: hasRain,
+    };
+  } catch {
+    // Stable Fallback with realistic climate averages for Uzbekistan
+    const fallbackTemps: Record<Region, { max: number; min: number }> = {
+      samarkand: { max: 32, min: 19 },
+      bukhara: { max: 34, min: 21 },
+      khiva: { max: 35, min: 20 },
+      tashkent: { max: 31, min: 18 },
+    };
+
+    const climate = fallbackTemps[region] || { max: 31, min: 19 };
+    const days: DayWeather[] = [];
+
+    for (let i = 0; i < count; i++) {
+      const tempMax = climate.max + (i % 2 === 0 ? 0 : 1);
+      const tempMin = climate.min + (i % 2 === 0 ? 0 : 1);
+      const { condition, icon } = getWeatherCondition(0, tempMax, lang);
+
+      days.push({
+        dayNumber: i + 1,
+        date: `2026-08-${15 + i}`,
+        tempMax,
+        tempMin,
+        weatherCode: 0,
+        condition,
+        icon,
+      });
+    }
+
+    return {
+      region,
+      currentTemp: climate.max,
+      days,
+      advice: generateSmartAdvice(climate.max, false, lang),
+      isHot: climate.max >= 32,
+      isRainy: false,
+    };
+  }
+}

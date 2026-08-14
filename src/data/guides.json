@@ -1,0 +1,82 @@
+[
+  {
+    "id": "g1",
+    "name": "Дилноза Каримова",
+    "region": "samarkand",
+    "languages": ["ru", "en"],
+    "specializationTags": ["history", "architecture"],
+    "rating": 4.9,
+    "priceRange": "$$",
+    "isDemoData": true
+  },
+  {
+    "id": "g2",
+    "name": "Botir Yusupov",
+    "region": "samarkand",
+    "languages": ["en", "uz"],
+    "specializationTags": ["pilgrimage", "history"],
+    "rating": 4.7,
+    "priceRange": "$",
+    "isDemoData": true
+  },
+  {
+    "id": "g3",
+    "name": "Nodira Rashidova",
+    "region": "bukhara",
+    "languages": ["ru", "en", "uz"],
+    "specializationTags": ["architecture", "gastronomy"],
+    "rating": 4.8,
+    "priceRange": "$$",
+    "isDemoData": true
+  },
+  {
+    "id": "g4",
+    "name": "Sardor Aliev",
+    "region": "bukhara",
+    "languages": ["ru"],
+    "specializationTags": ["pilgrimage", "history"],
+    "rating": 4.6,
+    "priceRange": "$",
+    "isDemoData": true
+  },
+  {
+    "id": "g5",
+    "name": "Malika Yusupova",
+    "region": "khiva",
+    "languages": ["en", "ru"],
+    "specializationTags": ["architecture", "history"],
+    "rating": 4.9,
+    "priceRange": "$$$",
+    "isDemoData": true
+  },
+  {
+    "id": "g6",
+    "name": "Jahongir Tursunov",
+    "region": "khiva",
+    "languages": ["uz", "ru"],
+    "specializationTags": ["history"],
+    "rating": 4.5,
+    "priceRange": "$",
+    "isDemoData": true
+  },
+  {
+    "id": "g7",
+    "name": "Anastasia Volkova",
+    "region": "tashkent",
+    "languages": ["ru", "en"],
+    "specializationTags": ["gastronomy", "history"],
+    "rating": 4.7,
+    "priceRange": "$$",
+    "isDemoData": true
+  },
+  {
+    "id": "g8",
+    "name": "Farrukh Nazarov",
+    "region": "tashkent",
+    "languages": ["en", "uz", "ru"],
+    "specializationTags": ["pilgrimage", "architecture"],
+    "rating": 4.8,
+    "priceRange": "$$",
+    "isDemoData": true
+  }
+]
