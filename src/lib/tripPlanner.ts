@@ -315,17 +315,59 @@ export function planTrip(
   };
 }
 
-/** Скоринг гидов под маршрут */
-export function scoreGuides(region: string, interests: Category[]): (Guide & { matchScore: number })[] {
-  const queryRegion = region === "tashkent_region" ? "tashkent" : region;
-  return GUIDES.filter((g) => g.region === queryRegion)
-    .map((g) => {
-      const overlap = g.specializationTags.filter((t) => interests.includes(t)).length;
-      const overlapRatio = interests.length === 0 ? 0.5 : overlap / interests.length;
-      const matchScore = 0.75 * overlapRatio + 0.25 * (g.rating / 5);
-      return { ...g, matchScore };
-    })
-    .sort((a, b) => b.matchScore - a.matchScore);
+import { MOCK_EXTENDED_GUIDES } from "@/data/guidesData";
+
+/** Скоринг гидов под маршрут и предпочтения */
+export function scoreGuides(
+  region: string,
+  interests: (Category | string)[],
+  options?: {
+    travelerType?: string;
+    language?: string;
+    pace?: string;
+  }
+): Guide[] {
+  const queryRegion = region ? region.toLowerCase() : "";
+
+  let candidateGuides = [...MOCK_EXTENDED_GUIDES];
+  if (queryRegion && queryRegion !== "all") {
+    candidateGuides = candidateGuides.filter((g) => {
+      if (g.region === queryRegion) return true;
+      if (queryRegion === "tashkent_region" && g.region === "tashkent_region") return true;
+      if (queryRegion === "tashkent" && (g.region === "tashkent" || g.region === "tashkent_region")) return true;
+      return false;
+    });
+    // If no guides in specific niche region, fallback to all to not leave empty
+    if (candidateGuides.length === 0) {
+      candidateGuides = [...MOCK_EXTENDED_GUIDES];
+    }
+  }
+
+  return candidateGuides.map((g) => {
+    let regionScore = g.region === queryRegion ? 1.0 : 0.8;
+
+    // Specialization / Interest overlap
+    const overlap = g.specializationTags.filter((t) => interests.includes(t as any)).length;
+    const interestScore = interests.length === 0 ? 0.8 : overlap / Math.max(1, interests.length);
+
+    // Rating and Trust impact
+    const ratingNormalized = g.rating / 5;
+
+    // Language bonus
+    let langBonus = 0.8;
+    if (options?.language) {
+      const hasLang = g.languages.some((l) => (typeof l === "string" ? l === options.language : l.code === options.language));
+      if (hasLang) langBonus = 1.0;
+    }
+
+    const rawMatch = 0.35 * regionScore + 0.35 * interestScore + 0.15 * langBonus + 0.15 * ratingNormalized;
+    const matchScore = Math.min(99, Math.max(75, Math.round(rawMatch * 100)));
+
+    return {
+      ...g,
+      matchScore,
+    };
+  }).sort((a, b) => (b.matchScore ?? 0) - (a.matchScore ?? 0));
 }
 
 export function getAllObjects(): TourismObject[] {

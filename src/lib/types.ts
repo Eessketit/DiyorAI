@@ -1,3 +1,5 @@
+import { ICON_MAP } from "./iconMap";
+
 export type Category =
   | "history"
   | "architecture"
@@ -6,7 +8,13 @@ export type Category =
   | "gastronomy"
   | "crafts_bazaars"
   | "nature_hiking"
-  | "soviet_modernism";
+  | "soviet_modernism"
+  | "photography"
+  | "archaeology"
+  | "night_tours"
+  | "eco_tourism"
+  | "skiing"
+  | "family_travel";
 
 export type Region =
   | "samarkand"
@@ -15,9 +23,18 @@ export type Region =
   | "tashkent"
   | "tashkent_region";
 
+export type ExtendedRegion =
+  | Region
+  | "shahrisabz"
+  | "fergana"
+  | "andijan"
+  | "namangan"
+  | "nukus"
+  | "termez";
+
 export type Pace = "relaxed" | "balanced" | "packed";
 export type TravelerType = "solo" | "couple" | "family" | "friends" | "group";
-export type BudgetRange = "under_200" | "under_500" | "under_1000" | "over_1000";
+export type BudgetRange = "under_200" | "under_500" | "under_1000" | "over_1000" | "1000_plus";
 
 // Backward compatibility aliases
 export type GroupType = TravelerType;
@@ -26,6 +43,12 @@ export type Budget = "budget" | "medium" | "luxury" | BudgetRange;
 export type TrustLevel = "high" | "medium" | "low";
 export type FactVerdict = "fact" | "legend" | "myth";
 export type TimeSlot = "morning" | "afternoon_indoor" | "evening" | "rest";
+
+export interface LocalizedName {
+  ru: string;
+  en: string;
+  uz: string;
+}
 
 export interface TravelersModel {
   type: TravelerType;
@@ -42,7 +65,7 @@ export interface DurationModel {
 
 export interface BudgetModel {
   range: BudgetRange;
-  maxAmount: number; // numeric cap for calculations e.g. 200, 500, 1000, 2500
+  maxAmount: number; // numeric cap for calculations e.g. 200, 500, 1000, Infinity
 }
 
 export interface TourismObject {
@@ -78,14 +101,72 @@ export interface ObjectFact {
   explanation?: string;
 }
 
+export interface GuideVerification {
+  identity: boolean;
+  qualification: boolean;
+  language: boolean;
+  status: "verified" | "pending" | "listed";
+}
+
+export interface GuidePerformance {
+  completionRate: number; // e.g. 98%
+  cancellationRate: number; // e.g. 1%
+  punctualityRate: number; // e.g. 99%
+  responseTime: string; // e.g. "до 10 мин"
+}
+
+export interface GuideReviewsBreakdown {
+  count: number;
+  averageRating: number;
+  knowledge: number;
+  communication: number;
+  service: number;
+  organization: number;
+  safety: number;
+}
+
+export interface GuideReviewItem {
+  id: string;
+  author: string;
+  date: string;
+  rating: number;
+  text: string;
+  tourType: string;
+}
+
+export interface GuideLanguage {
+  code: string;
+  label: string;
+  level: "native" | "verified" | "fluent";
+}
+
 export interface Guide {
   id: string;
-  name: string;
-  region: Region;
-  languages: string[];
-  specializationTags: Category[];
+  name: string | LocalizedName;
+  avatar?: string;
+  city: string;
+  region: Region | string;
+  languages: (string | GuideLanguage)[];
+  specializationTags: (Category | string)[];
   rating: number;
   priceRange: string;
+  pricePerTourUsd?: number;
+  experienceYears?: number;
+  completedTours?: number;
+  maxGroupSize?: number;
+  trustScore?: number; // 0 - 100
+  matchScore?: number; // 0 - 100%
+  verification?: GuideVerification;
+  performance?: GuidePerformance;
+  reviews?: GuideReviewsBreakdown;
+  reviewsList?: GuideReviewItem[];
+  badges?: string[];
+  about?: LocalizedName;
+  whyRecommended?: {
+    ru: string[];
+    en: string[];
+    uz: string[];
+  };
   isDemoData: boolean;
 }
 
@@ -268,6 +349,7 @@ export interface LeadContact {
   transport?: SelectedTransport;
   transfer?: SelectedTransfer;
   hotel?: SelectedHotel;
+  guide?: Guide;
   totalCostUsd: number;
   createdAt: string;
 }
@@ -281,14 +363,26 @@ export const CATEGORY_LABELS: Record<Category, string> = {
   crafts_bazaars: "Ремесла и базары",
   nature_hiking: "Горы, озера и хайкинг",
   soviet_modernism: "Советский модернизм и арт",
+  photography: "Фото-локации и панорамы",
+  archaeology: "Археология и раскопки",
+  night_tours: "Вечерние туры и огни",
+  eco_tourism: "Экотуризм и ущелья",
+  skiing: "Горные лыжи и спорт",
+  family_travel: "Семейный отдых с детьми",
 };
 
-export const REGION_LABELS: Record<Region, string> = {
+export const REGION_LABELS: Record<ExtendedRegion, string> = {
   samarkand: "Самарканд",
   bukhara: "Бухара",
   khiva: "Хива",
   tashkent: "Ташкент (Город)",
   tashkent_region: "Ташкентская область (Горы, Чарвак, Амирсой)",
+  shahrisabz: "Шахрисабз",
+  fergana: "Фергана",
+  andijan: "Андижан",
+  namangan: "Наманган",
+  nukus: "Нукус",
+  termez: "Термез",
 };
 
 export const PACE_LABELS: Record<Pace, string> = {
@@ -314,22 +408,24 @@ export const TRAVELER_TYPE_LABELS: Record<TravelerType, string> = {
 export const GROUP_LABELS: Record<GroupType, string> = TRAVELER_TYPE_LABELS;
 
 export const BUDGET_RANGE_LABELS: Record<BudgetRange, string> = {
-  under_200: "💵 До $200 (Бюджетный / Day Trips)",
-  under_500: "💵 До $500 (Оптимальный)",
-  under_1000: "💵 До $1,000 (Комфорт)",
-  over_1000: "💎 $1,000+ (Премиум)",
+  under_200: `${ICON_MAP.budget} До $200 (Бюджетный / Day Trips)`,
+  under_500: `${ICON_MAP.budget} До $500 (Оптимальный)`,
+  under_1000: `${ICON_MAP.budget} До $1,000 (Комфорт)`,
+  over_1000: `💎 $1,000+ (Премиум / Без лимита)`,
+  "1000_plus": `💎 $1,000+ (Премиум / Без лимита)`,
 };
 
 export const BUDGET_RANGE_MAX: Record<BudgetRange, number> = {
   under_200: 200,
   under_500: 500,
   under_1000: 1000,
-  over_1000: 2500,
+  over_1000: Infinity,
+  "1000_plus": Infinity,
 };
 
 export const BUDGET_LABELS: Record<string, string> = {
-  budget: "Бюджетный (до $200)",
-  medium: "Комфорт ($500 - $1000)",
-  luxury: "Премиум ($1000+)",
+  budget: `${ICON_MAP.budget} Бюджетный (до $200)`,
+  medium: `${ICON_MAP.budget} Комфорт ($500 - $1000)`,
+  luxury: `💎 Премиум ($1000+)`,
   ...BUDGET_RANGE_LABELS,
 };

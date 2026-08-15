@@ -4,11 +4,12 @@ import InterestChips from "@/components/InterestChips";
 import TilePattern from "@/components/TilePattern";
 import PresetCards from "@/components/PresetCards";
 import SurvivalGuideModal from "@/components/SurvivalGuideModal";
-import FAQSection from "@/components/FAQSection";
+import TravelDirectory from "@/components/TravelDirectory";
 import StepTransport from "@/components/planner/StepTransport";
 import StepTransfer from "@/components/planner/StepTransfer";
 import StepHotel from "@/components/planner/StepHotel";
 import BudgetBar from "@/components/planner/BudgetBar";
+import { ICON_MAP } from "@/lib/iconMap";
 import {
   BUDGET_RANGE_LABELS,
   BUDGET_RANGE_MAX,
@@ -572,7 +573,7 @@ export default function Home() {
                     >
                       <span className="block text-sm">{BUDGET_RANGE_LABELS[b].split(" (")[0]}</span>
                       <span className="text-[10px] opacity-80 block font-normal mt-0.5">
-                        Лимит: до ${BUDGET_RANGE_MAX[b]}
+                        Лимит: {BUDGET_RANGE_MAX[b] === Infinity ? "Без лимита" : `до $${BUDGET_RANGE_MAX[b]}`}
                       </span>
                     </button>
                   ))}
@@ -676,10 +677,8 @@ export default function Home() {
         <SurvivalGuideModal />
       </section>
 
-      {/* Attractive Interactive FAQ */}
-      <div className="mt-16 bg-white/40 border-t border-sand">
-        <FAQSection />
-      </div>
+      {/* Prominent Travel Directory */}
+      <TravelDirectory />
     </div>
   );
 }

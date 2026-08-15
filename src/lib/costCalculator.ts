@@ -67,8 +67,9 @@ export function calculateTripCost(params: CalculateCostParams): CostCalculationR
   const totalCostUsd = transportCost + transferCost + hotelCost + activitiesAndFood + guideCost + otherCost;
   const costPerPersonUsd = travelers.total > 0 ? Math.round(totalCostUsd / travelers.total) : totalCostUsd;
 
-  const budgetRemainingUsd = budgetMaxUsd - totalCostUsd;
-  const isOverBudget = budgetRemainingUsd < 0;
+  const isInfiniteBudget = budgetMaxUsd === Infinity || !budgetMaxUsd;
+  const budgetRemainingUsd = isInfiniteBudget ? Infinity : budgetMaxUsd - totalCostUsd;
+  const isOverBudget = !isInfiniteBudget && budgetRemainingUsd < 0;
   const overBudgetAmountUsd = isOverBudget ? Math.abs(budgetRemainingUsd) : 0;
 
   // 6. Payer Split Calculation

@@ -75,9 +75,15 @@ export default function Layout({ children }: { children: ReactNode }) {
       <main className="flex-1">{children}</main>
 
       <footer className="border-t border-sand mt-16 bg-white/40">
-        <div className="max-w-5xl mx-auto px-6 py-8 text-sm text-night/60 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <span>{t.footer.rights}</span>
-          <span className="text-xs text-night/50">{t.footer.sources}</span>
+        <div className="max-w-5xl mx-auto px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-night/60">
+          <div className="flex items-center gap-4 flex-wrap">
+            <span className="font-bold text-ink">DiyorAI TravelTech</span>
+            <Link href="/" className="hover:text-registan transition-colors">Маршруты</Link>
+            <Link href="/guides" className="hover:text-registan transition-colors">Гиды & Trust</Link>
+            <Link href="/verify" className="hover:text-registan transition-colors">Фактчек</Link>
+            <Link href="/faq" className="hover:text-registan transition-colors">FAQ & Помощь</Link>
+          </div>
+          <span className="text-night/50">{t.footer.sources}</span>
         </div>
       </footer>
     </div>
