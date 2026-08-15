@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState, useMemo } from "react";
 import { Guide } from "@/lib/types";
@@ -16,6 +17,8 @@ import {
   MapPin,
   SlidersHorizontal,
   X,
+  ArrowRight,
+  Sparkles,
 } from "lucide-react";
 
 export default function GuidesPage() {
@@ -32,6 +35,20 @@ export default function GuidesPage() {
   // Modals
   const [selectedGuideForProfile, setSelectedGuideForProfile] = useState<Guide | null>(null);
   const [selectedGuideForBooking, setSelectedGuideForBooking] = useState<Guide | null>(null);
+  const [customGuides, setCustomGuides] = useState<Guide[]>([]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const saved = JSON.parse(localStorage.getItem("diyorai_custom_guides") || "[]");
+        if (Array.isArray(saved) && saved.length > 0) {
+          setCustomGuides(saved);
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  }, []);
 
   useEffect(() => {
     if (!router.isReady) return;
@@ -86,7 +103,7 @@ export default function GuidesPage() {
   ], [language]);
 
   const filteredGuides = useMemo(() => {
-    let list = [...MOCK_EXTENDED_GUIDES];
+    let list = [...customGuides, ...MOCK_EXTENDED_GUIDES];
 
     // Location filter
     if (selectedLocation !== "all") {
@@ -137,7 +154,7 @@ export default function GuidesPage() {
     });
 
     return list;
-  }, [selectedLocation, selectedSpec, selectedLanguage, verifiedOnly, searchQuery, sortBy]);
+  }, [customGuides, selectedLocation, selectedSpec, selectedLanguage, verifiedOnly, searchQuery, sortBy]);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
@@ -186,6 +203,37 @@ export default function GuidesPage() {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Guide Partner Join Banner */}
+      <div className="mb-8 p-5 sm:p-6 bg-gradient-to-r from-night via-night/95 to-majolica/30 rounded-3xl border border-majolica/30 text-paper shadow-md flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="flex items-center gap-3.5">
+          <div className="w-11 h-11 rounded-2xl bg-majolica/30 border border-majolica/40 flex items-center justify-center text-gold shrink-0">
+            <Award className="w-5 h-5 text-gold" />
+          </div>
+          <div>
+            <div className="flex items-center gap-2">
+              <h3 className="font-display font-bold text-sm sm:text-base text-paper">
+                {language === "uz" ? "Siz professional gidsizmi?" : language === "en" ? "Are you a professional tour guide?" : "Вы профессиональный гид по Узбекистану?"}
+              </h3>
+              <span className="px-2 py-0.5 rounded-full bg-gold/20 text-gold text-[10px] font-mono font-bold uppercase">
+                0% Комиссии
+              </span>
+            </div>
+            <p className="text-xs text-paper/70 font-mono mt-0.5">
+              {language === "uz" ? "DiyorAI platformasiga qo'shiling va bevosita sayyohlarni qabul qiling" : language === "en" ? "Join the DiyorAI ecosystem and get direct tourist bookings with verified Trust Score" : "Присоединяйтесь к экосистеме DiyorAI, подтвердите свой Trust Score и получайте туристов без комиссий"}
+            </p>
+          </div>
+        </div>
+
+        <Link
+          href="/guides/join"
+          className="px-5 py-2.5 rounded-2xl bg-majolica hover:bg-majolica/90 text-paper text-xs font-mono font-bold transition-all shadow-xs shrink-0 flex items-center gap-2 cursor-pointer hover:scale-102"
+        >
+          <Sparkles className="w-3.5 h-3.5 text-gold" />
+          <span>{language === "uz" ? "Gid sifatida ro'yxatdan o'tish" : language === "en" ? "Join as a Guide" : "Стать гидом DiyorAI"}</span>
+          <ArrowRight className="w-4 h-4" />
+        </Link>
       </div>
 
       {/* Search & Filter Toolbar */}

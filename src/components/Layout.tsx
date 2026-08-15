@@ -118,6 +118,9 @@ export default function Layout({ children }: { children: ReactNode }) {
             <Link href="/guides" className="hover:text-majolica transition-colors">
               {language === "uz" ? "Gidlar" : language === "en" ? "Guides" : "Гиды"}
             </Link>
+            <Link href="/guides/join" className="hover:text-majolica transition-colors text-gold font-bold">
+              {language === "uz" ? "Gid bo'lish" : language === "en" ? "Become a Guide" : "Стать гидом"}
+            </Link>
             <Link href="/verify" className="hover:text-majolica transition-colors">
               {language === "uz" ? "Faktchek" : language === "en" ? "Fact Check" : "Фактчек"}
             </Link>
