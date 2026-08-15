@@ -7,17 +7,17 @@
   --font-body: "Manrope", sans-serif;
   --font-utility: "IBM Plex Mono", monospace;
 
-  /* Silk Road Theme ("Шёлковый путь") */
+  /* Silk Road Theme: Deep Midnight Blue + Terracotta */
   --color-primary: #C1622E;
   --color-primary-hover: #A8531F;
   --color-secondary: #2E4374;
-  --color-secondary-hover: #253658;
+  --color-secondary-hover: #1E2D52;
   --color-bg-neutral: #F2E9DA;
   --color-border: #DDCBAF;
-  --color-ink: #241C15;
-  --color-ink-muted: #6B5D4F;
+  --color-ink: #131E3A;        /* Deep midnight blue */
+  --color-ink-muted: #4B5875;
 
-  --night: #241C15;
+  --night: #131E3A;           /* Deep dark blue (instead of brown) */
   --majolica: #C1622E;
   --gold: #2E4374;
   --paper: #F2E9DA;
@@ -30,7 +30,7 @@ html {
 
 body {
   background-color: #F2E9DA;
-  color: #241C15;
+  color: #131E3A;
   font-feature-settings: "cv02", "cv03", "cv04", "cv11";
 }
 

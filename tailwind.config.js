@@ -28,8 +28,8 @@ module.exports = {
           border: "#DDCBAF",
         },
         ink: {
-          DEFAULT: "#241C15",   // Deep warm ink text
-          muted: "#6B5D4F",
+          DEFAULT: "#131E3A",   // Deep dark navy blue
+          muted: "#4B5875",
         },
 
         // Theme alias mappings
@@ -39,10 +39,10 @@ module.exports = {
         },
         gold: {
           DEFAULT: "#2E4374",   // Mapped to Indigo secondary
-          dark: "#253658",
+          dark: "#1E2D52",
         },
         paper: "#F2E9DA",
-        night: "#241C15",
+        night: "#131E3A",       // Deep Midnight Blue (dark navy instead of brown)
         brick: "#C1622E",
 
         trust: {
