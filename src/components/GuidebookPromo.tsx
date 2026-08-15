@@ -1,6 +1,6 @@
 import React from "react";
+import Link from "next/link";
 import { useTranslation } from "@/lib/i18n";
-import { GUIDEBOOK_URL } from "@/lib/config";
 import { BookOpen, Compass, ArrowRight } from "lucide-react";
 
 export default function GuidebookPromo() {
@@ -30,6 +30,14 @@ export default function GuidebookPromo() {
     uz: "Qo'llanmani ochish",
   };
 
+  const handleScrollToDirectory = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const el = document.getElementById("travel-directory");
+    if (el) {
+      e.preventDefault();
+      el.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <div className="my-12 bg-night text-paper rounded-3xl p-6 sm:p-8 shadow-xl border border-majolica/30 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative overflow-hidden">
       <div className="space-y-2 max-w-2xl">
@@ -50,17 +58,16 @@ export default function GuidebookPromo() {
         </p>
       </div>
 
-      {/* Primary CTA Button */}
-      <a
-        href={GUIDEBOOK_URL}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-majolica hover:bg-majolica/90 text-paper font-bold text-xs sm:text-sm transition-all shadow-md hover:scale-102 shrink-0 self-start md:self-center"
+      {/* Primary CTA Button scrolling to on-page Travel Directory */}
+      <Link
+        href="/#travel-directory"
+        onClick={handleScrollToDirectory}
+        className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-majolica hover:bg-majolica/90 text-paper font-bold text-xs sm:text-sm transition-all shadow-md hover:scale-102 shrink-0 self-start md:self-center font-mono cursor-pointer"
       >
         <BookOpen className="w-4 h-4 text-paper" />
         <span>{ctaText[language]}</span>
         <ArrowRight className="w-4 h-4" />
-      </a>
+      </Link>
     </div>
   );
 }
