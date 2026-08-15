@@ -74,24 +74,81 @@ const REGIONS: Region[] = [
 ];
 const PACES: Pace[] = ["relaxed", "balanced", "packed"];
 const TRAVELER_TYPES: TravelerType[] = ["couple", "family", "solo", "friends", "group"];
-const DEPARTURE_CITIES = [
-  "Ташкент",
-  "Самарканд",
-  "Бухара",
-  "Ургенч / Хива",
-  "Фергана",
-  "Андижан",
-  "Наманган",
-  "Шахрисабз / Карши",
-  "Термез",
-  "Нукус",
-  "Навои",
-  "Джизак",
-  "Гулистан",
-  "Алматы / Астана",
-  "Москва / Санкт-Петербург",
-  "Другой город",
-];
+
+const DEPARTURE_CITIES_MAP: Record<"ru" | "uz" | "en", string[]> = {
+  ru: [
+    "Ташкент",
+    "Самарканд",
+    "Бухара",
+    "Ургенч / Хива",
+    "Фергана",
+    "Андижан",
+    "Наманган",
+    "Шахрисабз / Карши",
+    "Термез",
+    "Нукус",
+    "Навои",
+    "Джизак",
+    "Гулистан",
+    "Алматы / Астана",
+    "Москва / Санкт-Петербург",
+    "Другой город",
+  ],
+  uz: [
+    "Toshkent",
+    "Samarqand",
+    "Buxoro",
+    "Urganch / Xiva",
+    "Farg'ona",
+    "Andijon",
+    "Namangan",
+    "Shahrisabz / Qarshi",
+    "Termiz",
+    "Nukus",
+    "Navoiy",
+    "Jizzax",
+    "Guliston",
+    "Almati / Ostona",
+    "Moskva / Sankt-Peterburg",
+    "Boshqa shahar",
+  ],
+  en: [
+    "Tashkent",
+    "Samarkand",
+    "Bukhara",
+    "Urgench / Khiva",
+    "Fergana",
+    "Andijan",
+    "Namangan",
+    "Shahrisabz / Karshi",
+    "Termez",
+    "Nukus",
+    "Navoi",
+    "Jizzakh",
+    "Gulistan",
+    "Almaty / Astana",
+    "Moscow / Saint Petersburg",
+    "Other city",
+  ],
+};
+
+const PACE_DESCRIPTIONS: Record<Pace, { ru: string; uz: string; en: string }> = {
+  relaxed: {
+    ru: "🌿 Спокойный (меньше спешки, больше отдыха)",
+    uz: "🌿 Xotirjam (kamroq shoshilish, ko'proq hordiq)",
+    en: "🌿 Relaxed (fewer stops, more leisure)",
+  },
+  balanced: {
+    ru: "⚖️ Сбалансированный (баланс впечатлений и отдыха)",
+    uz: "⚖️ Muvozanatli (taassurotlar va dam olish uyg'unligi)",
+    en: "⚖️ Balanced (optimal mix of sights & rest)",
+  },
+  packed: {
+    ru: "🔥 Насыщенный (максимум достопримечательностей)",
+    uz: "🔥 Tig'iz (maksimal diqqatga sazovor joylar)",
+    en: "🔥 Fast-paced (maximum attractions & activities)",
+  },
+};
 
 const REGION_SUBTITLES: Record<Region, { ru: string; uz: string; en: string }> = {
   tashkent: { ru: "Центр плова, Чорсу", uz: "Osh markazi, Chorsu", en: "Plov Center, Chorsu" },
@@ -671,7 +728,7 @@ export default function ConstructorPage() {
                 onChange={(e) => setDepartureCity(e.target.value)}
                 className="w-full sm:w-80 p-3 rounded-xl border border-sand-border bg-white text-xs font-mono font-bold text-night outline-none focus:border-primary"
               >
-                {DEPARTURE_CITIES.map((city) => (
+                {(DEPARTURE_CITIES_MAP[language] || DEPARTURE_CITIES_MAP.ru).map((city) => (
                   <option key={city} value={city}>
                     {city}
                   </option>
@@ -748,7 +805,7 @@ export default function ConstructorPage() {
                         : "bg-white text-slate-800 hover:border-indigo-400 hover:bg-indigo-50/50 border-slate-200 shadow-2xs"
                     }`}
                   >
-                    {PACE_LABELS[p]}
+                    {PACE_DESCRIPTIONS[p]?.[language] || PACE_DESCRIPTIONS[p]?.ru}
                   </button>
                 );
               })}

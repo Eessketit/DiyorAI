@@ -28,7 +28,7 @@ export default function StepTransport({
   onNext,
   onBack,
 }: StepTransportProps) {
-  const { t } = useTranslation();
+  const { t, language } = useTranslation();
   const [tab, setTab] = useState<TransportType>(selectedTransport?.type || "train");
   const [isRoundTrip, setIsRoundTrip] = useState<boolean>(selectedTransport?.isRoundTrip ?? true);
 
@@ -70,7 +70,7 @@ export default function StepTransport({
       car: {
         id: "car-personal",
         type: "personal",
-        title: "Личный автомобиль / Аренда авто",
+        title: language === "uz" ? "Shaxsiy avtomobil / Ijara" : language === "en" ? "Personal / Rental Car" : "Личный автомобиль / Аренда авто",
         estimatedDistanceKm: distanceKm,
         estimatedTravelHours: hours,
         estimatedFuelCostUsd: fuelCost,
@@ -85,15 +85,18 @@ export default function StepTransport({
     <div className="space-y-6">
       <div className="text-center sm:text-left">
         <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-paper border border-majolica/20 text-xs font-mono font-bold text-night uppercase tracking-wider mb-2">
-          Этап 1 из 3
+          {language === "uz" ? "1-bosqich (3 tadan)" : language === "en" ? "Step 1 of 3" : "Этап 1 из 3"}
         </div>
         <h2 className="text-2xl sm:text-3xl font-display font-bold text-night flex items-center gap-2">
           <Train className="w-6 h-6 text-majolica" />
-          <span>Как добраться до места назначения?</span>
+          <span>{language === "uz" ? "Manzilga qanday yetib borasiz?" : language === "en" ? "How will you get to your destination?" : "Как добраться до места назначения?"}</span>
         </h2>
         <p className="text-xs sm:text-sm text-night/70 mt-1 font-light">
-          Пассажиров: <span className="font-bold text-night font-mono">{passengers} чел.</span> ({travelers.adults} взр.
-          {travelers.children > 0 ? `, ${travelers.children} дет.` : ""}). Выберите подходящий транспорт:
+          {language === "uz" ? "Yo'lovchilar soni:" : language === "en" ? "Passengers:" : "Пассажиров:"}{" "}
+          <span className="font-bold text-night font-mono">{passengers} {language === "uz" ? "kishi" : language === "en" ? "people" : "чел."}</span> ({travelers.adults}{" "}
+          {language === "uz" ? "katta" : language === "en" ? "adults" : "взр."}
+          {travelers.children > 0 ? `, ${travelers.children} ${language === "uz" ? "bola" : language === "en" ? "children" : "дет."}` : ""}).{" "}
+          {language === "uz" ? "Qulay transport turini tanlang:" : language === "en" ? "Select suitable transport:" : "Выберите подходящий транспорт:"}
         </p>
       </div>
 
@@ -310,20 +313,20 @@ export default function StepTransport({
 
           <div className="grid sm:grid-cols-3 gap-3 pt-2 text-center text-xs font-mono">
             <div className="p-3 bg-paper rounded-xl border border-majolica/20">
-              <span className="text-night/60 block">Расстояние</span>
+              <span className="text-night/60 block">{language === "uz" ? "Masofa" : language === "en" ? "Distance" : "Расстояние"}</span>
               <span className="font-mono font-bold text-base text-night">
-                ~{region === "samarkand" ? 310 : region === "bukhara" ? 570 : region === "khiva" ? 980 : 85} км
+                ~{region === "samarkand" ? 310 : region === "bukhara" ? 570 : region === "khiva" ? 980 : 85} {language === "uz" ? "km" : language === "en" ? "km" : "км"}
               </span>
             </div>
             <div className="p-3 bg-paper rounded-xl border border-majolica/20">
-              <span className="text-night/60 block">Время в пути</span>
+              <span className="text-night/60 block">{language === "uz" ? "Yo'l vaqti" : language === "en" ? "Travel Time" : "Время в пути"}</span>
               <span className="font-mono font-bold text-base text-night">
-                ~{Math.round((region === "samarkand" ? 310 : region === "bukhara" ? 570 : region === "khiva" ? 980 : 85) / 70)} ч.
+                ~{Math.round((region === "samarkand" ? 310 : region === "bukhara" ? 570 : region === "khiva" ? 980 : 85) / 70)} {language === "uz" ? "soat" : language === "en" ? "hrs" : "ч."}
               </span>
             </div>
             <div className="p-3 bg-paper rounded-xl border border-majolica/20">
-              <span className="text-night/60 block">Расход на топливо</span>
-              <span className="font-mono font-bold text-base text-gold">
+              <span className="text-night/60 block">{language === "uz" ? "Yoqilg'i xarajati" : language === "en" ? "Fuel Cost" : "Расход на топливо"}</span>
+              <span className="font-mono font-bold text-base text-primary">
                 ~${selectedTransport?.totalCostUsd || 35}
               </span>
             </div>
@@ -336,17 +339,17 @@ export default function StepTransport({
         <button
           type="button"
           onClick={onBack}
-          className="px-5 py-3 rounded-xl border border-majolica/40 bg-paper text-xs sm:text-sm font-semibold text-night hover:bg-majolica/10 transition-colors"
+          className="px-5 py-3 rounded-xl border border-slate-300 bg-white text-xs sm:text-sm font-semibold text-slate-700 hover:bg-slate-100 transition-colors shadow-2xs cursor-pointer"
         >
-          ← Изменить параметры поездки
+          {language === "uz" ? "← Parametrlarni o'zgartirish" : language === "en" ? "← Change Parameters" : "← Изменить параметры поездки"}
         </button>
 
         <button
           type="button"
           onClick={onNext}
-          className="px-7 py-3 rounded-xl bg-majolica hover:bg-majolica/90 text-paper text-xs sm:text-sm font-bold transition-all shadow-md flex items-center gap-2"
+          className="px-7 py-3 rounded-xl bg-gradient-to-r from-[#1E3A8A] to-[#2563EB] hover:from-[#152a65] hover:to-[#1d4ed8] text-white text-xs sm:text-sm font-bold transition-all shadow-md flex items-center gap-2 cursor-pointer hover:scale-102"
         >
-          <span>Далее: Трансфер и передвижение</span>
+          <span>{language === "uz" ? "Keyingi: Joydagi transfer" : language === "en" ? "Next: Local Transfer" : "Далее: Трансфер и передвижение"}</span>
           <ArrowRight className="w-4 h-4" />
         </button>
       </div>
