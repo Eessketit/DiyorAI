@@ -265,12 +265,73 @@ export default function TripPage() {
             </div>
           )}
 
+          {/* Added Smart Experiences */}
+          {plan.smartTrips && plan.smartTrips.length > 0 && (
+            <div className="mb-8 p-6 rounded-3xl bg-sand/20 border border-sand shadow-xs space-y-4">
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <span className="text-xl">💰</span>
+                  <h3 className="font-display font-bold text-ink text-base sm:text-lg">
+                    {language === "uz" ? "Qo'shilgan hamyonbop turlar (Smart Trips)" : language === "en" ? "Added Smart Local Experiences" : "Добавленные впечатления (Smart Trips)"}
+                  </h3>
+                </div>
+                <span className="text-xs font-bold text-registan bg-registan/10 px-2.5 py-1 rounded-full">
+                  {plan.smartTrips.length} {language === "uz" ? "ta tanlangan" : language === "en" ? "selected" : "выбрано"}
+                </span>
+              </div>
+
+              <div className="grid sm:grid-cols-2 gap-3">
+                {plan.smartTrips.map((st) => (
+                  <div key={st.id} className="p-4 rounded-2xl bg-white border border-sand flex items-center justify-between gap-3 text-xs shadow-2xs">
+                    <div className="flex items-center gap-3">
+                      <span className="text-2xl p-2 bg-sand/30 rounded-xl">{st.image || "🏔"}</span>
+                      <div>
+                        <span className="font-bold text-ink block text-sm">{st.title[language] || st.title.ru}</span>
+                        <span className="text-night/60">📍 {st.destination} · ${st.pricePerAdult} / {t.trip.costPerPerson}</span>
+                      </div>
+                    </div>
+                    <span className="text-emerald-700 font-bold text-xs bg-emerald-50 px-2 py-1 rounded-md border border-emerald-200">
+                      ✓ {language === "uz" ? "Qo'shildi" : language === "en" ? "Active" : "В плане"}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* Smart Climate Day Timeline */}
           <DayTimeline stops={currentDay.stops} dayNumber={activeDay} />
 
-          {/* ========================================================
-             19. ИТОГОВЫЙ ФИНАНСОВЫЙ БЛОК & КАЛЬКУЛЯТОР СПЛИТА
-             ======================================================== */}
+          {/* Remaining Budget Recommendations */}
+          {costResult.budgetRemainingUsd > 15 && costResult.budgetRemainingUsd !== Infinity && (
+            <div className="mt-8 p-6 rounded-3xl bg-emerald-50/70 border border-emerald-200 text-emerald-950 space-y-3">
+              <div className="flex items-center justify-between gap-2 flex-wrap">
+                <div className="flex items-center gap-2">
+                  <span className="text-2xl">💰</span>
+                  <h4 className="font-display font-bold text-base">
+                    {language === "uz"
+                      ? `Sizda $${costResult.budgetRemainingUsd} qoldiq mavjud — sayohatingizni boyiting`
+                      : language === "en"
+                      ? `You have $${costResult.budgetRemainingUsd} left — make the most of your budget`
+                      : `У вас осталось $${costResult.budgetRemainingUsd} в бюджете — дополните поездку`}
+                  </h4>
+                </div>
+                <Link
+                  href="/#smart-trips"
+                  className="px-4 py-2 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs shadow-xs transition-all"
+                >
+                  {language === "uz" ? "Smart Trips katalogi →" : language === "en" ? "Explore Smart Trips →" : "Выбрать впечатления →"}
+                </Link>
+              </div>
+              <p className="text-xs text-emerald-800">
+                {language === "uz"
+                  ? "Qoldiq byudjetingizga Chorvoq bo'ylab katerda sayr, So'qoq tog' oshi yoki Toshkent shahar sayrini qo'shishingiz mumkin."
+                  : language === "en"
+                  ? "You can easily add a Charvak boat ride, Sukok kebab experience, or Old Tashkent walking tour within this remaining amount."
+                  : "На эту сумму можно добавить катер по Чарваку, обед в Сукоке или авторскую пешую прогулку по Ташкенту."}
+              </p>
+            </div>
+          )}
           <div className="mt-12 bg-white rounded-3xl border border-sand p-6 sm:p-8 shadow-xl space-y-6">
             <div className="flex items-center justify-between gap-4 flex-wrap pb-4 border-b border-sand">
               <div>

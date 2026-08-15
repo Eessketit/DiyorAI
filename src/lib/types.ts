@@ -63,8 +63,47 @@ export interface DurationModel {
   restDays: number;
 }
 
+export interface BudgetRangeModel {
+  minBudget: number;
+  maxBudget: number | null; // null or Infinity means no upper limit
+}
+
+export interface SmartTrip {
+  id: string;
+  title: {
+    ru: string;
+    en: string;
+    uz: string;
+  };
+  description: {
+    ru: string;
+    en: string;
+    uz: string;
+  };
+  destination: string;
+  region: Region | ExtendedRegion | string;
+  durationDays: number;
+  pricePerAdult: number;
+  pricePerChild: number;
+  currency: "USD";
+  minGroupSize: number;
+  maxGroupSize: number;
+  interests: (Category | string)[];
+  pace: Pace[];
+  suitableFor: TravelerType[];
+  included: { ru: string; en: string; uz: string }[];
+  optional: { ru: string; en: string; uz: string }[];
+  image: string;
+  guideIds?: string[];
+  isMock: true;
+  highlights: { ru: string; en: string; uz: string }[];
+  matchScore?: number;
+  tag?: { ru: string; en: string; uz: string };
+}
+
 export interface BudgetModel {
-  range: BudgetRange;
+  range?: BudgetRange;
+  minAmount?: number;
   maxAmount: number; // numeric cap for calculations e.g. 200, 500, 1000, Infinity
 }
 
@@ -315,7 +354,9 @@ export interface TripPreferences {
   duration?: DurationModel;
   pace: Pace;
   budget: BudgetModel | string;
+  budgetRange?: BudgetRangeModel;
   soloTraveler: boolean;
+  smartTrips?: SmartTrip[];
   // Legacy fields for backward compatibility
   days?: number;
   groupType?: GroupType;
@@ -329,6 +370,7 @@ export interface TripPlan {
   transport?: SelectedTransport;
   transfer?: SelectedTransfer;
   hotel?: SelectedHotel;
+  smartTrips?: SmartTrip[];
   costBreakdown?: CostCategoryBreakdown;
   payerSplit?: PayerSplit;
   isOverBudget?: boolean;
@@ -349,6 +391,7 @@ export interface LeadContact {
   transport?: SelectedTransport;
   transfer?: SelectedTransfer;
   hotel?: SelectedHotel;
+  smartTrips?: SmartTrip[];
   guide?: Guide;
   totalCostUsd: number;
   createdAt: string;

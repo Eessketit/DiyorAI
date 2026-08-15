@@ -16,6 +16,7 @@ interface StepHotelProps {
   onSelect: (hotel: SelectedHotel) => void;
   onNext: () => void;
   onBack: () => void;
+  loading?: boolean;
 }
 
 export default function StepHotel({
@@ -26,6 +27,7 @@ export default function StepHotel({
   onSelect,
   onNext,
   onBack,
+  loading,
 }: StepHotelProps) {
   const hotels = MOCK_HOTELS[region] || MOCK_HOTELS.samarkand;
 
@@ -145,10 +147,11 @@ export default function StepHotel({
 
         <button
           type="button"
+          disabled={loading}
           onClick={onNext}
-          className="px-8 py-3.5 rounded-xl bg-registan hover:bg-registan/90 text-plaster text-xs sm:text-sm font-bold transition-all shadow-md flex items-center gap-2 uppercase tracking-wider"
+          className="px-8 py-3.5 rounded-xl bg-registan hover:bg-registan/90 disabled:opacity-50 text-plaster text-xs sm:text-sm font-bold transition-all shadow-md flex items-center gap-2 uppercase tracking-wider"
         >
-          🗺️ Построить маршрут с учетом всех услуг →
+          {loading ? "Формируем маршрут..." : "🗺️ Построить маршрут с учетом всех услуг →"}
         </button>
       </div>
     </div>

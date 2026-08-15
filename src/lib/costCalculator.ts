@@ -16,6 +16,7 @@ export interface CalculateCostParams {
   transport?: SelectedTransport;
   transfer?: SelectedTransfer;
   hotel?: SelectedHotel;
+  smartTrips?: any[];
   splitMode?: PayerSplitMode;
   customActivitiesCostPerPersonPerDay?: number;
 }
@@ -40,6 +41,7 @@ export function calculateTripCost(params: CalculateCostParams): CostCalculationR
     transport,
     transfer,
     hotel,
+    smartTrips = [],
     splitMode = travelers.type === "couple" ? "equal" : travelers.type === "family" ? "family_share" : "equal",
     customActivitiesCostPerPersonPerDay,
   } = params;
@@ -56,9 +58,19 @@ export function calculateTripCost(params: CalculateCostParams): CostCalculationR
   // 4. Food & Activities estimation per person/day
   // Standard ~$18/person/day for authentic Uzbek food, street food, tea & museum entries
   const dailyActFoodRate = customActivitiesCostPerPersonPerDay ?? 18;
-  const activitiesAndFood = Math.round(
+  const baseActivitiesAndFood = Math.round(
     duration.totalDays * (travelers.adults * dailyActFoodRate + travelers.children * (dailyActFoodRate * 0.6))
   );
+
+  // 4.1 Added Smart Trips cost
+  const smartTripsCost = smartTrips.reduce((acc, st) => {
+    const adults = travelers.adults || 2;
+    const children = travelers.children || 0;
+    const itemCost = adults * (st.pricePerAdult || 30) + children * (st.pricePerChild || (st.pricePerAdult || 30) * 0.6);
+    return acc + itemCost;
+  }, 0);
+
+  const activitiesAndFood = baseActivitiesAndFood + smartTripsCost;
 
   // 5. Guide / Extras
   const guideCost = travelers.type === "group" ? 35 * Math.min(2, duration.activeDays) : 0;

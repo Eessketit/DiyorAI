@@ -67,7 +67,15 @@ export function createDurationModel(totalDaysInput: number, activeDaysInput?: nu
 export function createBudgetModel(range: BudgetRange): BudgetModel {
   return {
     range,
+    minAmount: 0,
     maxAmount: BUDGET_RANGE_MAX[range] || 500,
+  };
+}
+
+export function createBudgetRangeModel(minBudget = 0, maxBudget: number | null = 500): BudgetModel {
+  return {
+    minAmount: minBudget,
+    maxAmount: maxBudget === null ? Infinity : maxBudget,
   };
 }
 
@@ -77,10 +85,12 @@ export interface TripState {
   region: Region;
   pace: "relaxed" | "balanced" | "packed";
   budget: BudgetModel;
+  budgetRange?: { minBudget: number; maxBudget: number | null };
   interests: string[];
   transport?: SelectedTransport;
   transfer?: SelectedTransfer;
   hotel?: SelectedHotel;
+  smartTrips?: any[];
   itineraryPlan?: TripPlan;
 }
 
@@ -90,5 +100,6 @@ export const DEFAULT_TRIP_STATE: TripState = {
   region: "samarkand",
   pace: "balanced",
   budget: createBudgetModel("under_500"),
+  budgetRange: { minBudget: 50, maxBudget: 500 },
   interests: ["history", "architecture", "gastronomy"],
 };

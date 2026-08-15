@@ -3,17 +3,16 @@ import { useState } from "react";
 import InterestChips from "@/components/InterestChips";
 import TilePattern from "@/components/TilePattern";
 import PresetCards from "@/components/PresetCards";
-import SurvivalGuideModal from "@/components/SurvivalGuideModal";
-import TravelDirectory from "@/components/TravelDirectory";
+import SmartTripsSection from "@/components/smartTrips/SmartTripsSection";
+import GuidebookPromo from "@/components/GuidebookPromo";
 import StepTransport from "@/components/planner/StepTransport";
 import StepTransfer from "@/components/planner/StepTransfer";
 import StepHotel from "@/components/planner/StepHotel";
 import BudgetBar from "@/components/planner/BudgetBar";
+import BudgetRangeSlider from "@/components/planner/BudgetRangeSlider";
 import { ICON_MAP } from "@/lib/iconMap";
 import {
-  BUDGET_RANGE_LABELS,
-  BUDGET_RANGE_MAX,
-  BudgetRange,
+  BudgetRangeModel,
   Category,
   Pace,
   PACE_LABELS,
@@ -22,29 +21,27 @@ import {
   SelectedHotel,
   SelectedTransfer,
   SelectedTransport,
+  SmartTrip,
   TRAVELER_TYPE_LABELS,
   TravelerType,
   TripPlan,
 } from "@/lib/types";
 import {
-  createBudgetModel,
   createDurationModel,
   createTravelersModel,
-  DEFAULT_TRIP_STATE,
 } from "@/lib/tripState";
 import { calculateTripCost } from "@/lib/costCalculator";
 import { trackEvent } from "@/lib/analytics";
-import { TASHKENT_REGION_HIGHLIGHTS } from "@/data/mockTravelData";
 import { useTranslation } from "@/lib/i18n";
+import Link from "next/link";
 
 const REGIONS: Region[] = ["samarkand", "bukhara", "khiva", "tashkent", "tashkent_region"];
 const PACES: Pace[] = ["relaxed", "balanced", "packed"];
 const TRAVELER_TYPES: TravelerType[] = ["solo", "couple", "family", "friends", "group"];
-const BUDGET_RANGES: BudgetRange[] = ["under_200", "under_500", "under_1000", "over_1000"];
 
 export default function Home() {
   const router = useRouter();
-  const { t } = useTranslation();
+  const { t, language } = useTranslation();
 
   // 1. Travelers (КТО)
   const [travelerType, setTravelerType] = useState<TravelerType>("couple");
@@ -61,8 +58,11 @@ export default function Home() {
   // 4. Pace (ТЕМП ПОЕЗДКИ)
   const [pace, setPace] = useState<Pace>("balanced");
 
-  // 5. Budget (БЮДЖЕТ)
-  const [budgetRange, setBudgetRange] = useState<BudgetRange>("under_500");
+  // 5. Budget Range (БЮДЖЕТ: Min & Max Slider)
+  const [budgetRange, setBudgetRange] = useState<BudgetRangeModel>({
+    minBudget: 50,
+    maxBudget: 500,
+  });
 
   // 6. Interests (ИНТЕРЕСЫ)
   const [interests, setInterests] = useState<Category[]>([
@@ -70,6 +70,9 @@ export default function Home() {
     "architecture",
     "gastronomy",
   ]);
+
+  // Added Smart Trips from Smart / Low-Budget section
+  const [addedSmartTrips, setAddedSmartTrips] = useState<SmartTrip[]>([]);
 
   // Organization Flow State (Step 1: Transport, Step 2: Transfer, Step 3: Hotel)
   const [activeStep, setActiveStep] = useState<number>(0); // 0 = Form, 1 = Transport, 2 = Transfer, 3 = Hotel
@@ -83,16 +86,16 @@ export default function Home() {
   // Computed models
   const travelersModel = createTravelersModel(travelerType, adults, childrenCount);
   const durationModel = createDurationModel(totalDays, activeDays);
-  const budgetModel = createBudgetModel(budgetRange);
 
   // Realtime Cost Calculation
   const costCalculation = calculateTripCost({
     travelers: travelersModel,
     duration: durationModel,
-    budgetMaxUsd: budgetModel.maxAmount,
+    budgetMaxUsd: budgetRange.maxBudget === null ? Infinity : budgetRange.maxBudget,
     transport: selectedTransport,
     transfer: selectedTransfer,
     hotel: selectedHotel,
+    smartTrips: addedSmartTrips,
   });
 
   const handleTravelerTypeChange = (type: TravelerType) => {
@@ -114,6 +117,17 @@ export default function Home() {
       setChildrenCount(0);
     }
     trackEvent("traveler_type_selected", { type });
+  };
+
+  const handleToggleAddSmartTrip = (trip: SmartTrip) => {
+    setAddedSmartTrips((prev) => {
+      const exists = prev.some((t) => t.id === trip.id);
+      if (exists) {
+        return prev.filter((t) => t.id !== trip.id);
+      } else {
+        return [...prev, trip];
+      }
+    });
   };
 
   const handleStartOrganization = (e: React.FormEvent) => {
@@ -141,8 +155,13 @@ export default function Home() {
           travelers: travelersModel,
           duration: durationModel,
           pace,
-          budget: budgetModel,
+          budget: {
+            minAmount: budgetRange.minBudget,
+            maxAmount: budgetRange.maxBudget === null ? Infinity : budgetRange.maxBudget,
+          },
+          budgetRange,
           soloTraveler: travelerType === "solo",
+          smartTrips: addedSmartTrips,
           selectedServices: {
             transport: selectedTransport,
             transfer: selectedTransfer,
@@ -153,6 +172,7 @@ export default function Home() {
 
       if (!res.ok) throw new Error("API error");
       const plan: TripPlan = await res.json();
+      plan.smartTrips = addedSmartTrips;
       sessionStorage.setItem("diyorai-trip", JSON.stringify(plan));
       trackEvent("itinerary_generated", { region, totalCost: plan.costBreakdown?.total ?? 0 });
       router.push("/trip");
@@ -169,99 +189,93 @@ export default function Home() {
       <section className="relative overflow-hidden bg-ink text-plaster">
         <TilePattern className="absolute -right-10 -top-10 w-72 h-72 text-plaster/10 pointer-events-none" />
         <TilePattern className="absolute -left-16 bottom-0 w-56 h-56 text-plaster/10 pointer-events-none" />
-        <div className="max-w-5xl mx-auto px-6 py-16 relative">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-registan/20 border border-registan/40 text-registan text-xs font-semibold uppercase tracking-wider mb-4">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-20 relative">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-registan/20 border border-registan/40 text-registan text-xs font-bold uppercase tracking-wider mb-4">
             <span>🏛️</span> DiyorAI Digital Travel Assistant
           </div>
-          <h1 className="font-display text-4xl sm:text-5xl md:text-6xl leading-[1.08] max-w-3xl">
+          <h1 className="font-display text-3xl sm:text-5xl md:text-6xl font-black leading-[1.08] max-w-3xl">
             {t.home.title}
           </h1>
-          <p className="mt-5 text-plaster/85 max-w-2xl text-base sm:text-lg leading-relaxed">
-            Персональный AI-ассистент по Узбекистану: подбирает транспорт, трансферы, отели, оптимизирует бюджет и формирует идеальный маршрут без спешки.
+          <p className="mt-5 text-plaster/85 max-w-2xl text-sm sm:text-base md:text-lg leading-relaxed">
+            {t.home.subtitle}
           </p>
+
+          {/* Quick 3 Path Nav Buttons in Hero */}
+          <div className="flex items-center gap-3 mt-8 flex-wrap">
+            <a
+              href="#ready-routes"
+              className="px-5 py-3 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold text-xs sm:text-sm transition-all flex items-center gap-2"
+            >
+              <span>⚡</span> {language === "uz" ? "Tayyor marshrutlar" : language === "en" ? "Ready Routes" : "Готовые маршруты"}
+            </a>
+            <a
+              href="#smart-trips"
+              className="px-5 py-3 rounded-2xl bg-registan hover:bg-registan/90 text-white font-bold text-xs sm:text-sm transition-all shadow-md flex items-center gap-2"
+            >
+              <span>💰</span> {language === "uz" ? "Smart Trips (Hamyonbop)" : language === "en" ? "Smart Trips" : "Smart Trips (Впечатления)"}
+            </a>
+            <a
+              href="#trip-constructor"
+              className="px-5 py-3 rounded-2xl bg-white text-ink hover:bg-sand/30 font-bold text-xs sm:text-sm transition-all flex items-center gap-2 shadow-md"
+            >
+              <span>🛠️</span> {language === "uz" ? "Konstruktorda tuzish" : language === "en" ? "Build Custom Trip" : "Собрать в конструкторе"}
+            </a>
+          </div>
         </div>
       </section>
 
-      {/* Main Container */}
-      <section className="max-w-4xl mx-auto px-6 -mt-8 relative space-y-10">
-        {/* Preset Cards (1-Click Quick Launch) */}
-        <div className="bg-white/95 backdrop-blur border border-sand rounded-3xl p-6 sm:p-8 shadow-xl shadow-ink/5">
-          <PresetCards />
+      {/* Main Content Area */}
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 space-y-16">
+        {/* ========================================================
+           SCENARIO A: READY-MADE ROUTES (ГОТОВЫЕ МАРШРУТЫ)
+           ======================================================== */}
+        <PresetCards />
 
-          {/* Low-Budget Discovery & Tashkent Region Highlight */}
-          <div className="mt-8 pt-8 border-t border-sand/70">
-            <div className="flex items-center justify-between gap-4 mb-4 flex-wrap">
-              <div>
-                <span className="text-[11px] font-bold uppercase tracking-wider text-registan block">
-                  💸 Low-Budget & Weekend Discovery
-                </span>
-                <h3 className="font-display text-xl font-bold text-ink">
-                  🏔️ Откройте Ташкентскую область (туры от ~$25–40)
-                </h3>
-              </div>
-              <span className="text-xs text-night/60 bg-sand/30 px-3 py-1 rounded-full font-medium">
-                1–2 дня · Горы Тянь-Шаня
+        {/* ========================================================
+           SCENARIO B: SMART / LOW-BUDGET TOURS (ЛОКАЛЬНЫЕ ВПЕЧАТЛЕНИЯ)
+           ======================================================== */}
+        <SmartTripsSection
+          travelers={travelersModel}
+          budgetRange={budgetRange}
+          currentTripCost={costCalculation.totalCostUsd}
+          addedTrips={addedSmartTrips}
+          onToggleAddTrip={handleToggleAddSmartTrip}
+        />
+
+        {/* ========================================================
+           SCENARIO C: TRIP CONSTRUCTOR (КОНСТРУКТОР ПУТЕШЕСТВИЯ)
+           ======================================================== */}
+        <section id="trip-constructor" className="bg-white border border-sand rounded-3xl p-6 sm:p-10 shadow-sm scroll-mt-24">
+          <div className="mb-8 pb-6 border-b border-sand/80">
+            <div className="flex items-center gap-2 mb-1.5">
+              <span className="text-xl">🛠️</span>
+              <span className="text-xs uppercase font-bold tracking-[0.2em] text-registan">
+                {language === "uz" ? "Shaxsiy marshrut tuzish" : language === "en" ? "Custom Itinerary Builder" : "Персональный конструктор"}
               </span>
             </div>
-
-            <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-3">
-              {TASHKENT_REGION_HIGHLIGHTS.slice(0, 3).map((item) => (
-                <div
-                  key={item.id}
-                  onClick={() => {
-                    setRegion("tashkent_region");
-                    setBudgetRange("under_200");
-                    setTotalDays(2);
-                    setActiveDays(2);
-                    setInterests(["nature", "nature_hiking", "gastronomy"]);
-                  }}
-                  className="p-4 rounded-2xl border border-sand bg-plaster/30 hover:bg-white hover:border-registan transition-all cursor-pointer group shadow-2xs"
-                >
-                  <span className="text-[10px] font-bold bg-registan/15 text-registan px-2 py-0.5 rounded uppercase">
-                    {item.tag}
-                  </span>
-                  <h4 className="font-display font-bold text-ink text-sm mt-2 group-hover:text-registan transition-colors">
-                    {item.title}
-                  </h4>
-                  <div className="flex items-center justify-between text-xs text-night/70 mt-3 pt-2 border-t border-sand/50">
-                    <span>от ~${item.approxPricePerPersonUsd}/чел.</span>
-                    <span className="text-clay font-bold group-hover:underline">Выбрать →</span>
-                  </div>
-                </div>
-              ))}
-            </div>
+            <h2 className="font-display text-2xl sm:text-4xl font-black text-ink">
+              {language === "uz" ? "Sayohat konstruktori" : language === "en" ? "Trip Constructor" : "Конструктор путешествия"}
+            </h2>
+            <p className="text-xs sm:text-sm text-night/70 mt-1 max-w-2xl">
+              {language === "uz"
+                ? "Guruh tarkibi, kunlar soni va byudjet diapazonini tanlang — DiyorAI shaxsiy reja va xarajatlar hisobini shakllantiradi."
+                : language === "en"
+                ? "Specify travelers, duration, and flexible budget range — DiyorAI will optimize your routing, stays, and transit."
+                : "Укажите состав группы, длительность и гибкий диапазон бюджета — DiyorAI рассчитает затраты и сформирует персональный план."}
+            </p>
           </div>
 
-          {/* Multi-step Flow Modal or Main Form */}
+          {/* Form or Step Flow */}
           {activeStep === 0 ? (
-            /* ========================================================
-               NEW TRIP PLANNER ORDER (1 to 7)
-               1. КТО
-               2. СКОЛЬКО ДНЕЙ
-               3. ФОРМАТ (Регион)
-               4. ТЕМП ПОЕЗДКИ
-               5. БЮДЖЕТ
-               6. ИНТЕРЕСЫ
-               7. ПОСТРОИТЬ МАРШРУТ
-               ======================================================== */
-            <form onSubmit={handleStartOrganization} className="border-t border-sand/70 pt-8 mt-8 space-y-8">
-              <div className="text-center sm:text-left">
-                <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink mb-1">
-                  🛠️ Новый конструктор путешествия
-                </h2>
-                <p className="text-xs sm:text-sm text-night/70">
-                  Укажите состав группы, длительность и предпочтения — DiyorAI рассчитает бюджет и сформирует сквозной план поездки.
-                </p>
-              </div>
-
+            <form onSubmit={handleStartOrganization} className="space-y-8">
               {/* 1. БЛОК "КТО" */}
               <div className="p-5 sm:p-6 bg-plaster/30 rounded-2xl border border-sand space-y-4">
                 <div className="flex items-center justify-between">
                   <label className="block font-display text-base sm:text-lg text-ink font-bold">
-                    1. КТО едет в путешествие?
+                    {t.planner.stepWho}
                   </label>
                   <span className="text-xs font-bold text-registan bg-registan/10 px-2.5 py-1 rounded-full">
-                    Всего: {travelersModel.total} чел.
+                    {language === "uz" ? `Jami: ${travelersModel.total} kishi` : language === "en" ? `Total: ${travelersModel.total} travelers` : `Всего: ${travelersModel.total} чел.`}
                   </span>
                 </div>
 
@@ -284,23 +298,11 @@ export default function Home() {
                 </div>
 
                 {/* Dynamic fields based on traveler type */}
-                {travelerType === "solo" && (
-                  <p className="text-xs text-night/70 bg-white/80 p-3 rounded-xl border border-sand/60">
-                    👤 <strong>Одиночное путешествие:</strong> 1 взрослый. Система автоматически подбирает безопасные и популярные маршруты.
-                  </p>
-                )}
-
-                {travelerType === "couple" && (
-                  <p className="text-xs text-night/70 bg-white/80 p-3 rounded-xl border border-sand/60">
-                    👫 <strong>Пара:</strong> Автоматически 2 взрослых. Включен расчет стоимости на двоих и опция раздельной или совместной оплаты.
-                  </p>
-                )}
-
                 {travelerType === "family" && (
                   <div className="bg-white p-4 rounded-xl border border-sand grid sm:grid-cols-2 gap-4">
                     <div className="flex items-center justify-between">
                       <div>
-                        <span className="text-xs font-bold text-ink block">Взрослые</span>
+                        <span className="text-xs font-bold text-ink block">{t.planner.adultsLabel}</span>
                         <span className="text-[11px] text-night/50">от 1 чел.</span>
                       </div>
                       <div className="flex items-center gap-2">
@@ -324,86 +326,8 @@ export default function Home() {
 
                     <div className="flex items-center justify-between">
                       <div>
-                        <span className="text-xs font-bold text-ink block">Дети</span>
+                        <span className="text-xs font-bold text-ink block">{t.planner.childrenLabel}</span>
                         <span className="text-[11px] text-night/50">до 14 лет</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <button
-                          type="button"
-                          onClick={() => setChildrenCount(Math.max(0, childrenCount - 1))}
-                          className="w-8 h-8 rounded-lg bg-sand/40 hover:bg-sand font-bold text-ink text-sm flex items-center justify-center"
-                        >
-                          -
-                        </button>
-                        <span className="w-8 text-center font-bold text-ink text-sm">{childrenCount}</span>
-                        <button
-                          type="button"
-                          onClick={() => setChildrenCount(childrenCount + 1)}
-                          className="w-8 h-8 rounded-lg bg-sand/40 hover:bg-sand font-bold text-ink text-sm flex items-center justify-center"
-                        >
-                          +
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {travelerType === "friends" && (
-                  <div className="bg-white p-4 rounded-xl border border-sand flex items-center justify-between">
-                    <div>
-                      <span className="text-xs font-bold text-ink block">Количество друзей (участников)</span>
-                      <span className="text-[11px] text-night/50">Все считаются отдельными плательщиками (стоимость / {adults})</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <button
-                        type="button"
-                        onClick={() => setAdults(Math.max(2, adults - 1))}
-                        className="w-8 h-8 rounded-lg bg-sand/40 hover:bg-sand font-bold text-ink text-sm flex items-center justify-center"
-                      >
-                        -
-                      </button>
-                      <span className="w-8 text-center font-bold text-ink text-sm">{adults}</span>
-                      <button
-                        type="button"
-                        onClick={() => setAdults(adults + 1)}
-                        className="w-8 h-8 rounded-lg bg-sand/40 hover:bg-sand font-bold text-ink text-sm flex items-center justify-center"
-                      >
-                        +
-                      </button>
-                    </div>
-                  </div>
-                )}
-
-                {travelerType === "group" && (
-                  <div className="bg-white p-4 rounded-xl border border-sand grid sm:grid-cols-2 gap-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <span className="text-xs font-bold text-ink block">Взрослые участники</span>
-                        <span className="text-[11px] text-night/50">Групповой тур</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <button
-                          type="button"
-                          onClick={() => setAdults(Math.max(1, adults - 1))}
-                          className="w-8 h-8 rounded-lg bg-sand/40 hover:bg-sand font-bold text-ink text-sm flex items-center justify-center"
-                        >
-                          -
-                        </button>
-                        <span className="w-8 text-center font-bold text-ink text-sm">{adults}</span>
-                        <button
-                          type="button"
-                          onClick={() => setAdults(adults + 1)}
-                          className="w-8 h-8 rounded-lg bg-sand/40 hover:bg-sand font-bold text-ink text-sm flex items-center justify-center"
-                        >
-                          +
-                        </button>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <span className="text-xs font-bold text-ink block">Дети в группе</span>
-                        <span className="text-[11px] text-night/50">Детские скидки</span>
                       </div>
                       <div className="flex items-center gap-2">
                         <button
@@ -430,12 +354,12 @@ export default function Home() {
               {/* 2. БЛОК "СКОЛЬКО ДНЕЙ" */}
               <div className="p-5 sm:p-6 bg-plaster/30 rounded-2xl border border-sand space-y-4">
                 <label className="block font-display text-base sm:text-lg text-ink font-bold">
-                  2. СКОЛЬКО ДНЕЙ продлится поездка?
+                  {t.planner.stepDays}
                 </label>
 
                 <div className="grid sm:grid-cols-3 gap-4">
                   <div className="bg-white p-3.5 rounded-xl border border-sand">
-                    <span className="text-xs font-bold text-ink block">Общее число дней</span>
+                    <span className="text-xs font-bold text-ink block">{t.planner.totalDaysLabel}</span>
                     <div className="flex items-center gap-2 mt-2">
                       <button
                         type="button"
@@ -448,12 +372,14 @@ export default function Home() {
                       >
                         -
                       </button>
-                      <span className="flex-1 text-center font-black font-display text-lg text-ink">
-                        {totalDays} дн.
-                      </span>
+                      <span className="w-8 text-center font-bold text-ink text-sm">{totalDays}</span>
                       <button
                         type="button"
-                        onClick={() => setTotalDays(Math.min(14, totalDays + 1))}
+                        onClick={() => {
+                          const next = Math.min(14, totalDays + 1);
+                          setTotalDays(next);
+                          setActiveDays(next);
+                        }}
                         className="w-8 h-8 rounded-lg bg-sand/40 font-bold text-ink text-sm flex items-center justify-center"
                       >
                         +
@@ -462,7 +388,7 @@ export default function Home() {
                   </div>
 
                   <div className="bg-white p-3.5 rounded-xl border border-sand">
-                    <span className="text-xs font-bold text-ink block">Активные дни (экскурсии)</span>
+                    <span className="text-xs font-bold text-ink block">{t.planner.activeDaysLabel}</span>
                     <div className="flex items-center gap-2 mt-2">
                       <button
                         type="button"
@@ -471,9 +397,7 @@ export default function Home() {
                       >
                         -
                       </button>
-                      <span className="flex-1 text-center font-black font-display text-lg text-ink">
-                        {activeDays} дн.
-                      </span>
+                      <span className="w-8 text-center font-bold text-ink text-sm">{activeDays}</span>
                       <button
                         type="button"
                         onClick={() => setActiveDays(Math.min(totalDays, activeDays + 1))}
@@ -484,22 +408,19 @@ export default function Home() {
                     </div>
                   </div>
 
-                  <div className="bg-emerald-50 p-3.5 rounded-xl border border-emerald-200 flex flex-col justify-between">
-                    <span className="text-xs font-bold text-emerald-900 block">🌿 Дни отдыха (Rest days)</span>
-                    <div className="text-center font-black font-display text-lg text-emerald-800 my-1">
-                      {durationModel.restDays} дн.
-                    </div>
-                    <span className="text-[10px] text-emerald-700 text-center block">
-                      {durationModel.restDays > 0 ? "Свободный релакс и чайханы" : "Без дней отдыха"}
+                  <div className="bg-sand/30 p-3.5 rounded-xl border border-sand/60 flex flex-col justify-center">
+                    <span className="text-xs text-night/60 block">{t.planner.restDaysLabel}</span>
+                    <span className="font-display font-bold text-lg text-emerald-800">
+                      🌿 {durationModel.restDays} {t.trip.days}
                     </span>
                   </div>
                 </div>
               </div>
 
-              {/* 3. БЛОК "ФОРМАТ / НАПРАВЛЕНИЕ" */}
+              {/* 3. БЛОК "ФОРМАТ И РЕГИОН" */}
               <div className="p-5 sm:p-6 bg-plaster/30 rounded-2xl border border-sand space-y-4">
                 <label className="block font-display text-base sm:text-lg text-ink font-bold">
-                  3. ФОРМАТ: Куда держим путь?
+                  {t.planner.stepFormat}
                 </label>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
                   {REGIONS.map((r) => (
@@ -507,13 +428,13 @@ export default function Home() {
                       key={r}
                       type="button"
                       onClick={() => setRegion(r)}
-                      className={`p-3 rounded-xl border text-xs font-bold transition-all text-left ${
+                      className={`p-3.5 rounded-xl border text-xs sm:text-sm font-bold text-left transition-all ${
                         region === r
-                          ? "bg-registan text-plaster border-registan shadow-md scale-102"
-                          : "border-sand hover:border-registan text-ink bg-white"
+                          ? "bg-registan text-white border-registan shadow-md scale-102"
+                          : "border-sand bg-white text-ink hover:bg-sand/30"
                       }`}
                     >
-                      <span className="block font-display text-sm">{REGION_LABELS[r]}</span>
+                      <span className="block">{t.regions[r]}</span>
                     </button>
                   ))}
                 </div>
@@ -522,115 +443,65 @@ export default function Home() {
               {/* 4. БЛОК "ТЕМП ПОЕЗДКИ" */}
               <div className="p-5 sm:p-6 bg-plaster/30 rounded-2xl border border-sand space-y-4">
                 <label className="block font-display text-base sm:text-lg text-ink font-bold">
-                  4. ТЕМП ПОЕЗДКИ
+                  {t.planner.stepPace}
                 </label>
-                <div className="grid sm:grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   {PACES.map((p) => (
                     <button
                       key={p}
                       type="button"
                       onClick={() => setPace(p)}
-                      className={`p-4 rounded-xl border text-xs font-bold transition-all text-left ${
+                      className={`p-3.5 rounded-xl border text-xs font-bold text-left transition-all ${
                         pace === p
-                          ? "bg-ink text-plaster border-ink shadow-md scale-102"
-                          : "border-sand bg-white text-ink hover:border-ink"
+                          ? "bg-ink text-plaster border-ink shadow-md"
+                          : "border-sand bg-white text-ink hover:bg-sand/30"
                       }`}
                     >
-                      <span className="block text-sm mb-1">{PACE_LABELS[p]}</span>
-                      <span className="text-[11px] opacity-80 block font-normal">
-                        {p === "relaxed"
-                          ? "Меньше объектов, больше кофеен и парков"
-                          : p === "balanced"
-                          ? "Оптимальный баланс открытий и отдыха"
-                          : "Максимум достопримечательностей"}
-                      </span>
+                      <span>{t.paces[p]}</span>
                     </button>
                   ))}
                 </div>
               </div>
 
-              {/* 5. БЛОК "БЮДЖЕТ" */}
-              <div className="p-5 sm:p-6 bg-plaster/30 rounded-2xl border border-sand space-y-4">
-                <div className="flex items-center justify-between">
-                  <label className="block font-display text-base sm:text-lg text-ink font-bold">
-                    5. БЮДЖЕТ (Диапазон расходов)
-                  </label>
-                  <span className="text-xs text-night/70">
-                    На {travelersModel.total} чел. / {totalDays} дн.
-                  </span>
-                </div>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-                  {BUDGET_RANGES.map((b) => (
-                    <button
-                      key={b}
-                      type="button"
-                      onClick={() => setBudgetRange(b)}
-                      className={`p-3.5 rounded-xl border text-xs font-bold transition-all text-center ${
-                        budgetRange === b
-                          ? "bg-clay text-plaster border-clay shadow-md scale-102"
-                          : "border-sand bg-white text-ink hover:border-clay"
-                      }`}
-                    >
-                      <span className="block text-sm">{BUDGET_RANGE_LABELS[b].split(" (")[0]}</span>
-                      <span className="text-[10px] opacity-80 block font-normal mt-0.5">
-                        Лимит: {BUDGET_RANGE_MAX[b] === Infinity ? "Без лимита" : `до $${BUDGET_RANGE_MAX[b]}`}
-                      </span>
-                    </button>
-                  ))}
-                </div>
-              </div>
+              {/* 5. БЛОК "БЮДЖЕТ (RANGE SLIDER)" */}
+              <BudgetRangeSlider
+                value={budgetRange}
+                onChange={(newVal) => setBudgetRange(newVal)}
+                title={t.planner.stepBudget}
+              />
 
               {/* 6. БЛОК "ИНТЕРЕСЫ" */}
               <div className="p-5 sm:p-6 bg-plaster/30 rounded-2xl border border-sand space-y-4">
                 <label className="block font-display text-base sm:text-lg text-ink font-bold">
-                  6. ИНТЕРЕСЫ И ПРЕДПОЧТЕНИЯ
+                  {t.planner.stepInterests}
                 </label>
                 <InterestChips selected={interests} onChange={setInterests} />
               </div>
 
-              {error && <p className="text-trust-low text-sm font-semibold text-center">{error}</p>}
-
-              {/* 7. КНОПКА "ПОСТРОИТЬ МАРШРУТ" -> Launches Step 1 (Transport) */}
-              <button
-                type="submit"
-                className="w-full bg-clay hover:bg-clay/90 text-plaster font-bold py-4 rounded-2xl transition-all shadow-md hover:shadow-lg text-base uppercase tracking-wider flex items-center justify-center gap-2"
-              >
-                <span>🚀 ОРГАНИЗОВАТЬ ПОЕЗДКУ (Транспорт, Отели, Маршрут) →</span>
-              </button>
-            </form>
-          ) : (
-            /* ========================================================
-               ORGANIZATION STEPS FLOW (Transport -> Transfer -> Hotel)
-               ======================================================== */
-            <div className="border-t border-sand/70 pt-8 mt-8 space-y-6">
-              {/* Step Progress Bar */}
-              <div className="flex items-center justify-between border-b border-sand pb-4 flex-wrap gap-2 text-xs font-bold text-night/70">
-                <div className="flex items-center gap-3">
-                  <span className={`px-3 py-1 rounded-lg ${activeStep === 1 ? "bg-registan text-plaster" : "bg-sand/40"}`}>
-                    1. ✈️ Транспорт
-                  </span>
-                  <span>→</span>
-                  <span className={`px-3 py-1 rounded-lg ${activeStep === 2 ? "bg-registan text-plaster" : "bg-sand/40"}`}>
-                    2. 🚕 Трансфер
-                  </span>
-                  <span>→</span>
-                  <span className={`px-3 py-1 rounded-lg ${activeStep === 3 ? "bg-registan text-plaster" : "bg-sand/40"}`}>
-                    3. 🏨 Отель
-                  </span>
+              {error && (
+                <div className="p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs font-bold">
+                  {error}
                 </div>
+              )}
+
+              {/* 7. CTA КНОПКА "ОРГАНИЗОВАТЬ ПОЕЗДКУ" */}
+              <div className="text-center pt-2">
                 <button
-                  type="button"
-                  onClick={() => setActiveStep(0)}
-                  className="text-clay hover:underline font-bold"
+                  type="submit"
+                  className="w-full sm:w-auto px-10 py-4 bg-clay hover:bg-clay/90 text-plaster font-bold text-base sm:text-lg rounded-2xl transition-all shadow-xl hover:shadow-2xl hover:scale-102 flex items-center justify-center gap-3 mx-auto"
                 >
-                  Изменить параметры
+                  <span>{t.planner.finishPlan}</span>
                 </button>
               </div>
+            </form>
+          ) : (
+            /* Multi-step Logistics Selector */
+            <div className="space-y-6">
+              <BudgetBar
+                costResult={costCalculation}
+                travelers={travelersModel}
+              />
 
-              {/* Realtime Budget Bar */}
-              <BudgetBar costResult={costCalculation} travelers={travelersModel} />
-
-              {/* Step Content */}
               {activeStep === 1 && (
                 <StepTransport
                   region={region}
@@ -661,24 +532,39 @@ export default function Home() {
                   onSelect={setSelectedHotel}
                   onNext={handleBuildFinalItinerary}
                   onBack={() => setActiveStep(2)}
+                  loading={loading}
                 />
-              )}
-
-              {loading && (
-                <div className="p-4 bg-registan/10 border border-registan/30 rounded-xl text-center text-xs font-bold text-ink animate-pulse">
-                  🤖 DiyorAI формирует индивидуальный маршрут с учетом погоды и расписания...
-                </div>
               )}
             </div>
           )}
+        </section>
+
+        {/* ========================================================
+           SCENARIO D: COMPACT EXPLORE UZBEKISTAN GUIDEBOOK BLOCK
+           ======================================================== */}
+        <GuidebookPromo />
+
+        {/* Accredited Guides Preview */}
+        <div className="p-6 sm:p-8 rounded-3xl bg-white border border-sand flex flex-col sm:flex-row items-center justify-between gap-6 shadow-xs">
+          <div className="flex items-center gap-4">
+            <span className="text-4xl p-3 bg-sand/30 rounded-2xl shrink-0">👨‍🏫</span>
+            <div>
+              <h3 className="font-display text-lg sm:text-xl font-bold text-ink">
+                {language === "uz" ? "25+ akkreditatsiyadan o'tgan gidlar reyestri" : language === "en" ? "25+ Accredited Guides Registry" : "Реестр аккредитованных гидов Узбекистана"}
+              </h3>
+              <p className="text-xs text-night/70 mt-0.5">
+                {t.guides.trustGuaranteeDesc}
+              </p>
+            </div>
+          </div>
+          <Link
+            href="/guides"
+            className="px-6 py-3 rounded-xl bg-ink hover:bg-night text-plaster text-xs font-bold transition-all shrink-0 shadow-md"
+          >
+            {language === "uz" ? "Gidlarni ko'rish →" : language === "en" ? "View Guides →" : "Перейти к каталогу гидов →"}
+          </Link>
         </div>
-
-        {/* Survival Guide Modal */}
-        <SurvivalGuideModal />
-      </section>
-
-      {/* Prominent Travel Directory */}
-      <TravelDirectory />
+      </div>
     </div>
   );
 }

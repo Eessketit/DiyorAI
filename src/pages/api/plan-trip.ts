@@ -29,6 +29,8 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Data>)
     duration,
     pace,
     budget,
+    budgetRange,
+    smartTrips,
     // Legacy support
     days,
     groupType,
@@ -51,7 +53,9 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Data>)
     ? duration
     : createDurationModel(totalDays, activeDays);
 
-  const normalizedBudget = budget?.range
+  const normalizedBudget = budget?.maxAmount !== undefined
+    ? budget
+    : budget?.range
     ? budget
     : createBudgetModel((budget === "budget" ? "under_200" : budget === "luxury" ? "over_1000" : "under_500") as BudgetRange);
 
@@ -62,6 +66,8 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Data>)
     duration: normalizedDuration,
     pace: (pace || "balanced") as Pace,
     budget: normalizedBudget,
+    budgetRange,
+    smartTrips,
     soloTraveler: Boolean(soloTraveler || normalizedTravelers.type === "solo"),
   };
 
@@ -70,6 +76,10 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Data>)
     transfer?: SelectedTransfer;
     hotel?: SelectedHotel;
   });
+
+  if (smartTrips && Array.isArray(smartTrips)) {
+    plan.smartTrips = smartTrips;
+  }
 
   res.status(200).json(plan);
 }
