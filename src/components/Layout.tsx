@@ -4,6 +4,7 @@ import { ReactNode } from "react";
 import TilePattern from "./TilePattern";
 import { Language, useTranslation } from "@/lib/i18n";
 import { SlidersHorizontal, UserCheck, ShieldCheck, HelpCircle } from "lucide-react";
+import AiChatWidget from "./chat/AiChatWidget";
 
 export default function Layout({ children }: { children: ReactNode }) {
   const router = useRouter();
@@ -40,7 +41,7 @@ export default function Layout({ children }: { children: ReactNode }) {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col bg-paper text-night">
+    <div className="min-h-screen flex flex-col bg-paper text-night relative">
       {/* Horizontal Header */}
       <header className="border-b border-majolica/20 bg-paper/95 backdrop-blur-md sticky top-0 z-30 shadow-xs">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-4">
@@ -100,6 +101,9 @@ export default function Layout({ children }: { children: ReactNode }) {
 
       <main className="flex-1">{children}</main>
 
+      {/* Floating AI Chat Concierge Widget */}
+      <AiChatWidget />
+
       {/* Footer */}
       <footer className="border-t border-majolica/20 mt-16 bg-white/60">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-night/60">
@@ -127,3 +131,4 @@ export default function Layout({ children }: { children: ReactNode }) {
     </div>
   );
 }
+
