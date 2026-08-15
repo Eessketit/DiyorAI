@@ -21,16 +21,18 @@ export type Region =
   | "bukhara"
   | "khiva"
   | "tashkent"
-  | "tashkent_region";
-
-export type ExtendedRegion =
-  | Region
-  | "shahrisabz"
+  | "tashkent_region"
   | "fergana"
   | "andijan"
   | "namangan"
+  | "shahrisabz"
+  | "termez"
   | "nukus"
-  | "termez";
+  | "navoi"
+  | "jizzakh"
+  | "syrdarya";
+
+export type ExtendedRegion = Region;
 
 export type Pace = "relaxed" | "balanced" | "packed";
 export type TravelerType = "solo" | "couple" | "family" | "friends" | "group";
@@ -237,7 +239,7 @@ export interface TrainOption {
   departureTime: string;
   arrivalTime: string;
   duration: string;
-  trainClass: "economy" | "business" | "vip";
+  trainClass: "economy" | "comfort" | "business" | "vip";
   pricePerPassengerUsd: number;
 }
 
@@ -419,18 +421,21 @@ export const CATEGORY_LABELS: Record<Category, string> = {
   family_travel: "Семейный отдых с детьми",
 };
 
-export const REGION_LABELS: Record<ExtendedRegion, string> = {
+export const REGION_LABELS: Record<Region, string> = {
   samarkand: "Самарканд",
   bukhara: "Бухара",
-  khiva: "Хива",
-  tashkent: "Ташкент (Город)",
-  tashkent_region: "Ташкентская область (Горы, Чарвак, Амирсой)",
-  shahrisabz: "Шахрисабз",
+  khiva: "Хива (Хорезм)",
+  tashkent: "Ташкент",
+  tashkent_region: "Ташкентская область",
   fergana: "Фергана",
   andijan: "Андижан",
   namangan: "Наманган",
-  nukus: "Нукус",
+  shahrisabz: "Шахрисабз",
   termez: "Термез",
+  nukus: "Каракалпакстан (Нукус / Арал)",
+  navoi: "Навои (Нурата)",
+  jizzakh: "Джизак (Заамин)",
+  syrdarya: "Сырдарья (Гулистан)",
 };
 
 export const PACE_LABELS: Record<Pace, string> = {

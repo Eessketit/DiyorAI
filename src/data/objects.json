@@ -4,7 +4,10 @@
     "name": "Ансамбль площади Регистан",
     "city": "Самарканд",
     "region": "samarkand",
-    "categories": ["architecture", "history"],
+    "categories": [
+      "architecture",
+      "history"
+    ],
     "lat": 39.6547,
     "lon": 66.9758,
     "description": "Сердце древнего Самарканда. Три грандиозных медресе XV-XVII веков: Улугбека, Шердор и Тилля-Кари с ослепительными лазурными мозаиками.",
@@ -12,14 +15,20 @@
     "isIndoor": false,
     "bestTimeSlot": "morning",
     "approxDurationMin": 120,
-    "ticketPriceUzs": { "resident": 25000, "foreigner": 65000 }
+    "ticketPriceUzs": {
+      "resident": 25000,
+      "foreigner": 65000
+    }
   },
   {
     "id": "samarkand-gur-emir",
     "name": "Мавзолей Гур-Эмир",
     "city": "Самарканд",
     "region": "samarkand",
-    "categories": ["history", "architecture"],
+    "categories": [
+      "history",
+      "architecture"
+    ],
     "lat": 39.6486,
     "lon": 66.9689,
     "description": "Усыпальница Амира Тимура (Тамерлана) и его потомков. Шедевр средневековой архитектуры с ребристым лазурным куполом и нефритовым надгробием.",
@@ -27,14 +36,20 @@
     "isIndoor": true,
     "bestTimeSlot": "morning",
     "approxDurationMin": 60,
-    "ticketPriceUzs": { "resident": 20000, "foreigner": 50000 }
+    "ticketPriceUzs": {
+      "resident": 20000,
+      "foreigner": 50000
+    }
   },
   {
     "id": "samarkand-shahi-zinda",
     "name": "Мемориальный комплекс Шахи-Зинда",
     "city": "Самарканд",
     "region": "samarkand",
-    "categories": ["architecture", "pilgrimage"],
+    "categories": [
+      "architecture",
+      "pilgrimage"
+    ],
     "lat": 39.6644,
     "lon": 66.9878,
     "description": "Невероятная улица-некрополь из бирюзовых мавзолеев XI-XV веков, святыня исламского мира и вершина искусства майолики.",
@@ -42,14 +57,20 @@
     "isIndoor": false,
     "bestTimeSlot": "evening",
     "approxDurationMin": 90,
-    "ticketPriceUzs": { "resident": 20000, "foreigner": 50000 }
+    "ticketPriceUzs": {
+      "resident": 20000,
+      "foreigner": 50000
+    }
   },
   {
     "id": "samarkand-siab-bazaar",
     "name": "Сиабский базар и Чайхана",
     "city": "Самарканд",
     "region": "samarkand",
-    "categories": ["crafts_bazaars", "gastronomy"],
+    "categories": [
+      "crafts_bazaars",
+      "gastronomy"
+    ],
     "lat": 39.6611,
     "lon": 66.9819,
     "description": "Аутентичный восточный базар рядом с мечетью Биби-Ханум. Самаркандские лепешки, орехи, сушеные фрукты, сладости и пряности.",
@@ -57,14 +78,19 @@
     "isIndoor": true,
     "bestTimeSlot": "afternoon_indoor",
     "approxDurationMin": 90,
-    "ticketPriceUzs": { "resident": 0, "foreigner": 0 }
+    "ticketPriceUzs": {
+      "resident": 0,
+      "foreigner": 0
+    }
   },
   {
     "id": "samarkand-afrasiyab-museum",
     "name": "Музей истории Самарканда Афрасиаб",
     "city": "Самарканд",
     "region": "samarkand",
-    "categories": ["history"],
+    "categories": [
+      "history"
+    ],
     "lat": 39.6708,
     "lon": 66.9933,
     "description": "Музей на месте древнего городища Афрасиаб с прохладными залами и бесценными настенными фресками VII века.",
@@ -72,14 +98,20 @@
     "isIndoor": true,
     "bestTimeSlot": "afternoon_indoor",
     "approxDurationMin": 90,
-    "ticketPriceUzs": { "resident": 15000, "foreigner": 40000 }
+    "ticketPriceUzs": {
+      "resident": 15000,
+      "foreigner": 40000
+    }
   },
   {
     "id": "bukhara-poi-kalyan",
     "name": "Ансамбль Пои-Калян (Минарет и Мечеть)",
     "city": "Бухара",
     "region": "bukhara",
-    "categories": ["architecture", "history"],
+    "categories": [
+      "architecture",
+      "history"
+    ],
     "lat": 39.7758,
     "lon": 64.4144,
     "description": "Центральная площадь старой Бухары с 46-метровым минаретом Калян (1127 г.) и действующим медресе Мири Араб.",
@@ -87,14 +119,19 @@
     "isIndoor": false,
     "bestTimeSlot": "morning",
     "approxDurationMin": 90,
-    "ticketPriceUzs": { "resident": 20000, "foreigner": 50000 }
+    "ticketPriceUzs": {
+      "resident": 20000,
+      "foreigner": 50000
+    }
   },
   {
     "id": "bukhara-ark",
     "name": "Крепость Арк",
     "city": "Бухара",
     "region": "bukhara",
-    "categories": ["history"],
+    "categories": [
+      "history"
+    ],
     "lat": 39.7778,
     "lon": 64.4108,
     "description": "Древняя цитадель эмиров Бухары, служившая резиденцией правителей более тысячи лет. Панорамный вид на старый город.",
@@ -102,14 +139,20 @@
     "isIndoor": true,
     "bestTimeSlot": "afternoon_indoor",
     "approxDurationMin": 90,
-    "ticketPriceUzs": { "resident": 20000, "foreigner": 50000 }
+    "ticketPriceUzs": {
+      "resident": 20000,
+      "foreigner": 50000
+    }
   },
   {
     "id": "bukhara-lyabi-khauz",
     "name": "Ансамбль Ляби-Хауз и Чайхана",
     "city": "Бухара",
     "region": "bukhara",
-    "categories": ["gastronomy", "architecture"],
+    "categories": [
+      "gastronomy",
+      "architecture"
+    ],
     "lat": 39.7731,
     "lon": 64.4206,
     "description": "Живописная площадь вокруг старинного водоема, окруженная вековыми тутовниками, чайханами и медресе Нодир-Диван-Беги.",
@@ -117,14 +160,19 @@
     "isIndoor": false,
     "bestTimeSlot": "evening",
     "approxDurationMin": 90,
-    "ticketPriceUzs": { "resident": 0, "foreigner": 0 }
+    "ticketPriceUzs": {
+      "resident": 0,
+      "foreigner": 0
+    }
   },
   {
     "id": "bukhara-trading-domes",
     "name": "Торговые купола Бухары (Токи Саррафон, Тельпак Фурушон, Заргарон)",
     "city": "Бухара",
     "region": "bukhara",
-    "categories": ["crafts_bazaars"],
+    "categories": [
+      "crafts_bazaars"
+    ],
     "lat": 39.7745,
     "lon": 64.4172,
     "description": "Крытые торговые купола XVI века: ремесленники чеканки, шелкоткачества, сузане и бухарские ювелиры.",
@@ -132,14 +180,20 @@
     "isIndoor": true,
     "bestTimeSlot": "afternoon_indoor",
     "approxDurationMin": 90,
-    "ticketPriceUzs": { "resident": 0, "foreigner": 0 }
+    "ticketPriceUzs": {
+      "resident": 0,
+      "foreigner": 0
+    }
   },
   {
     "id": "khiva-ichan-kala",
     "name": "Крепость Ичан-Кала (Внутренний город)",
     "city": "Хива",
     "region": "khiva",
-    "categories": ["architecture", "history"],
+    "categories": [
+      "architecture",
+      "history"
+    ],
     "lat": 41.3783,
     "lon": 60.3639,
     "description": "Живой музей под открытым небом, объект всемирного наследия ЮНЕСКО, окруженный массивными глиняными стенами.",
@@ -147,14 +201,19 @@
     "isIndoor": false,
     "bestTimeSlot": "morning",
     "approxDurationMin": 180,
-    "ticketPriceUzs": { "resident": 30000, "foreigner": 100000 }
+    "ticketPriceUzs": {
+      "resident": 30000,
+      "foreigner": 100000
+    }
   },
   {
     "id": "khiva-kalta-minor",
     "name": "Минарет Кальта-Минор",
     "city": "Хива",
     "region": "khiva",
-    "categories": ["architecture"],
+    "categories": [
+      "architecture"
+    ],
     "lat": 41.3779,
     "lon": 60.3592,
     "description": "Знаменитый незавершенный бирюзовый минарет, полностью покрытый полихромными глазурованными изразцами.",
@@ -162,14 +221,20 @@
     "isIndoor": false,
     "bestTimeSlot": "evening",
     "approxDurationMin": 45,
-    "ticketPriceUzs": { "resident": 0, "foreigner": 0 }
+    "ticketPriceUzs": {
+      "resident": 0,
+      "foreigner": 0
+    }
   },
   {
     "id": "tashkent-chorsu",
     "name": "Базар Чорсу и ряды обжорных рядов",
     "city": "Ташкент",
     "region": "tashkent",
-    "categories": ["gastronomy", "crafts_bazaars"],
+    "categories": [
+      "gastronomy",
+      "crafts_bazaars"
+    ],
     "lat": 41.3275,
     "lon": 69.2346,
     "description": "Сердце старого Ташкента под гигантским лазурным куполом. Уличная самса, нарын, шашлык, курт и специи.",
@@ -177,14 +242,19 @@
     "isIndoor": true,
     "bestTimeSlot": "morning",
     "approxDurationMin": 120,
-    "ticketPriceUzs": { "resident": 0, "foreigner": 0 }
+    "ticketPriceUzs": {
+      "resident": 0,
+      "foreigner": 0
+    }
   },
   {
     "id": "tashkent-besh-qozon",
     "name": "Центр плова Besh Qozon",
     "city": "Ташкент",
     "region": "tashkent",
-    "categories": ["gastronomy"],
+    "categories": [
+      "gastronomy"
+    ],
     "lat": 41.3486,
     "lon": 69.2872,
     "description": "Главный гастрономический аттракцион столицы. Приготовление десятков тонн традиционного плова в исполинских казанах.",
@@ -192,14 +262,20 @@
     "isIndoor": true,
     "bestTimeSlot": "afternoon_indoor",
     "approxDurationMin": 90,
-    "ticketPriceUzs": { "resident": 0, "foreigner": 0 }
+    "ticketPriceUzs": {
+      "resident": 0,
+      "foreigner": 0
+    }
   },
   {
     "id": "tashkent-hotel-uzbekistan",
     "name": "Гостиница «Узбекистан» и Сквер Амира Тимура",
     "city": "Ташкент",
     "region": "tashkent",
-    "categories": ["soviet_modernism", "architecture"],
+    "categories": [
+      "soviet_modernism",
+      "architecture"
+    ],
     "lat": 41.3123,
     "lon": 69.2787,
     "description": "Шедевр советского модернизма 1974 года с фасадной решеткой панджара, символ эпохи восстановления города.",
@@ -207,14 +283,20 @@
     "isIndoor": false,
     "bestTimeSlot": "morning",
     "approxDurationMin": 60,
-    "ticketPriceUzs": { "resident": 0, "foreigner": 0 }
+    "ticketPriceUzs": {
+      "resident": 0,
+      "foreigner": 0
+    }
   },
   {
     "id": "tashkent-state-art-museum",
     "name": "Государственный музей искусств Узбекистана",
     "city": "Ташкент",
     "region": "tashkent",
-    "categories": ["soviet_modernism", "history"],
+    "categories": [
+      "soviet_modernism",
+      "history"
+    ],
     "lat": 41.3039,
     "lon": 69.2789,
     "description": "Бруталистский куб с сокровищами согдийской культуры и богатейшим собранием русского и узбекского авангарда.",
@@ -222,14 +304,21 @@
     "isIndoor": true,
     "bestTimeSlot": "afternoon_indoor",
     "approxDurationMin": 120,
-    "ticketPriceUzs": { "resident": 20000, "foreigner": 50000 }
+    "ticketPriceUzs": {
+      "resident": 20000,
+      "foreigner": 50000
+    }
   },
   {
     "id": "tashkent-hazrati-imam",
     "name": "Ансамбль Хазрати Имам (Хаст-Имам)",
     "city": "Ташкент",
     "region": "tashkent",
-    "categories": ["architecture", "pilgrimage", "history"],
+    "categories": [
+      "architecture",
+      "pilgrimage",
+      "history"
+    ],
     "lat": 41.3364,
     "lon": 69.2408,
     "description": "Духовный центр Ташкента. Здесь в медресе Муйи Муборак хранится всемирно известный Коран Усмана VII века.",
@@ -237,14 +326,20 @@
     "isIndoor": true,
     "bestTimeSlot": "evening",
     "approxDurationMin": 90,
-    "ticketPriceUzs": { "resident": 15000, "foreigner": 40000 }
+    "ticketPriceUzs": {
+      "resident": 15000,
+      "foreigner": 40000
+    }
   },
   {
     "id": "tasreg-charvak",
     "name": "Чарвакское водохранилище и смотровые площадки",
     "city": "Чарвак",
     "region": "tashkent_region",
-    "categories": ["nature", "nature_hiking"],
+    "categories": [
+      "nature",
+      "nature_hiking"
+    ],
     "lat": 41.6369,
     "lon": 70.0456,
     "description": "Бирюзовая жемчужина Западного Тянь-Шаня. Водные прогулки на катерах, парапланеризм, горные пляжи и панорамный вид на горы.",
@@ -252,7 +347,10 @@
     "isIndoor": false,
     "bestTimeSlot": "morning",
     "approxDurationMin": 180,
-    "ticketPriceUzs": { "resident": 0, "foreigner": 0 },
+    "ticketPriceUzs": {
+      "resident": 0,
+      "foreigner": 0
+    },
     "approxCostUsd": 10
   },
   {
@@ -260,7 +358,9 @@
     "name": "Гастрономический комплекс «Бочка» и чайханы",
     "city": "Бостанлык",
     "region": "tashkent_region",
-    "categories": ["gastronomy"],
+    "categories": [
+      "gastronomy"
+    ],
     "lat": 41.6112,
     "lon": 69.9678,
     "description": "Легендарный гастрономический центр на развилке дорог к Чарваку и Чимгану. Свежая горная форель, сочные шашлыки и горячие лепешки.",
@@ -268,7 +368,10 @@
     "isIndoor": true,
     "bestTimeSlot": "afternoon_indoor",
     "approxDurationMin": 90,
-    "ticketPriceUzs": { "resident": 0, "foreigner": 0 },
+    "ticketPriceUzs": {
+      "resident": 0,
+      "foreigner": 0
+    },
     "approxCostUsd": 12
   },
   {
@@ -276,7 +379,10 @@
     "name": "Горный курорт Амирсой (Канатная дорога Гондола)",
     "city": "Амирсой",
     "region": "tashkent_region",
-    "categories": ["nature_hiking", "nature"],
+    "categories": [
+      "nature_hiking",
+      "nature"
+    ],
     "lat": 41.5273,
     "lon": 70.0768,
     "description": "Современный всесезонный горный курорт мирового уровня. Подъем на канатной дороге на высоту 2290м, горные трассы и альпийские террасы.",
@@ -284,7 +390,10 @@
     "isIndoor": false,
     "bestTimeSlot": "morning",
     "approxDurationMin": 180,
-    "ticketPriceUzs": { "resident": 110000, "foreigner": 160000 },
+    "ticketPriceUzs": {
+      "resident": 110000,
+      "foreigner": 160000
+    },
     "approxCostUsd": 15
   },
   {
@@ -292,7 +401,10 @@
     "name": "Урочище Чимган и подножие Большого Чимгана",
     "city": "Чимган",
     "region": "tashkent_region",
-    "categories": ["nature_hiking", "nature"],
+    "categories": [
+      "nature_hiking",
+      "nature"
+    ],
     "lat": 41.5492,
     "lon": 70.0298,
     "description": "Классический центр горного туризма Узбекистана (3309м). Катание на лошадях, прогулки к Гулькамским теснинам и чистейшие горные родники.",
@@ -300,7 +412,10 @@
     "isIndoor": false,
     "bestTimeSlot": "morning",
     "approxDurationMin": 150,
-    "ticketPriceUzs": { "resident": 0, "foreigner": 0 },
+    "ticketPriceUzs": {
+      "resident": 0,
+      "foreigner": 0
+    },
     "approxCostUsd": 8
   },
   {
@@ -308,7 +423,10 @@
     "name": "Ущелье Бельдерсай и канатно-кресельная дорога",
     "city": "Бельдерсай",
     "region": "tashkent_region",
-    "categories": ["nature_hiking", "nature"],
+    "categories": [
+      "nature_hiking",
+      "nature"
+    ],
     "lat": 41.5127,
     "lon": 69.9984,
     "description": "Живописнейшее ущелье с реликтовыми арчовыми лесами, кресельным подъемником длиной более 2.5 км и петроглифами на перевале Кумбель.",
@@ -316,7 +434,10 @@
     "isIndoor": false,
     "bestTimeSlot": "afternoon_indoor",
     "approxDurationMin": 120,
-    "ticketPriceUzs": { "resident": 35000, "foreigner": 60000 },
+    "ticketPriceUzs": {
+      "resident": 35000,
+      "foreigner": 60000
+    },
     "approxCostUsd": 6
   },
   {
@@ -324,7 +445,11 @@
     "name": "Сосновый бор Сукок и Паркентские винодельни",
     "city": "Паркент / Сукок",
     "region": "tashkent_region",
-    "categories": ["gastronomy", "nature", "nature_hiking"],
+    "categories": [
+      "gastronomy",
+      "nature",
+      "nature_hiking"
+    ],
     "lat": 41.2589,
     "lon": 69.8378,
     "description": "Заповедная сосновая роща Сукок, знаменитый сукокский шашлык в тени горной реки и дегустация автохтонных вин в Chateau Hamkor.",
@@ -332,7 +457,10 @@
     "isIndoor": false,
     "bestTimeSlot": "evening",
     "approxDurationMin": 150,
-    "ticketPriceUzs": { "resident": 10000, "foreigner": 25000 },
+    "ticketPriceUzs": {
+      "resident": 10000,
+      "foreigner": 25000
+    },
     "approxCostUsd": 10
   },
   {
@@ -340,7 +468,10 @@
     "name": "Янгиабадские каньоны и водопад Чалдыран",
     "city": "Янгиабад",
     "region": "tashkent_region",
-    "categories": ["nature_hiking", "nature"],
+    "categories": [
+      "nature_hiking",
+      "nature"
+    ],
     "lat": 41.1215,
     "lon": 70.0934,
     "description": "Уединенный горный оазис с узкими каньонами, хрустальными ваннами горной реки Каттасай и живописными пешими маршрутами.",
@@ -348,8 +479,367 @@
     "isIndoor": false,
     "bestTimeSlot": "morning",
     "approxDurationMin": 180,
-    "ticketPriceUzs": { "resident": 0, "foreigner": 0 },
+    "ticketPriceUzs": {
+      "resident": 0,
+      "foreigner": 0
+    },
     "approxCostUsd": 8
+  },
+  {
+    "id": "fergana-kokand-palace",
+    "name": "Дворец Худояр-хана (Кокандский Урда)",
+    "city": "Коканд",
+    "region": "fergana",
+    "categories": [
+      "history",
+      "architecture"
+    ],
+    "lat": 40.5342,
+    "lon": 70.9392,
+    "description": "Величественный дворец последнего правителя Кокандского ханства с богатой мозаичной отделкой и 7 дворами.",
+    "popularity": 9,
+    "isIndoor": true,
+    "bestTimeSlot": "morning",
+    "approxDurationMin": 90,
+    "ticketPriceUzs": {
+      "resident": 15000,
+      "foreigner": 40000
+    }
+  },
+  {
+    "id": "fergana-rishtan-ceramics",
+    "name": "Гончарные мастерские Риштана",
+    "city": "Риштан",
+    "region": "fergana",
+    "categories": [
+      "crafts_bazaars",
+      "culture"
+    ],
+    "lat": 40.3581,
+    "lon": 71.2828,
+    "description": "Мировая столица лазурной керамики. Мастер-классы по ручной росписи и гончарному кругу от потомственных мастеров.",
+    "popularity": 9,
+    "isIndoor": true,
+    "bestTimeSlot": "afternoon_indoor",
+    "approxDurationMin": 120,
+    "ticketPriceUzs": {
+      "resident": 0,
+      "foreigner": 0
+    }
+  },
+  {
+    "id": "fergana-yodgorlik-silk",
+    "name": "Шёлковая фабрика «Ёдгорлик»",
+    "city": "Маргилан",
+    "region": "fergana",
+    "categories": [
+      "crafts_bazaars",
+      "history"
+    ],
+    "lat": 40.4722,
+    "lon": 71.7144,
+    "description": "Единственная фабрика, где вручную ткут знаменитый узбекский шелк хан-атлас и адрас по технологиям Великого Шелкового пути.",
+    "popularity": 9,
+    "isIndoor": true,
+    "bestTimeSlot": "morning",
+    "approxDurationMin": 90,
+    "ticketPriceUzs": {
+      "resident": 10000,
+      "foreigner": 30000
+    }
+  },
+  {
+    "id": "andijan-babur-park",
+    "name": "Мемориальный парк и музей Захириддина Бабура",
+    "city": "Андижан",
+    "region": "andijan",
+    "categories": [
+      "history",
+      "nature"
+    ],
+    "lat": 40.7511,
+    "lon": 72.3833,
+    "description": "Живописный парк на холме Боги Шамол, где родился основатель Империи Великих Моголов Бабур. Музей и смотровая площадка.",
+    "popularity": 8,
+    "isIndoor": false,
+    "bestTimeSlot": "morning",
+    "approxDurationMin": 100,
+    "ticketPriceUzs": {
+      "resident": 10000,
+      "foreigner": 25000
+    }
+  },
+  {
+    "id": "andijan-jami-madrasah",
+    "name": "Комплекс медресе Джами",
+    "city": "Андижан",
+    "region": "andijan",
+    "categories": [
+      "architecture",
+      "history"
+    ],
+    "lat": 40.7825,
+    "lon": 72.3442,
+    "description": "Крупнейший исторический комплекс Ферганской долины XIX века с грандиозным минаретом и музеем прикладного искусства.",
+    "popularity": 8,
+    "isIndoor": true,
+    "bestTimeSlot": "afternoon_indoor",
+    "approxDurationMin": 60,
+    "ticketPriceUzs": {
+      "resident": 10000,
+      "foreigner": 25000
+    }
+  },
+  {
+    "id": "namangan-afsona-park",
+    "name": "Тематический парк «Долина Легенд» (Afsonalar Vodiysi)",
+    "city": "Наманган",
+    "region": "namangan",
+    "categories": [
+      "family_travel",
+      "nature"
+    ],
+    "lat": 40.9983,
+    "lon": 71.6726,
+    "description": "Крупнейший современный парк развлечений в Центральной Азии с аквапарком, колесом обозрения и светомузыкальными фонтанами.",
+    "popularity": 9,
+    "isIndoor": false,
+    "bestTimeSlot": "evening",
+    "approxDurationMin": 180,
+    "ticketPriceUzs": {
+      "resident": 25000,
+      "foreigner": 40000
+    }
+  },
+  {
+    "id": "namangan-akhsikent",
+    "name": "Древнее городище Ахсикент",
+    "city": "Наманган",
+    "region": "namangan",
+    "categories": [
+      "history",
+      "archaeology"
+    ],
+    "lat": 40.8872,
+    "lon": 71.4983,
+    "description": "Археологический памятник III века до н.э. на берегу Сырдарьи — столица древней Ферганы и центр кузнечного дела.",
+    "popularity": 8,
+    "isIndoor": false,
+    "bestTimeSlot": "morning",
+    "approxDurationMin": 90,
+    "ticketPriceUzs": {
+      "resident": 10000,
+      "foreigner": 30000
+    }
+  },
+  {
+    "id": "shahrisabz-ak-saray",
+    "name": "Дворец Аксарай (Белый Дворец Тимура)",
+    "city": "Шахрисабз",
+    "region": "shahrisabz",
+    "categories": [
+      "history",
+      "architecture"
+    ],
+    "lat": 39.0567,
+    "lon": 66.8286,
+    "description": "Грандиозный портал летней резиденции Амира Тимура высотой свыше 40 метров, украшенный непревзойденной лазурной майоликой.",
+    "popularity": 10,
+    "isIndoor": false,
+    "bestTimeSlot": "morning",
+    "approxDurationMin": 90,
+    "ticketPriceUzs": {
+      "resident": 15000,
+      "foreigner": 45000
+    }
+  },
+  {
+    "id": "shahrisabz-dorus-saodat",
+    "name": "Мемориальный комплекс Дорус-Саодат и Дорут-Тилават",
+    "city": "Шахрисабз",
+    "region": "shahrisabz",
+    "categories": [
+      "history",
+      "pilgrimage"
+    ],
+    "lat": 39.0511,
+    "lon": 66.8322,
+    "description": "Усыпальница сыновей Тимура и мечеть Кок-Гумбаз («Голубой купол») XV века.",
+    "popularity": 9,
+    "isIndoor": true,
+    "bestTimeSlot": "afternoon_indoor",
+    "approxDurationMin": 80,
+    "ticketPriceUzs": {
+      "resident": 10000,
+      "foreigner": 35000
+    }
+  },
+  {
+    "id": "termez-fayaz-tepa",
+    "name": "Буддийский храмовый комплекс Фаязтепа",
+    "city": "Термез",
+    "region": "termez",
+    "categories": [
+      "history",
+      "archaeology"
+    ],
+    "lat": 37.2858,
+    "lon": 67.1856,
+    "description": "Уникальный буддийский монастырский комплекс I–III веков н.э. Кушанского царства со священной ступой.",
+    "popularity": 9,
+    "isIndoor": false,
+    "bestTimeSlot": "morning",
+    "approxDurationMin": 80,
+    "ticketPriceUzs": {
+      "resident": 15000,
+      "foreigner": 40000
+    }
+  },
+  {
+    "id": "termez-al-hakim",
+    "name": "Мавзолей Аль-Хаким ат-Тирмизи",
+    "city": "Термез",
+    "region": "termez",
+    "categories": [
+      "pilgrimage",
+      "history"
+    ],
+    "lat": 37.2889,
+    "lon": 67.1953,
+    "description": "Святыня выдающегося суфийского мыслителя и богослова IX века на живописном берегу Амударьи.",
+    "popularity": 9,
+    "isIndoor": true,
+    "bestTimeSlot": "evening",
+    "approxDurationMin": 60,
+    "ticketPriceUzs": {
+      "resident": 10000,
+      "foreigner": 30000
+    }
+  },
+  {
+    "id": "nukus-savitsky-museum",
+    "name": "Музей искусств им. И.В. Савицкого («Лувр в пустыне»)",
+    "city": "Нукус",
+    "region": "nukus",
+    "categories": [
+      "culture",
+      "history"
+    ],
+    "lat": 42.4647,
+    "lon": 59.6083,
+    "description": "Вторая в мире по величине коллекция русского авангарда и уникальное собрание прикладного искусства Каракалпакстана.",
+    "popularity": 10,
+    "isIndoor": true,
+    "bestTimeSlot": "afternoon_indoor",
+    "approxDurationMin": 150,
+    "ticketPriceUzs": {
+      "resident": 25000,
+      "foreigner": 75000
+    }
+  },
+  {
+    "id": "nukus-muynak-ship-graveyard",
+    "name": "Кладбище кораблей на Аральском море",
+    "city": "Муйнак",
+    "region": "nukus",
+    "categories": [
+      "nature",
+      "history"
+    ],
+    "lat": 43.7667,
+    "lon": 59.0333,
+    "description": "Символ экологической катастрофы — ржавеющие остовы судов на дне отступившего Аральского моря и маяк-музей.",
+    "popularity": 9,
+    "isIndoor": false,
+    "bestTimeSlot": "morning",
+    "approxDurationMin": 120,
+    "ticketPriceUzs": {
+      "resident": 10000,
+      "foreigner": 30000
+    }
+  },
+  {
+    "id": "navoi-nurata-chashma",
+    "name": "Комплекс «Чашма» и крепость Александра Македонского",
+    "city": "Нурата",
+    "region": "navoi",
+    "categories": [
+      "history",
+      "pilgrimage"
+    ],
+    "lat": 40.5636,
+    "lon": 65.6881,
+    "description": "Священный источник с чистейшей водой и священными рыбками маринками, а также руины крепости Нур IV века до н.э.",
+    "popularity": 8,
+    "isIndoor": false,
+    "bestTimeSlot": "morning",
+    "approxDurationMin": 90,
+    "ticketPriceUzs": {
+      "resident": 10000,
+      "foreigner": 25000
+    }
+  },
+  {
+    "id": "navoi-aydarkul-yurt",
+    "name": "Юртовый лагерь и озеро Айдаркуль",
+    "city": "Кызылкум",
+    "region": "navoi",
+    "categories": [
+      "nature",
+      "eco_tourism"
+    ],
+    "lat": 40.9167,
+    "lon": 66.25,
+    "description": "Ночёвка в настоящих войлочных юртах кочевников, катание на верблюдах и вечерние песни акына у костра под звездами.",
+    "popularity": 9,
+    "isIndoor": false,
+    "bestTimeSlot": "evening",
+    "approxDurationMin": 180,
+    "ticketPriceUzs": {
+      "resident": 50000,
+      "foreigner": 120000
+    }
+  },
+  {
+    "id": "jizzakh-zaamin-national-park",
+    "name": "Зааминский национальный парк («Узбекская Швейцария»)",
+    "city": "Заамин",
+    "region": "jizzakh",
+    "categories": [
+      "nature",
+      "nature_hiking"
+    ],
+    "lat": 39.6667,
+    "lon": 68.5167,
+    "description": "Горный заповедник с вековыми арчовыми лесами, плато Суфа, каньоном Чортанги и целебным горным климатом.",
+    "popularity": 9,
+    "isIndoor": false,
+    "bestTimeSlot": "morning",
+    "approxDurationMin": 180,
+    "ticketPriceUzs": {
+      "resident": 15000,
+      "foreigner": 35000
+    }
+  },
+  {
+    "id": "syrdarya-river-safari",
+    "name": "Эко-комплекс и рыбалка на реке Сырдарья",
+    "city": "Гулистан / Сырдарья",
+    "region": "syrdarya",
+    "categories": [
+      "nature",
+      "gastronomy"
+    ],
+    "lat": 40.5,
+    "lon": 68.7833,
+    "description": "Берег великой реки Сырдарья: прогулки на лодках, традиционная сырдарьинская уха и запеченный сом на углях.",
+    "popularity": 7,
+    "isIndoor": false,
+    "bestTimeSlot": "morning",
+    "approxDurationMin": 120,
+    "ticketPriceUzs": {
+      "resident": 10000,
+      "foreigner": 20000
+    }
   }
 ]
-

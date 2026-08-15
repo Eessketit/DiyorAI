@@ -26,6 +26,15 @@ export const REGION_COORDINATES: Record<Region, { lat: number; lon: number }> = 
   khiva: { lat: 41.3783, lon: 60.3639 },
   tashkent: { lat: 41.2995, lon: 69.2401 },
   tashkent_region: { lat: 41.5273, lon: 70.0768 },
+  fergana: { lat: 40.3842, lon: 71.7843 },
+  andijan: { lat: 40.7821, lon: 72.3442 },
+  namangan: { lat: 40.9983, lon: 71.6726 },
+  shahrisabz: { lat: 39.0567, lon: 66.8286 },
+  termez: { lat: 37.2242, lon: 67.2783 },
+  nukus: { lat: 42.4602, lon: 59.6166 },
+  navoi: { lat: 40.0844, lon: 65.3792 },
+  jizzakh: { lat: 40.1158, lon: 67.8422 },
+  syrdarya: { lat: 40.4897, lon: 68.7842 },
 };
 
 function getWeatherCondition(code: number, tempMax: number, lang: Language): { condition: string; icon: DayWeather["icon"] } {
@@ -167,6 +176,15 @@ export async function fetchWeatherForTrip(
       khiva: { max: 35, min: 20 },
       tashkent: { max: 31, min: 18 },
       tashkent_region: { max: 26, min: 14 },
+      fergana: { max: 30, min: 18 },
+      andijan: { max: 29, min: 17 },
+      namangan: { max: 30, min: 17 },
+      shahrisabz: { max: 33, min: 19 },
+      termez: { max: 37, min: 23 },
+      nukus: { max: 34, min: 19 },
+      navoi: { max: 34, min: 20 },
+      jizzakh: { max: 28, min: 16 },
+      syrdarya: { max: 32, min: 19 },
     };
 
     const climate = fallbackTemps[region] || { max: 31, min: 19 };

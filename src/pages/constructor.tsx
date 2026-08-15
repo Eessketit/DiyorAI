@@ -56,7 +56,22 @@ import {
   ShieldCheck,
 } from "lucide-react";
 
-const REGIONS: Region[] = ["samarkand", "bukhara", "khiva", "tashkent", "tashkent_region"];
+const REGIONS: Region[] = [
+  "samarkand",
+  "bukhara",
+  "khiva",
+  "tashkent",
+  "tashkent_region",
+  "fergana",
+  "andijan",
+  "namangan",
+  "shahrisabz",
+  "termez",
+  "nukus",
+  "navoi",
+  "jizzakh",
+  "syrdarya",
+];
 const PACES: Pace[] = ["relaxed", "balanced", "packed"];
 const TRAVELER_TYPES: TravelerType[] = ["couple", "family", "solo", "friends", "group"];
 const DEPARTURE_CITIES = [
@@ -65,10 +80,35 @@ const DEPARTURE_CITIES = [
   "Бухара",
   "Ургенч / Хива",
   "Фергана",
+  "Андижан",
+  "Наманган",
+  "Шахрисабз / Карши",
+  "Термез",
+  "Нукус",
+  "Навои",
+  "Джизак",
+  "Гулистан",
   "Алматы / Астана",
   "Москва / Санкт-Петербург",
   "Другой город",
 ];
+
+const REGION_SUBTITLES: Record<Region, { ru: string; uz: string; en: string }> = {
+  tashkent: { ru: "Центр плова, Чорсу", uz: "Osh markazi, Chorsu", en: "Plov Center, Chorsu" },
+  tashkent_region: { ru: "Чарвак, Чимган, Амирсой", uz: "Chorvoq, Chimyon, Amirsoy", en: "Charvak, Chimgan, Amirsoy" },
+  samarkand: { ru: "Регистан, Гур-Эмир", uz: "Registon, Go'ri Amir", en: "Registan, Gur-Emir" },
+  bukhara: { ru: "Пои-Калян, Арк, Ляби-Хауз", uz: "Poi Kalon, Ark, Labi Hovuz", en: "Poi Kalyan, Ark, Lyabi-Khauz" },
+  khiva: { ru: "Ичан-Кала, Кальта-Минор", uz: "Ichan Qal'a, Kalta Minor", en: "Ichan-Kala, Kalta Minor" },
+  fergana: { ru: "Коканд, Риштан, Маргилан", uz: "Qo'qon, Rishton, Marg'ilon", en: "Kokand, Rishtan, Margilan" },
+  andijan: { ru: "Парк Бабура, Ремесла", uz: "Bobur bog'i, Hunarmandlar", en: "Babur Park, Crafts" },
+  namangan: { ru: "Долина Легенд, Ахсикент", uz: "Afsonalar vodiysi, Axsikent", en: "Valley of Legends, Akhsikent" },
+  shahrisabz: { ru: "Дворец Аксарай, Темур", uz: "Oqsaroy, Amir Temur merosi", en: "Ak-Saray Palace, Timur" },
+  termez: { ru: "Фаязтепа, Ат-Тирмизи", uz: "Fayoztepa, At-Termiziy", en: "Fayaztepa, Al-Hakim Termezi" },
+  nukus: { ru: "Музей Савицкого, Арал", uz: "Savitskiy muzeyi, Orol dengizi", en: "Savitsky Museum, Aral Sea" },
+  navoi: { ru: "Нурата, Айдаркуль", uz: "Nurota, Aydarko'l o'tovlari", en: "Nurata, Aydarkul Yurts" },
+  jizzakh: { ru: "Заамин («Швейцария»)", uz: "Zomin milliy bog'i", en: "Zaamin National Park" },
+  syrdarya: { ru: "Река Сырдарья, Рыбалка", uz: "Sirdaryo daryosi, Baliqchilik", en: "Syrdarya River, Fishing" },
+};
 
 export default function ConstructorPage() {
   const router = useRouter();
@@ -660,7 +700,7 @@ export default function ConstructorPage() {
             </div>
 
             {/* Destination Region */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
               {REGIONS.map((r) => {
                 const active = region === r;
                 return (
@@ -675,18 +715,10 @@ export default function ConstructorPage() {
                     }`}
                   >
                     <span className="text-xs font-bold text-night block mb-0.5">
-                      {REGION_LABELS[r]}
+                      {t.regions[r] || REGION_LABELS[r]}
                     </span>
                     <span className="text-[10px] text-night/50 font-mono">
-                      {r === "tashkent_region"
-                        ? "Чарвак, Чимган, Амирсой"
-                        : r === "samarkand"
-                        ? "Регистан, Гур-Эмир"
-                        : r === "bukhara"
-                        ? "Пои-Калян, Арк"
-                        : r === "khiva"
-                        ? "Ичан-Кала"
-                        : "Центр плова, Чорсу"}
+                      {REGION_SUBTITLES[r]?.[language] || REGION_SUBTITLES[r]?.ru}
                     </span>
                   </button>
                 );
