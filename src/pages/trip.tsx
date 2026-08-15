@@ -380,15 +380,15 @@ export default function TripPage() {
         <MapView stops={allStops} />
 
         {/* Day tabs */}
-        <div className="flex gap-2 border-b border-majolica/20 pb-3 overflow-x-auto scrollbar-none">
+        <div className="flex gap-2 border-b border-slate-200 pb-3 overflow-x-auto scrollbar-none">
           {plan.days.map((d) => (
             <button
               key={d.dayNumber}
               onClick={() => setActiveDay(d.dayNumber)}
-              className={`px-4 py-2 rounded-xl text-xs font-mono font-bold transition-all ${
+              className={`px-4 py-2 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
                 activeDay === d.dayNumber
-                  ? "bg-majolica text-paper shadow-xs"
-                  : "bg-paper text-night/70 hover:bg-majolica/10"
+                  ? "bg-gradient-to-r from-[#1E3A8A] to-[#2563EB] text-white shadow-md ring-2 ring-indigo-300 scale-102"
+                  : "bg-white border border-slate-200 text-slate-700 hover:bg-indigo-50/50 hover:border-indigo-300 shadow-2xs"
               }`}
             >
               {language === "uz" ? `${d.dayNumber}-kun` : language === "en" ? `Day ${d.dayNumber}` : `День ${d.dayNumber}`}
