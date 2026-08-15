@@ -75,11 +75,11 @@ export default function BookingModal({ isOpen, onClose, plan }: BookingModalProp
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-night/70 backdrop-blur-xs overflow-y-auto">
-      <div className="bg-paper rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl border border-sand my-8 relative text-night">
+      <div className="bg-paper rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl border border-majolica/20 my-8 relative text-night">
         {/* Close button */}
         <button
           onClick={onClose}
-          className="absolute top-5 right-5 text-night/50 hover:text-night w-8 h-8 rounded-full bg-sand/30 flex items-center justify-center font-bold text-sm"
+          className="absolute top-5 right-5 text-night/50 hover:text-night w-8 h-8 rounded-full bg-paper border border-majolica/30 flex items-center justify-center font-bold text-sm hover:bg-majolica/10"
         >
           <X className="w-4 h-4" />
         </button>
@@ -100,8 +100,8 @@ export default function BookingModal({ isOpen, onClose, plan }: BookingModalProp
             </div>
 
             {/* Booking Details Card */}
-            <div className="bg-white border border-sand rounded-2xl p-4 sm:p-5 text-left text-xs space-y-2.5 font-mono">
-              <div className="flex items-center justify-between pb-2 border-b border-sand">
+            <div className="bg-white border border-majolica/20 rounded-2xl p-4 sm:p-5 text-left text-xs space-y-2.5 font-mono">
+              <div className="flex items-center justify-between pb-2 border-b border-majolica/15">
                 <span className="text-night/60 font-semibold">{t.booking.bookingIdLabel}:</span>
                 <span className="font-mono font-black text-sm text-gold bg-gold/10 px-2.5 py-0.5 rounded-md">
                   {bookingSuccess.bookingId}
@@ -119,7 +119,7 @@ export default function BookingModal({ isOpen, onClose, plan }: BookingModalProp
                 <span className="text-night/60">{t.planner.totalDaysLabel}:</span>
                 <span className="font-bold text-night">{plan.preferences.duration?.totalDays || plan.preferences.days || 3} {t.trip.days}</span>
               </div>
-              <div className="flex items-center justify-between pt-2 border-t border-sand">
+              <div className="flex items-center justify-between pt-2 border-t border-majolica/15">
                 <span className="font-bold text-night">{t.booking.totalCostLabel}:</span>
                 <span className="font-mono font-black text-base text-gold">
                   ${bookingSuccess.totalCostUsd}
@@ -164,7 +164,7 @@ export default function BookingModal({ isOpen, onClose, plan }: BookingModalProp
             </div>
 
             {/* Trip summary badge */}
-            <div className="bg-white rounded-2xl p-4 mb-6 text-xs flex items-center justify-between gap-2 flex-wrap border border-sand font-mono">
+            <div className="bg-white rounded-2xl p-4 mb-6 text-xs flex items-center justify-between gap-2 flex-wrap border border-majolica/20 font-mono">
               <div>
                 <span className="font-bold text-night block">
                   {t.regions[destination]} · {plan.preferences.duration?.totalDays || plan.preferences.days || 3} {t.trip.days} ({travelers.total})
@@ -191,7 +191,7 @@ export default function BookingModal({ isOpen, onClose, plan }: BookingModalProp
                   placeholder={t.booking.fullNamePlaceholder}
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-sand bg-white text-night text-xs focus:outline-hidden focus:border-majolica"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-majolica/20 bg-white text-night text-xs focus:outline-hidden focus:border-majolica"
                 />
               </div>
 
@@ -207,7 +207,7 @@ export default function BookingModal({ isOpen, onClose, plan }: BookingModalProp
                     placeholder="+998 90 123-45-67"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-sand bg-white text-night text-xs font-mono focus:outline-hidden focus:border-majolica"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-majolica/20 bg-white text-night text-xs font-mono focus:outline-hidden focus:border-majolica"
                   />
                 </div>
 
@@ -221,7 +221,7 @@ export default function BookingModal({ isOpen, onClose, plan }: BookingModalProp
                     placeholder="traveler@example.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-sand bg-white text-night text-xs font-mono focus:outline-hidden focus:border-majolica"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-majolica/20 bg-white text-night text-xs font-mono focus:outline-hidden focus:border-majolica"
                   />
                 </div>
               </div>
@@ -262,7 +262,7 @@ export default function BookingModal({ isOpen, onClose, plan }: BookingModalProp
                   placeholder={t.booking.commentsPlaceholder}
                   value={comments}
                   onChange={(e) => setComments(e.target.value)}
-                  className="w-full px-3.5 py-2 rounded-xl border border-sand bg-white text-night text-xs focus:outline-hidden focus:border-majolica"
+                  className="w-full px-3.5 py-2 rounded-xl border border-majolica/20 bg-white text-night text-xs focus:outline-hidden focus:border-majolica"
                 />
               </div>
 

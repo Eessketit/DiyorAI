@@ -49,7 +49,7 @@ export default function StepTransfer({
   return (
     <div className="space-y-6">
       <div className="text-center sm:text-left">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-paper border border-sand text-xs font-mono font-bold text-night uppercase tracking-wider mb-2">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-paper border border-majolica/20 text-xs font-mono font-bold text-night uppercase tracking-wider mb-2">
           Этап 2 из 3
         </div>
         <h2 className="text-2xl sm:text-3xl font-display font-bold text-night flex items-center gap-2">
@@ -62,7 +62,7 @@ export default function StepTransfer({
       </div>
 
       {/* Round-trip Transfer toggle */}
-      <div className="flex items-center justify-between bg-white p-3.5 rounded-xl border border-sand text-xs font-mono">
+      <div className="flex items-center justify-between bg-white p-3.5 rounded-xl border border-majolica/20 text-xs font-mono">
         <span className="font-semibold text-night">Маршрут трансфера:</span>
         <div className="flex items-center gap-2">
           <button
@@ -75,7 +75,7 @@ export default function StepTransfer({
               }
             }}
             className={`px-3.5 py-1.5 rounded-lg font-bold transition-colors ${
-              !isRoundTrip ? "bg-majolica text-paper" : "bg-paper border border-sand text-night"
+              !isRoundTrip ? "bg-majolica text-paper" : "bg-paper border border-majolica/20 text-night"
             }`}
           >
             В одну сторону (Вокзал → Отель)
@@ -90,7 +90,7 @@ export default function StepTransfer({
               }
             }}
             className={`px-3.5 py-1.5 rounded-lg font-bold transition-colors ${
-              isRoundTrip ? "bg-majolica text-paper" : "bg-paper border border-sand text-night"
+              isRoundTrip ? "bg-majolica text-paper" : "bg-paper border border-majolica/20 text-night"
             }`}
           >
             Туда и обратно (Round trip)
@@ -115,17 +115,17 @@ export default function StepTransfer({
               className={`p-5 rounded-2xl border transition-all cursor-pointer bg-white flex flex-col justify-between ${
                 isSelected
                   ? "border-majolica ring-2 ring-majolica/30 shadow-md bg-paper/40"
-                  : "border-sand hover:border-majolica/60 shadow-xs"
+                  : "border-majolica/20 hover:border-majolica/60 shadow-xs"
               }`}
             >
               <div>
                 <div className="flex items-start justify-between gap-3 mb-3">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-xl bg-paper border border-sand flex items-center justify-center text-majolica shrink-0">
+                    <div className="w-12 h-12 rounded-xl bg-paper border border-majolica/20 flex items-center justify-center text-majolica shrink-0">
                       {v.passengerCapacity > 4 ? <Bus className="w-6 h-6 text-majolica" /> : <Car className="w-6 h-6 text-majolica" />}
                     </div>
                     <div>
-                      <span className="text-[10px] bg-paper border border-sand px-2 py-0.5 rounded font-mono font-bold uppercase text-night/70">
+                      <span className="text-[10px] bg-paper border border-majolica/20 px-2 py-0.5 rounded font-mono font-bold uppercase text-night/70">
                         {v.className}
                       </span>
                       <h3 className="font-display font-bold text-night text-sm sm:text-base mt-0.5">
@@ -148,7 +148,7 @@ export default function StepTransfer({
                 </div>
 
                 {/* Specs */}
-                <div className="flex items-center gap-4 py-2 border-y border-sand/60 text-xs text-night/80 font-mono">
+                <div className="flex items-center gap-4 py-2 border-y border-majolica/15 text-xs text-night/80 font-mono">
                   <span className="flex items-center gap-1"><Users className="w-3.5 h-3.5 text-majolica" /> До {v.passengerCapacity} мест</span>
                   <span className="flex items-center gap-1"><Luggage className="w-3.5 h-3.5 text-majolica" /> {v.luggageCapacity} чемодана</span>
                 </div>
@@ -182,7 +182,7 @@ export default function StepTransfer({
       </div>
 
       {/* Navigation buttons: Secondary vs Primary */}
-      <div className="flex items-center justify-between gap-4 pt-4 border-t border-sand">
+      <div className="flex items-center justify-between gap-4 pt-4 border-t border-majolica/15">
         <button
           type="button"
           onClick={onBack}

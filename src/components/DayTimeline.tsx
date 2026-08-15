@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { TimelineStop, TourismObject } from "@/lib/types";
 import { useTranslation } from "@/lib/i18n";
+import CategoryBadge from "./common/CategoryBadge";
+import { Snowflake, ShieldCheck } from "lucide-react";
 
 interface DayTimelineProps {
   stops: (TourismObject & {
@@ -15,41 +17,16 @@ interface DayTimelineProps {
 export default function DayTimeline({ stops, dayNumber }: DayTimelineProps) {
   const { t, language } = useTranslation();
 
-  const getSlotIcon = (slot?: string) => {
+  const getSlotTitle = (slot?: string) => {
     switch (slot) {
       case "morning":
-        return "🌅";
+        return language === "uz" ? "Ertalabki salqin" : language === "en" ? "Morning Cool" : "Утренняя прохлада";
       case "afternoon_indoor":
-        return "☀️";
+        return language === "uz" ? "Tushki soya & Muzeylar" : language === "en" ? "Midday Shade & Museums" : "Сиеста в тени & Музеи";
       case "evening":
-        return "🌆";
+        return language === "uz" ? "Kechki quyosh botishi" : language === "en" ? "Sunset & Illumination" : "Закат & Вечерняя подсветка";
       default:
-        return "📍";
-    }
-  };
-
-  const getSlotBadge = (slot?: string) => {
-    switch (slot) {
-      case "morning":
-        return {
-          title: language === "uz" ? "Ertalabki salqin" : language === "en" ? "Morning Cool" : "Утренняя прохлада",
-          color: "bg-amber-500/15 text-amber-900 border-amber-500/30",
-        };
-      case "afternoon_indoor":
-        return {
-          title: language === "uz" ? "Tushki soya & Muzeylar" : language === "en" ? "Midday Shade & Museums" : "Сиеста в тени & Музеи",
-          color: "bg-blue-500/15 text-blue-900 border-blue-500/30",
-        };
-      case "evening":
-        return {
-          title: language === "uz" ? "Kechki quyosh botishi" : language === "en" ? "Sunset & Illumination" : "Закат & Вечерняя подсветка",
-          color: "bg-purple-500/15 text-purple-900 border-purple-500/30",
-        };
-      default:
-        return {
-          title: "Остановка",
-          color: "bg-sand text-ink border-sand",
-        };
+        return language === "uz" ? "To'xtash joyi" : language === "en" ? "Stop" : "Остановка";
     }
   };
 
@@ -72,66 +49,56 @@ export default function DayTimeline({ stops, dayNumber }: DayTimelineProps) {
   };
 
   return (
-    <div className="relative pl-6 sm:pl-8 border-l-2 border-dashed border-sand/90 space-y-6 my-6">
+    <div className="relative pl-6 sm:pl-8 border-l-2 border-dashed border-majolica/30 space-y-6 my-6">
       {stops.map((stop, idx) => {
-        const slotConfig = getSlotBadge(stop.bestTimeSlot || stop.timeSlot);
-        const icon = getSlotIcon(stop.bestTimeSlot || stop.timeSlot);
+        const slotTitle = getSlotTitle(stop.bestTimeSlot || stop.timeSlot);
 
         return (
           <div key={stop.id} className="relative group">
             {/* Timeline node marker */}
-            <div className="absolute -left-[35px] sm:-left-[43px] top-1.5 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-clay text-plaster flex items-center justify-center font-bold text-xs sm:text-sm shadow-md border-2 border-white">
+            <div className="absolute -left-[35px] sm:-left-[43px] top-1.5 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-night text-paper flex items-center justify-center font-bold text-xs sm:text-sm shadow-md border-2 border-majolica font-mono">
               {idx + 1}
             </div>
 
             {/* Stop Card */}
-            <div className="bg-white border border-sand hover:border-registan/60 rounded-2xl p-5 sm:p-6 shadow-xs hover:shadow-md transition-all">
+            <div className="bg-white border border-majolica/20 hover:border-majolica/60 rounded-2xl p-5 sm:p-6 shadow-xs hover:shadow-md transition-all">
               {/* Slot & Time Header */}
               <div className="flex items-center justify-between gap-3 mb-3 flex-wrap">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <span className="text-base">{icon}</span>
-                  <span
-                    className={`text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full border ${slotConfig.color}`}
-                  >
-                    {slotConfig.title}
-                  </span>
-                  <span className="text-xs font-semibold text-night/60">
+                  <CategoryBadge label={slotTitle} icon={stop.bestTimeSlot === "morning" ? "🌅" : stop.bestTimeSlot === "afternoon_indoor" ? "🏛️" : "🌆"} />
+                  <span className="text-xs font-mono font-semibold text-gold">
                     {stop.timeLabel || `Остановка ${idx + 1}`}
                   </span>
                 </div>
 
                 <Link
                   href={`/verify?objectId=${stop.id}`}
-                  className="text-xs font-bold text-registan hover:underline flex items-center gap-1 shrink-0"
+                  className="text-xs font-bold text-majolica hover:underline flex items-center gap-1 shrink-0"
                 >
-                  {verifyText[language]}
+                  <ShieldCheck className="w-3.5 h-3.5" />
+                  <span>{verifyText[language]}</span>
                 </Link>
               </div>
 
               {/* Title & Description */}
-              <h3 className="font-display text-xl font-bold text-ink mb-1.5 group-hover:text-clay transition-colors">
+              <h3 className="font-display text-xl font-bold text-night mb-1.5 group-hover:text-majolica transition-colors">
                 {stop.name}
               </h3>
               <p className="text-sm text-night/75 leading-relaxed mb-4">{stop.description}</p>
 
               {/* Badges & Practical Info */}
-              <div className="flex items-center justify-between gap-3 pt-3 border-t border-sand/50 flex-wrap text-xs">
+              <div className="flex items-center justify-between gap-3 pt-3 border-t border-majolica/15 flex-wrap text-xs">
                 {/* Categories */}
                 <div className="flex gap-1.5 flex-wrap">
                   {stop.categories.map((c) => (
-                    <span
-                      key={c}
-                      className="px-2.5 py-1 rounded-full bg-plaster border border-sand text-ink text-[11px] font-medium"
-                    >
-                      {t.categories[c] || c}
-                    </span>
+                    <CategoryBadge key={c} label={t.categories[c] || c} />
                   ))}
                 </div>
 
                 {/* Ticket Price & Indoor */}
-                <div className="flex items-center gap-2 text-night/70 font-medium">
+                <div className="flex items-center gap-2 text-night/70 font-medium font-mono text-xs">
                   {stop.ticketPriceUzs && (
-                    <span className="bg-sand/30 px-2.5 py-1 rounded-md text-[11px]">
+                    <span className="bg-paper border border-majolica/20 px-2.5 py-1 rounded-md text-[11px]">
                       🎫 {ticketsText[language]}:{" "}
                       {stop.ticketPriceUzs.resident === 0
                         ? freeText[language]
@@ -139,8 +106,9 @@ export default function DayTimeline({ stops, dayNumber }: DayTimelineProps) {
                     </span>
                   )}
                   {stop.isIndoor && (
-                    <span className="bg-blue-500/10 text-blue-900 border border-blue-500/20 px-2 py-0.5 rounded-md text-[10px] font-bold">
-                      ❄️ Кондиционер / Тень
+                    <span className="bg-majolica/10 text-night border border-majolica/30 px-2 py-0.5 rounded-md text-[10px] font-bold flex items-center gap-1">
+                      <Snowflake className="w-3 h-3 text-majolica" />
+                      <span>Кондиционер / Тень</span>
                     </span>
                   )}
                 </div>

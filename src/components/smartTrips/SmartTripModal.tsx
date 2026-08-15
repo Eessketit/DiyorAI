@@ -50,18 +50,18 @@ export default function SmartTripModal({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-night/70 backdrop-blur-xs animate-fade-in overflow-y-auto">
       <div
-        className="bg-paper border border-sand rounded-3xl w-full max-w-2xl my-8 overflow-hidden shadow-2xl animate-scale-in text-night max-h-[90vh] flex flex-col"
+        className="bg-paper border border-majolica/30 rounded-3xl w-full max-w-2xl my-8 overflow-hidden shadow-2xl animate-scale-in text-night max-h-[90vh] flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header Bar */}
-        <div className="bg-white border-b border-sand p-6 flex items-start justify-between gap-4 shrink-0">
+        <div className="bg-white border-b border-majolica/15 p-6 flex items-start justify-between gap-4 shrink-0">
           <div className="flex items-start gap-4">
-            <div className="w-16 h-16 rounded-2xl bg-paper border border-sand flex items-center justify-center text-majolica shrink-0">
+            <div className="w-16 h-16 rounded-2xl bg-paper border border-majolica/20 flex items-center justify-center text-majolica shrink-0">
               <ExperienceIcon name={trip.image} className="w-8 h-8 text-majolica" />
             </div>
             <div>
               <div className="flex items-center gap-2 flex-wrap mb-1">
-                <span className="text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full bg-majolica/15 text-majolica uppercase">
+                <span className="text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full border border-majolica/30 bg-majolica/5 text-night uppercase">
                   {trip.tag ? trip.tag[language] || trip.tag.ru : "Smart Trip"}
                 </span>
                 <span className="text-xs text-night/60 flex items-center gap-1 font-mono">
@@ -76,7 +76,7 @@ export default function SmartTripModal({
           <button
             type="button"
             onClick={onClose}
-            className="w-9 h-9 rounded-full bg-sand/40 hover:bg-sand flex items-center justify-center text-night transition-colors shrink-0"
+            className="w-9 h-9 rounded-full bg-paper border border-majolica/30 hover:bg-majolica/10 flex items-center justify-center text-night transition-colors shrink-0"
           >
             <X className="w-4 h-4" />
           </button>
@@ -85,8 +85,8 @@ export default function SmartTripModal({
         {/* Modal Body */}
         <div className="p-6 overflow-y-auto space-y-6 flex-1 text-xs sm:text-sm">
           {/* Price & Group Breakdown */}
-          <div className="bg-white rounded-2xl p-5 border border-sand shadow-xs">
-            <div className="flex items-center justify-between gap-3 flex-wrap pb-3 border-b border-sand/70">
+          <div className="bg-white rounded-2xl p-5 border border-majolica/20 shadow-xs">
+            <div className="flex items-center justify-between gap-3 flex-wrap pb-3 border-b border-majolica/15">
               <div>
                 <span className="text-night/50 font-mono text-xs block">
                   {language === "uz" ? "Bir kishi uchun narx:" : language === "en" ? "Price per adult:" : "Стоимость на взрослого:"}
@@ -117,14 +117,14 @@ export default function SmartTripModal({
           </div>
 
           {/* Highlights */}
-          <div className="bg-white rounded-2xl p-5 border border-sand">
+          <div className="bg-white rounded-2xl p-5 border border-majolica/20">
             <h4 className="font-display font-bold text-night text-sm mb-3 flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-gold" />
               <span>{language === "uz" ? "Asosiy qulayliklar va afzalliklar" : language === "en" ? "Highlights & Best Experiences" : "Ключевые впечатления"}</span>
             </h4>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-night/80">
               {trip.highlights.map((h, idx) => (
-                <div key={idx} className="flex items-start gap-2 p-2.5 rounded-xl bg-paper/60 border border-sand/70">
+                <div key={idx} className="flex items-start gap-2 p-2.5 rounded-xl bg-paper/60 border border-majolica/20">
                   <Check className="w-3.5 h-3.5 text-majolica shrink-0 mt-0.5" />
                   <span>{h[language] || h.ru}</span>
                 </div>
@@ -167,7 +167,7 @@ export default function SmartTripModal({
 
           {/* Linked Certified Guides */}
           {linkedGuides.length > 0 && (
-            <div className="bg-white rounded-2xl p-5 border border-sand">
+            <div className="bg-white rounded-2xl p-5 border border-majolica/20">
               <h4 className="font-display font-bold text-night text-sm mb-3 flex items-center gap-2">
                 <UserCheck className="w-4 h-4 text-majolica" />
                 <span>
@@ -178,7 +178,7 @@ export default function SmartTripModal({
                 {linkedGuides.map((g) => (
                   <div
                     key={g!.id}
-                    className="p-3 rounded-xl bg-paper/60 border border-sand flex items-center justify-between gap-2 text-xs"
+                    className="p-3 rounded-xl bg-paper/60 border border-majolica/20 flex items-center justify-between gap-2 text-xs"
                   >
                     <div className="flex items-center gap-2.5">
                       <div className="w-8 h-8 rounded-full bg-majolica/15 border border-majolica/30 flex items-center justify-center text-majolica shrink-0">
@@ -195,7 +195,7 @@ export default function SmartTripModal({
                       </div>
                     </div>
                     <span className="text-[10px] font-mono font-bold text-gold bg-gold/10 px-2 py-0.5 rounded flex items-center gap-1">
-                      <Target className="w-3 h-3" />
+                      <Target className="w-3 h-3 text-gold" />
                       <span>{g!.matchScore || 96}%</span>
                     </span>
                   </div>
@@ -206,7 +206,7 @@ export default function SmartTripModal({
         </div>
 
         {/* Footer Bar */}
-        <div className="bg-white border-t border-sand p-6 flex items-center justify-between gap-4 shrink-0">
+        <div className="bg-white border-t border-majolica/15 p-6 flex items-center justify-between gap-4 shrink-0">
           <div>
             <span className="text-[10px] text-night/50 font-mono block">
               {language === "uz" ? "Umumiy qiymat" : language === "en" ? "Total Price" : "Итоговая стоимость"}

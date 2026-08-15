@@ -37,7 +37,7 @@ export default function SurvivalGuideModal() {
         className="w-full bg-paper border border-majolica/30 rounded-3xl p-5 sm:p-6 flex items-center justify-between gap-4 transition-all group shadow-xs my-6 text-left hover:border-majolica hover:shadow-md"
       >
         <div className="flex items-center gap-3.5">
-          <div className="w-12 h-12 rounded-2xl bg-white border border-sand flex items-center justify-center text-majolica shrink-0 group-hover:scale-105 transition-transform">
+          <div className="w-12 h-12 rounded-2xl bg-white border border-majolica/20 flex items-center justify-center text-majolica shrink-0 group-hover:scale-105 transition-transform">
             <Train className="w-6 h-6 text-majolica" />
           </div>
           <div>
@@ -58,9 +58,9 @@ export default function SurvivalGuideModal() {
       {/* Modal */}
       {isOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-night/70 backdrop-blur-xs animate-fade-in">
-          <div className="bg-white border border-sand rounded-3xl max-w-3xl w-full max-h-[90vh] overflow-hidden flex flex-col shadow-2xl animate-scale-in text-night">
+          <div className="bg-white border border-majolica/20 rounded-3xl max-w-3xl w-full max-h-[90vh] overflow-hidden flex flex-col shadow-2xl animate-scale-in text-night">
             {/* Header */}
-            <div className="p-6 border-b border-sand flex items-center justify-between bg-paper">
+            <div className="p-6 border-b border-majolica/15 flex items-center justify-between bg-paper">
               <div>
                 <h3 className="font-display text-2xl font-bold text-night">{modalTitle[language]}</h3>
                 <p className="text-xs text-night/60 mt-0.5 font-light">
@@ -70,14 +70,14 @@ export default function SurvivalGuideModal() {
               <button
                 type="button"
                 onClick={() => setIsOpen(false)}
-                className="w-8 h-8 rounded-full bg-sand/40 hover:bg-sand text-night flex items-center justify-center text-xs font-bold transition-colors"
+                className="w-8 h-8 rounded-full bg-paper border border-majolica/30 hover:bg-majolica/10 text-night flex items-center justify-center text-xs font-bold transition-colors"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
             {/* Tabs */}
-            <div className="flex border-b border-sand bg-paper/50 px-6 gap-2 overflow-x-auto">
+            <div className="flex border-b border-majolica/15 bg-paper/50 px-6 gap-2 overflow-x-auto">
               {SURVIVAL_GUIDE.map((section) => (
                 <button
                   key={section.id}
@@ -106,7 +106,7 @@ export default function SurvivalGuideModal() {
                     className={`p-4 rounded-2xl border transition-all ${
                       pt.highlight
                         ? "bg-gold/10 border-gold/30 text-night"
-                        : "bg-paper border-sand text-night"
+                        : "bg-paper border-majolica/20 text-night"
                     }`}
                   >
                     <h4 className="font-display text-sm font-bold mb-1 flex items-center gap-1.5">
@@ -119,7 +119,7 @@ export default function SurvivalGuideModal() {
             </div>
 
             {/* Footer */}
-            <div className="p-4 border-t border-sand bg-paper flex justify-end">
+            <div className="p-4 border-t border-majolica/15 bg-paper flex justify-end">
               <button
                 type="button"
                 onClick={() => setIsOpen(false)}

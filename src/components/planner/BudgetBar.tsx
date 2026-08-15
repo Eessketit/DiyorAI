@@ -36,7 +36,7 @@ export default function BudgetBar({ costResult, travelers }: BudgetBarProps) {
   const percentage = isInfinite ? 35 : Math.min(100, Math.round((totalCostUsd / (budgetMaxUsd || 1)) * 100));
 
   return (
-    <div className="bg-white rounded-2xl border border-sand p-4 sm:p-5 shadow-sm">
+    <div className="bg-white rounded-2xl border border-majolica/20 p-4 sm:p-5 shadow-sm">
       <div className="flex items-center justify-between gap-3 mb-3 flex-wrap">
         <div>
           <span className="text-[11px] uppercase tracking-wider text-night/60 font-mono font-bold flex items-center gap-1.5">
@@ -50,7 +50,7 @@ export default function BudgetBar({ costResult, travelers }: BudgetBarProps) {
             <span className="text-xs text-night/70 font-mono">
               {isInfinite ? `(${t.planner.unlimited})` : `/ $${budgetMaxUsd}`}
             </span>
-            <span className="text-xs px-2.5 py-0.5 rounded-full bg-paper border border-sand text-night font-mono font-semibold">
+            <span className="text-xs px-2.5 py-0.5 rounded-full bg-paper border border-majolica/20 text-night font-mono font-semibold">
               ~${costPerPersonUsd} / {t.trip.costPerPerson} ({travelers.total})
             </span>
           </div>
@@ -72,7 +72,7 @@ export default function BudgetBar({ costResult, travelers }: BudgetBarProps) {
       </div>
 
       {/* Progress Bar */}
-      <div className="w-full bg-sand/30 h-2 rounded-full overflow-hidden mb-3">
+      <div className="w-full bg-paper border border-majolica/20 h-2 rounded-full overflow-hidden mb-3">
         <div
           className={`h-full transition-all duration-300 rounded-full ${
             isOverBudget ? "bg-brick" : percentage > 85 ? "bg-gold" : "bg-majolica"
@@ -82,18 +82,18 @@ export default function BudgetBar({ costResult, travelers }: BudgetBarProps) {
       </div>
 
       {/* Breakdown chips */}
-      <div className="flex items-center gap-2 flex-wrap text-[11px] text-night/70 pt-2 border-t border-sand/50 font-mono">
+      <div className="flex items-center gap-2 flex-wrap text-[11px] text-night/70 pt-2 border-t border-majolica/15 font-mono">
         <Check className="w-3.5 h-3.5 text-majolica" />
-        <span className="bg-paper px-2 py-0.5 rounded-md border border-sand flex items-center gap-1">
+        <span className="bg-paper px-2 py-0.5 rounded-md border border-majolica/20 flex items-center gap-1">
           <Train className="w-3 h-3 text-majolica" /> {t.trip.costTransport}: ${breakdown.transport}
         </span>
-        <span className="bg-paper px-2 py-0.5 rounded-md border border-sand flex items-center gap-1">
+        <span className="bg-paper px-2 py-0.5 rounded-md border border-majolica/20 flex items-center gap-1">
           <Car className="w-3 h-3 text-majolica" /> {t.trip.costTransfer}: ${breakdown.transfer}
         </span>
-        <span className="bg-paper px-2 py-0.5 rounded-md border border-sand flex items-center gap-1">
+        <span className="bg-paper px-2 py-0.5 rounded-md border border-majolica/20 flex items-center gap-1">
           <Building className="w-3 h-3 text-majolica" /> {t.trip.costHotel}: ${breakdown.hotel}
         </span>
-        <span className="bg-paper px-2 py-0.5 rounded-md border border-sand flex items-center gap-1">
+        <span className="bg-paper px-2 py-0.5 rounded-md border border-majolica/20 flex items-center gap-1">
           <UtensilsCrossed className="w-3 h-3 text-majolica" /> {t.trip.costActivitiesFood}: ${breakdown.activitiesAndFood}
         </span>
       </div>

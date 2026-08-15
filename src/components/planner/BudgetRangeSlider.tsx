@@ -58,7 +58,7 @@ export default function BudgetRangeSlider({
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-sand p-5 sm:p-6 shadow-xs space-y-4">
+    <div className="bg-white rounded-2xl border border-majolica/20 p-5 sm:p-6 shadow-xs space-y-4">
       {/* Header with Title & Current Value */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
         <div>
@@ -71,7 +71,7 @@ export default function BudgetRangeSlider({
           </p>
         </div>
 
-        <div className="text-left sm:text-right shrink-0 bg-paper border border-sand px-3.5 py-1.5 rounded-xl">
+        <div className="text-left sm:text-right shrink-0 bg-paper border border-majolica/20 px-3.5 py-1.5 rounded-xl">
           <span className="text-[10px] text-night/50 uppercase font-mono font-bold block">
             {language === "uz" ? "Tanlangan byudjet" : language === "en" ? "Selected Range" : "Выбранный диапазон"}
           </span>
@@ -98,7 +98,7 @@ export default function BudgetRangeSlider({
               value={min}
               onChange={handleMinChange}
               aria-label="Minimum budget"
-              className="w-full h-2 bg-sand/50 rounded-lg appearance-none cursor-pointer accent-majolica focus:outline-hidden"
+              className="w-full h-2 bg-paper border border-majolica/20 rounded-lg appearance-none cursor-pointer accent-majolica focus:outline-hidden"
             />
           </div>
 
@@ -118,13 +118,13 @@ export default function BudgetRangeSlider({
               value={isUnlimited ? 5000 : max}
               onChange={handleMaxChange}
               aria-label="Maximum budget"
-              className="w-full h-2 bg-sand/50 rounded-lg appearance-none cursor-pointer accent-gold focus:outline-hidden"
+              className="w-full h-2 bg-paper border border-majolica/20 rounded-lg appearance-none cursor-pointer accent-gold focus:outline-hidden"
             />
           </div>
         </div>
 
         {/* Visual Track Representation */}
-        <div className="w-full bg-sand/30 h-2 rounded-full overflow-hidden relative">
+        <div className="w-full bg-paper border border-majolica/20 h-2 rounded-full overflow-hidden relative">
           <div
             className="absolute top-0 bottom-0 bg-gradient-to-r from-majolica to-gold rounded-full"
             style={{

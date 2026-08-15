@@ -93,7 +93,7 @@ export default function GuideBookingModal({ guide, isOpen, onClose }: GuideBooki
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-night/70 backdrop-blur-xs animate-fade-in overflow-y-auto">
       <div
-        className="bg-paper border border-sand rounded-3xl w-full max-w-lg overflow-hidden shadow-2xl animate-scale-in text-night my-8"
+        className="bg-paper border border-majolica/20 rounded-3xl w-full max-w-lg overflow-hidden shadow-2xl animate-scale-in text-night my-8"
         onClick={(e) => e.stopPropagation()}
       >
         {bookingSuccessId ? (
@@ -109,7 +109,7 @@ export default function GuideBookingModal({ guide, isOpen, onClose }: GuideBooki
               {t.booking.successSubtitle}
             </p>
 
-            <div className="bg-paper border border-sand rounded-2xl p-4 text-left text-xs space-y-2 font-mono">
+            <div className="bg-paper border border-majolica/20 rounded-2xl p-4 text-left text-xs space-y-2 font-mono">
               <div className="flex justify-between">
                 <span className="text-night/60">{t.booking.bookingIdLabel}:</span>
                 <span className="font-mono font-bold text-gold text-sm">{bookingSuccessId}</span>
@@ -126,7 +126,7 @@ export default function GuideBookingModal({ guide, isOpen, onClose }: GuideBooki
                 <span className="text-night/60">{t.booking.travelersCountLabel}:</span>
                 <span className="font-bold text-night">{totalTravelers}</span>
               </div>
-              <div className="flex justify-between border-t border-sand pt-1.5 font-bold">
+              <div className="flex justify-between border-t border-majolica/15 pt-1.5 font-bold">
                 <span>{t.booking.totalCostLabel}:</span>
                 <span className="text-gold font-black text-sm">${price}</span>
               </div>
@@ -147,7 +147,7 @@ export default function GuideBookingModal({ guide, isOpen, onClose }: GuideBooki
         ) : (
           /* BOOKING FORM */
           <form onSubmit={handleSubmit}>
-            <div className="bg-white border-b border-sand p-6 flex items-center justify-between">
+            <div className="bg-white border-b border-majolica/15 p-6 flex items-center justify-between">
               <div>
                 <span className="text-[10px] uppercase font-mono font-bold tracking-wider text-majolica block">
                   {t.booking.guideBookingSubtitle}
@@ -159,7 +159,7 @@ export default function GuideBookingModal({ guide, isOpen, onClose }: GuideBooki
               <button
                 type="button"
                 onClick={onClose}
-                className="w-8 h-8 rounded-full bg-sand/40 hover:bg-sand flex items-center justify-center text-xs font-bold transition-colors"
+                className="w-8 h-8 rounded-full bg-paper border border-majolica/20 hover:bg-majolica/10 flex items-center justify-center text-xs font-bold transition-colors"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -178,7 +178,7 @@ export default function GuideBookingModal({ guide, isOpen, onClose }: GuideBooki
                     value={date}
                     onChange={(e) => setDate(e.target.value)}
                     required
-                    className="w-full px-3 py-2 rounded-xl border border-sand bg-white text-xs font-mono text-night focus:outline-hidden focus:border-majolica"
+                    className="w-full px-3 py-2 rounded-xl border border-majolica/20 bg-white text-xs font-mono text-night focus:outline-hidden focus:border-majolica"
                   />
                 </div>
 
@@ -196,7 +196,7 @@ export default function GuideBookingModal({ guide, isOpen, onClose }: GuideBooki
                         max="20"
                         value={adults}
                         onChange={(e) => setAdults(parseInt(e.target.value) || 1)}
-                        className="w-full px-2.5 py-1.5 rounded-xl border border-sand bg-white text-xs font-mono font-bold text-night"
+                        className="w-full px-2.5 py-1.5 rounded-xl border border-majolica/20 bg-white text-xs font-mono font-bold text-night"
                       />
                     </div>
                     <div className="flex-1">
@@ -207,7 +207,7 @@ export default function GuideBookingModal({ guide, isOpen, onClose }: GuideBooki
                         max="10"
                         value={childrenCount}
                         onChange={(e) => setChildrenCount(parseInt(e.target.value) || 0)}
-                        className="w-full px-2.5 py-1.5 rounded-xl border border-sand bg-white text-xs font-mono font-bold text-night"
+                        className="w-full px-2.5 py-1.5 rounded-xl border border-majolica/20 bg-white text-xs font-mono font-bold text-night"
                       />
                     </div>
                   </div>
@@ -225,7 +225,7 @@ export default function GuideBookingModal({ guide, isOpen, onClose }: GuideBooki
               )}
 
               {/* Contact Information */}
-              <div className="space-y-3 pt-2 border-t border-sand/60">
+              <div className="space-y-3 pt-2 border-t border-majolica/15">
                 <h4 className="text-xs font-mono font-bold text-night uppercase tracking-wider">
                   {t.booking.contactInfoTitle}
                 </h4>
@@ -240,7 +240,7 @@ export default function GuideBookingModal({ guide, isOpen, onClose }: GuideBooki
                     placeholder={t.booking.fullNamePlaceholder}
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl border border-sand bg-white text-xs font-medium text-night focus:outline-hidden focus:border-majolica"
+                    className="w-full px-3 py-2 rounded-xl border border-majolica/20 bg-white text-xs font-medium text-night focus:outline-hidden focus:border-majolica"
                   />
                 </div>
 
@@ -255,7 +255,7 @@ export default function GuideBookingModal({ guide, isOpen, onClose }: GuideBooki
                       placeholder="+998 90 123-45-67"
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
-                      className="w-full px-3 py-2 rounded-xl border border-sand bg-white text-xs font-mono text-night focus:outline-hidden focus:border-majolica"
+                      className="w-full px-3 py-2 rounded-xl border border-majolica/20 bg-white text-xs font-mono text-night focus:outline-hidden focus:border-majolica"
                     />
                   </div>
 
@@ -268,7 +268,7 @@ export default function GuideBookingModal({ guide, isOpen, onClose }: GuideBooki
                       placeholder="you@example.com"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="w-full px-3 py-2 rounded-xl border border-sand bg-white text-xs font-mono text-night focus:outline-hidden focus:border-majolica"
+                      className="w-full px-3 py-2 rounded-xl border border-majolica/20 bg-white text-xs font-mono text-night focus:outline-hidden focus:border-majolica"
                     />
                   </div>
                 </div>
@@ -312,13 +312,13 @@ export default function GuideBookingModal({ guide, isOpen, onClose }: GuideBooki
                     placeholder={t.booking.commentsPlaceholder}
                     value={comments}
                     onChange={(e) => setComments(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl border border-sand bg-white text-xs font-medium text-night focus:outline-hidden focus:border-majolica"
+                    className="w-full px-3 py-2 rounded-xl border border-majolica/20 bg-white text-xs font-medium text-night focus:outline-hidden focus:border-majolica"
                   />
                 </div>
               </div>
             </div>
 
-            <div className="bg-white border-t border-sand p-6 flex items-center justify-between gap-4">
+            <div className="bg-white border-t border-majolica/15 p-6 flex items-center justify-between gap-4">
               <div>
                 <span className="text-[10px] text-night/50 font-mono block">{t.booking.totalToPay}</span>
                 <span className="text-xl font-mono font-black text-night">${price}</span>

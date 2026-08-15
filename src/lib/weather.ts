@@ -198,3 +198,70 @@ export async function fetchWeatherForTrip(
     };
   }
 }
+
+export interface WeatherAlternative {
+  id: string;
+  originalType: "mountain" | "outdoor";
+  replacementName: { ru: string; uz: string; en: string };
+  replacementDesc: { ru: string; uz: string; en: string };
+  category: "museum" | "gastronomy" | "crafts" | "indoor";
+  icon: string;
+}
+
+export function getWeatherAlternatives(region: Region, isRainy: boolean, isHot: boolean): WeatherAlternative[] {
+  if (!isRainy && !isHot) return [];
+
+  const alternatives: WeatherAlternative[] = [
+    {
+      id: "alt-museum-art",
+      originalType: "mountain",
+      replacementName: {
+        ru: "Государственный музей искусств & Исторические залы",
+        uz: "Davlat san'at muzeyi va tarix zallari",
+        en: "State Museum of Fine Arts & Heritage Halls",
+      },
+      replacementDesc: {
+        ru: "Комфортная крытая экспозиция с климат-контролем: редкие образцы согдийской живописи, чеканка и текстиль.",
+        uz: "Iqlim nazorati bilan qulay yopiq ko'rgazma: so'g'd san'ati durdonalari, zardo'zlik va qadimiy matolar.",
+        en: "Climate-controlled indoor gallery: rare Sogdian frescoes, copper engraving & oriental textiles.",
+      },
+      category: "museum",
+      icon: "🏛️",
+    },
+    {
+      id: "alt-gastro-masterclass",
+      originalType: "outdoor",
+      replacementName: {
+        ru: "Гастрономический мастер-класс по плову & чайная церемония",
+        uz: "Osh tayyorlash mahorat darsi va choy marosimi",
+        en: "Authentic Plov Masterclass & Traditional Tea Ceremony",
+      },
+      replacementDesc: {
+        ru: "Уютный крытый мастер-класс от потомственного ошпаза в традиционном дворике с дегустацией сладостей.",
+        uz: "Tajribali oshpazdan an'anaviy shinam hovlida osh damlash sirlari va milliy shirinliklar degustatsiyasi.",
+        en: "Cozy indoor culinary workshop with a master chef in a shaded courtyard with halva tasting.",
+      },
+      category: "gastronomy",
+      icon: "🥘",
+    },
+    {
+      id: "alt-ceramics-workshop",
+      originalType: "outdoor",
+      replacementName: {
+        ru: "Гончарная мастерская & Керамика Риштана/Гиждувана",
+        uz: "Kulolchilik ustaxonasi & Rishton/G'ijduvon sopol san'ati",
+        en: "Artisan Ceramics Studio & Pottery Masterclass",
+      },
+      replacementDesc: {
+        ru: "Создание собственного глиняного кувшина на гончарном круге в аутентичной мастерской ремесленников.",
+        uz: "Haqiqiy hunarmandlar ustaxonasida charxda o'z qo'lingiz bilan sopol ko'za yasash amaliyoti.",
+        en: "Hands-on pottery on the potter's wheel inside an authentic craftsman studio.",
+      },
+      category: "crafts",
+      icon: "🏺",
+    },
+  ];
+
+  return alternatives;
+}
+

@@ -50,7 +50,7 @@ export default function StepHotel({
   return (
     <div className="space-y-6">
       <div className="text-center sm:text-left">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-paper border border-sand text-xs font-mono font-bold text-night uppercase tracking-wider mb-2">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-paper border border-majolica/20 text-xs font-mono font-bold text-night uppercase tracking-wider mb-2">
           Этап 3 из 3
         </div>
         <h2 className="text-2xl sm:text-3xl font-display font-bold text-night flex items-center gap-2">
@@ -77,12 +77,12 @@ export default function StepHotel({
               className={`p-5 rounded-2xl border transition-all cursor-pointer bg-white flex flex-col justify-between ${
                 isSelected
                   ? "border-majolica ring-2 ring-majolica/30 shadow-md bg-paper/40"
-                  : "border-sand hover:border-majolica/60 shadow-xs"
+                  : "border-majolica/20 hover:border-majolica/60 shadow-xs"
               }`}
             >
               <div>
                 <div className="flex items-start justify-between gap-2 mb-2">
-                  <div className="w-12 h-12 rounded-xl bg-paper border border-sand flex items-center justify-center text-majolica shrink-0">
+                  <div className="w-12 h-12 rounded-xl bg-paper border border-majolica/20 flex items-center justify-center text-majolica shrink-0">
                     <Building className="w-6 h-6 text-majolica" />
                   </div>
                   <div className="text-right">
@@ -107,13 +107,13 @@ export default function StepHotel({
                   <span>{h.location}</span>
                 </p>
 
-                <div className="p-2.5 bg-paper rounded-xl border border-sand text-xs mb-3 space-y-1 font-mono">
+                <div className="p-2.5 bg-paper rounded-xl border border-majolica/20 text-xs mb-3 space-y-1 font-mono">
                   <div className="flex items-center justify-between text-night/80">
                     <span className="font-semibold">{h.roomType}</span>
                     <span>До {h.roomCapacity} мест</span>
                   </div>
                   {neededRooms > 1 && (
-                    <p className="text-[11px] text-gold font-bold pt-1 border-t border-sand flex items-center gap-1">
+                    <p className="text-[11px] text-gold font-bold pt-1 border-t border-majolica/15 flex items-center gap-1">
                       <Users className="w-3 h-3 text-gold" />
                       <span>Для {totalGuests} гостей требуется {neededRooms} номера</span>
                     </p>
@@ -123,7 +123,7 @@ export default function StepHotel({
                 {/* Amenities */}
                 <div className="space-y-1">
                   {h.amenities.map((am, idx) => (
-                    <div key={idx} className="flex items-center gap-1.5 text-[11px] text-night/80">
+                    <div key={idx} className="flex items-center gap-1.5 text-[11px] text-night/80 font-light">
                       <Check className="w-3.5 h-3.5 text-majolica shrink-0" />
                       <span>{am}</span>
                     </div>
@@ -131,7 +131,7 @@ export default function StepHotel({
                 </div>
               </div>
 
-              <div className="mt-4 pt-3 border-t border-sand/60 flex items-center justify-between text-xs font-mono">
+              <div className="mt-4 pt-3 border-t border-majolica/15 flex items-center justify-between text-xs font-mono">
                 <span className="text-night/60">
                   {neededRooms} {neededRooms === 1 ? "номер" : "номера"}
                 </span>
@@ -146,7 +146,7 @@ export default function StepHotel({
       </div>
 
       {/* Navigation buttons: Secondary (Back) vs Primary (Submit) */}
-      <div className="flex items-center justify-between gap-4 pt-4 border-t border-sand">
+      <div className="flex items-center justify-between gap-4 pt-4 border-t border-majolica/15">
         <button
           type="button"
           onClick={onBack}

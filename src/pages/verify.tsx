@@ -13,9 +13,9 @@ interface VerifyResult {
 }
 
 const TRUST_CLASS: Record<TrustLevel, string> = {
-  high: "bg-trust-high/10 text-trust-high border-trust-high/30",
-  medium: "bg-trust-medium/10 text-trust-medium border-trust-medium/30",
-  low: "bg-trust-low/10 text-trust-low border-trust-low/30",
+  high: "border border-majolica/40 bg-majolica/10 text-night font-mono",
+  medium: "border border-gold/40 bg-gold/10 text-night font-mono",
+  low: "border border-brick/40 bg-brick/10 text-night font-mono",
 };
 
 export default function VerifyPage() {
@@ -74,13 +74,13 @@ export default function VerifyPage() {
     switch (verdict) {
       case "fact":
         return (
-          <div className="bg-emerald-500/10 border-2 border-emerald-500/40 rounded-2xl p-5 mb-6 text-emerald-950 flex items-start gap-3.5 shadow-sm animate-fade-in">
+          <div className="bg-majolica/10 border-2 border-majolica/40 rounded-2xl p-5 mb-6 text-night flex items-start gap-3.5 shadow-sm animate-fade-in">
             <span className="text-3xl shrink-0">🟢</span>
             <div>
-              <p className="font-display text-lg font-bold text-emerald-900 mb-1">
+              <p className="font-display text-lg font-bold text-night mb-1">
                 Подтвержденный исторический факт
               </p>
-              <p className="text-xs sm:text-sm text-emerald-900/80 leading-relaxed">
+              <p className="text-xs sm:text-sm text-night/80 leading-relaxed">
                 Утверждение полностью подтверждается академическими источниками, исследованиями Института востоковедения и ЮНЕСКО.
               </p>
             </div>
@@ -88,13 +88,13 @@ export default function VerifyPage() {
         );
       case "legend":
         return (
-          <div className="bg-amber-500/10 border-2 border-amber-500/40 rounded-2xl p-5 mb-6 text-amber-950 flex items-start gap-3.5 shadow-sm animate-fade-in">
+          <div className="bg-gold/10 border-2 border-gold/40 rounded-2xl p-5 mb-6 text-night flex items-start gap-3.5 shadow-sm animate-fade-in">
             <span className="text-3xl shrink-0">🟡</span>
             <div>
-              <p className="font-display text-lg font-bold text-amber-900 mb-1">
+              <p className="font-display text-lg font-bold text-night mb-1">
                 Городская легенда / Фольклор
               </p>
-              <p className="text-xs sm:text-sm text-amber-900/80 leading-relaxed">
+              <p className="text-xs sm:text-sm text-night/80 leading-relaxed">
                 Красивое народное предание или байка гидов. Исторически не подтверждено документами, но является частью культурного фольклора.
               </p>
             </div>
@@ -102,13 +102,13 @@ export default function VerifyPage() {
         );
       case "myth":
         return (
-          <div className="bg-red-500/10 border-2 border-red-500/40 rounded-2xl p-5 mb-6 text-red-950 flex items-start gap-3.5 shadow-sm animate-fade-in">
+          <div className="bg-brick/10 border-2 border-brick/40 rounded-2xl p-5 mb-6 text-night flex items-start gap-3.5 shadow-sm animate-fade-in">
             <span className="text-3xl shrink-0">🔴</span>
             <div>
-              <p className="font-display text-lg font-bold text-red-900 mb-1">
+              <p className="font-display text-lg font-bold text-night mb-1">
                 Исторический миф / Искажение
               </p>
-              <p className="text-xs sm:text-sm text-red-900/80 leading-relaxed">
+              <p className="text-xs sm:text-sm text-night/80 leading-relaxed">
                 Данное утверждение опровергнуто историками и археологическими исследованиями. Гид допустил ошибку.
               </p>
             </div>
@@ -121,10 +121,10 @@ export default function VerifyPage() {
 
   return (
     <div className="max-w-3xl mx-auto px-6 py-12">
-      <p className="uppercase tracking-[0.2em] text-registan text-xs font-bold mb-2">
+      <p className="uppercase tracking-[0.2em] text-majolica text-xs font-bold mb-2">
         {t.verify.badge}
       </p>
-      <h1 className="font-display text-3xl sm:text-4xl text-ink font-bold mb-3">{t.verify.title}</h1>
+      <h1 className="font-display text-3xl sm:text-4xl text-night font-bold mb-3">{t.verify.title}</h1>
       <p className="text-night/75 mb-8 text-sm sm:text-base leading-relaxed">{t.verify.subtitle}</p>
 
       {/* Voice Fact-Check Component */}
@@ -132,17 +132,17 @@ export default function VerifyPage() {
 
       <form
         onSubmit={handleCheck}
-        className="bg-white border border-sand rounded-2xl p-6 space-y-5 shadow-sm"
+        className="bg-white border border-majolica/20 rounded-2xl p-6 space-y-5 shadow-sm"
       >
         <div>
-          <label htmlFor="object" className="block font-medium text-ink mb-2 text-sm">
+          <label htmlFor="object" className="block font-medium text-night mb-2 text-sm">
             {t.verify.objectLabel}
           </label>
           <select
             id="object"
             value={objectId}
             onChange={(e) => setObjectId(e.target.value)}
-            className="w-full px-4 py-3 rounded-xl border border-sand bg-plaster/30 focus:bg-white focus:outline-none focus:border-clay text-ink text-sm font-medium"
+            className="w-full px-4 py-3 rounded-xl border border-majolica/20 bg-paper focus:bg-white focus:outline-hidden focus:border-majolica text-night text-sm font-medium"
           >
             {objects.map((o) => (
               <option key={o.id} value={o.id}>
@@ -153,7 +153,7 @@ export default function VerifyPage() {
         </div>
 
         <div>
-          <label htmlFor="query" className="block font-medium text-ink mb-2 text-sm">
+          <label htmlFor="query" className="block font-medium text-night mb-2 text-sm">
             {t.verify.queryLabel}
           </label>
           <textarea
@@ -162,14 +162,14 @@ export default function VerifyPage() {
             onChange={(e) => setQuery(e.target.value)}
             rows={3}
             placeholder={t.verify.placeholder}
-            className="w-full px-4 py-3 rounded-xl border border-sand bg-plaster/30 focus:bg-white focus:outline-none focus:border-clay text-ink text-sm leading-relaxed"
+            className="w-full px-4 py-3 rounded-xl border border-majolica/20 bg-paper focus:bg-white focus:outline-hidden focus:border-majolica text-night text-sm leading-relaxed"
           />
         </div>
 
         <button
           type="submit"
           disabled={loading || !objectId}
-          className="w-full sm:w-auto bg-clay hover:bg-clay/90 disabled:opacity-60 text-plaster font-bold px-8 py-3.5 rounded-xl transition-all shadow-xs text-sm uppercase tracking-wider"
+          className="w-full sm:w-auto bg-majolica hover:bg-majolica/90 disabled:opacity-60 text-paper font-bold px-8 py-3.5 rounded-xl transition-all shadow-xs text-sm uppercase tracking-wider"
         >
           {loading ? t.verify.checking : t.verify.button}
         </button>
@@ -181,9 +181,9 @@ export default function VerifyPage() {
           {result.status === "matched" && renderVerdictBadge(result.verdict)}
 
           {result.status === "no-match" && (
-            <div className="bg-amber-500/10 border border-amber-500/30 rounded-2xl p-5 mb-6 text-amber-950 text-xs sm:text-sm leading-relaxed">
+            <div className="bg-gold/10 border border-gold/30 rounded-2xl p-5 mb-6 text-night text-xs sm:text-sm leading-relaxed">
               <p className="font-bold mb-1">Точного совпадения не найдено в базе</p>
-              <p>{t.verify.noMatchTitle}</p>
+              <p className="text-night/80">{t.verify.noMatchTitle}</p>
             </div>
           )}
 
@@ -197,19 +197,19 @@ export default function VerifyPage() {
             {result.results.map((fact) => (
               <li
                 key={fact.id}
-                className="bg-white border border-sand rounded-2xl p-5 sm:p-6 shadow-xs hover:border-sand/90 transition-all"
+                className="bg-white border border-majolica/20 rounded-2xl p-5 sm:p-6 shadow-xs hover:border-majolica/60 transition-all"
               >
-                <p className="text-ink text-base leading-relaxed mb-3">{fact.factText}</p>
+                <p className="text-night text-base leading-relaxed mb-3">{fact.factText}</p>
 
                 {fact.explanation && (
-                  <p className="text-xs text-night/70 italic bg-sand/20 p-2.5 rounded-lg mb-3">
+                  <p className="text-xs text-night/70 italic bg-paper border border-majolica/20 p-2.5 rounded-lg mb-3">
                     💡 Экспертный комментарий: {fact.explanation}
                   </p>
                 )}
 
-                <div className="flex items-center gap-3 pt-3 border-t border-sand/40 flex-wrap text-xs">
+                <div className="flex items-center gap-3 pt-3 border-t border-majolica/15 flex-wrap text-xs">
                   <span
-                    className={`px-2.5 py-1 rounded-full border font-bold ${
+                    className={`px-2.5 py-1 rounded-full text-xs ${
                       TRUST_CLASS[fact.trustLevel]
                     }`}
                   >
@@ -219,7 +219,7 @@ export default function VerifyPage() {
                     href={fact.sourceUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="text-registan font-bold hover:underline"
+                    className="text-majolica font-bold hover:underline"
                   >
                     {t.verify.source}: {fact.sourceName}
                   </a>

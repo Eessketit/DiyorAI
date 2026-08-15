@@ -143,7 +143,7 @@ export default function GuidesPage() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
       {/* Header Banner */}
       <div className="text-center max-w-3xl mx-auto mb-10">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-paper border border-sand text-xs font-mono font-bold text-majolica uppercase tracking-wider mb-3">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-paper border border-majolica/20 text-xs font-mono font-bold text-majolica uppercase tracking-wider mb-3">
           <ShieldCheck className="w-3.5 h-3.5" />
           <span>{t.guides.badge}</span>
         </div>
@@ -156,7 +156,7 @@ export default function GuidesPage() {
 
         {/* Trust Guarantee Highlights */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-6 text-left">
-          <div className="p-4 bg-white border border-sand rounded-2xl flex items-center gap-3 shadow-xs">
+          <div className="p-4 bg-white border border-majolica/20 rounded-2xl flex items-center gap-3 shadow-xs">
             <div className="w-10 h-10 rounded-xl bg-majolica/15 text-majolica flex items-center justify-center shrink-0">
               <ShieldCheck className="w-5 h-5" />
             </div>
@@ -166,7 +166,7 @@ export default function GuidesPage() {
             </div>
           </div>
 
-          <div className="p-4 bg-white border border-sand rounded-2xl flex items-center gap-3 shadow-xs">
+          <div className="p-4 bg-white border border-majolica/20 rounded-2xl flex items-center gap-3 shadow-xs">
             <div className="w-10 h-10 rounded-xl bg-gold/15 text-gold flex items-center justify-center shrink-0">
               <Award className="w-5 h-5" />
             </div>
@@ -176,8 +176,8 @@ export default function GuidesPage() {
             </div>
           </div>
 
-          <div className="p-4 bg-white border border-sand rounded-2xl flex items-center gap-3 shadow-xs">
-            <div className="w-10 h-10 rounded-xl bg-paper border border-sand text-majolica flex items-center justify-center shrink-0">
+          <div className="p-4 bg-white border border-majolica/20 rounded-2xl flex items-center gap-3 shadow-xs">
+            <div className="w-10 h-10 rounded-xl bg-paper border border-majolica/20 text-majolica flex items-center justify-center shrink-0">
               <Star className="w-5 h-5 fill-gold text-gold" />
             </div>
             <div>
@@ -189,7 +189,7 @@ export default function GuidesPage() {
       </div>
 
       {/* Search & Filter Toolbar */}
-      <div className="bg-white border border-sand rounded-3xl p-5 sm:p-6 mb-8 shadow-xs space-y-4">
+      <div className="bg-white border border-majolica/20 rounded-3xl p-5 sm:p-6 mb-8 shadow-xs space-y-4">
         {/* Search Bar & Sort */}
         <div className="flex flex-col sm:flex-row items-center gap-3">
           <div className="relative flex-1 w-full">
@@ -199,7 +199,7 @@ export default function GuidesPage() {
               placeholder={t.guides.searchPlaceholder}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-11 pr-10 py-2.5 rounded-2xl border border-sand bg-paper text-xs sm:text-sm font-medium text-night placeholder:text-night/40 focus:outline-hidden focus:border-majolica focus:bg-white"
+              className="w-full pl-11 pr-10 py-2.5 rounded-2xl border border-majolica/20 bg-paper text-xs sm:text-sm font-medium text-night placeholder:text-night/40 focus:outline-hidden focus:border-majolica focus:bg-white"
             />
             {searchQuery && (
               <button
@@ -217,7 +217,7 @@ export default function GuidesPage() {
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="w-full sm:w-auto px-4 py-2.5 rounded-2xl border border-sand bg-white text-xs font-bold text-night focus:outline-hidden focus:border-majolica font-mono"
+              className="w-full sm:w-auto px-4 py-2.5 rounded-2xl border border-majolica/20 bg-white text-xs font-bold text-night focus:outline-hidden focus:border-majolica font-mono"
             >
               {SORT_OPTIONS.map((opt) => (
                 <option key={opt.id} value={opt.id}>
@@ -252,7 +252,7 @@ export default function GuidesPage() {
         </div>
 
         {/* Specialty Pills & Additional Filters */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pt-3 border-t border-sand/60">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pt-3 border-t border-majolica/15">
           <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none flex-1">
             {SPECIALIZATIONS.map((spec) => (
               <button
@@ -274,7 +274,7 @@ export default function GuidesPage() {
             <select
               value={selectedLanguage}
               onChange={(e) => setSelectedLanguage(e.target.value)}
-              className="px-3 py-1.5 rounded-xl border border-sand bg-white text-xs font-semibold text-night"
+              className="px-3 py-1.5 rounded-xl border border-majolica/20 bg-white text-xs font-semibold text-night"
             >
               {LANGUAGES.map((l) => (
                 <option key={l.id} value={l.id}>
@@ -299,7 +299,7 @@ export default function GuidesPage() {
 
       {/* Guides Grid */}
       {filteredGuides.length === 0 ? (
-        <div className="text-center py-16 bg-white border border-sand rounded-3xl p-8">
+        <div className="text-center py-16 bg-white border border-majolica/20 rounded-3xl p-8">
           <Search className="w-10 h-10 text-majolica mx-auto mb-3" />
           <h3 className="font-display font-bold text-lg text-night mb-1">
             {t.guides.empty}

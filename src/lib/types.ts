@@ -61,6 +61,8 @@ export interface DurationModel {
   totalDays: number;
   activeDays: number;
   restDays: number;
+  startDate?: string;
+  endDate?: string;
 }
 
 export interface BudgetRangeModel {
@@ -249,16 +251,19 @@ export interface CarOption {
   rentalPerDayUsd?: number;
 }
 
-export type TransportType = "flight" | "train" | "car";
+export type TransportType = "flight" | "train" | "car" | "none";
 
 export interface SelectedTransport {
   type: TransportType;
+  departureCity?: string;
+  destinationCity?: string;
   flight?: FlightOption;
   train?: TrainOption;
   car?: CarOption;
   isRoundTrip: boolean;
   passengers: number;
   totalCostUsd: number;
+  noTransportNeeded?: boolean;
 }
 
 export type TransferClass = "economy" | "comfort" | "business" | "van";

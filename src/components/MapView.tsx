@@ -193,16 +193,16 @@ export default function MapView({ stops }: { stops: Stop[] }) {
   }, [stops, engine, language]);
 
   return (
-    <div className="relative w-full rounded-2xl overflow-hidden border border-sand shadow-sm">
+    <div className="relative w-full rounded-2xl overflow-hidden border border-majolica/20 shadow-sm">
       {/* Map Header / Layer Switcher */}
-      <div className="absolute top-3 right-3 z-10 bg-white/90 backdrop-blur border border-sand px-2 py-1.5 rounded-xl shadow-md flex items-center gap-1.5 text-xs font-medium">
+      <div className="absolute top-3 right-3 z-10 bg-white/90 backdrop-blur border border-majolica/20 px-2 py-1.5 rounded-xl shadow-md flex items-center gap-1.5 text-xs font-mono">
         <span className="text-night/50 text-[11px] px-1 hidden sm:inline">Провайдер:</span>
         <button
           onClick={() => setEngine("yandex")}
           className={`px-2.5 py-1 rounded-lg transition-all flex items-center gap-1 ${
             engine === "yandex"
-              ? "bg-yellow-400 text-ink font-bold shadow-xs scale-105"
-              : "text-night/70 hover:bg-sand/40"
+              ? "bg-gold text-night font-bold shadow-xs scale-105"
+              : "text-night/70 hover:bg-majolica/10"
           }`}
           title="Официальный партнер хакатона"
         >
@@ -212,15 +212,15 @@ export default function MapView({ stops }: { stops: Stop[] }) {
           onClick={() => setEngine("osm")}
           className={`px-2.5 py-1 rounded-lg transition-all flex items-center gap-1 ${
             engine === "osm"
-              ? "bg-ink text-plaster font-bold shadow-xs scale-105"
-              : "text-night/70 hover:bg-sand/40"
+              ? "bg-night text-paper font-bold shadow-xs scale-105"
+              : "text-night/70 hover:bg-majolica/10"
           }`}
         >
           <span>🌐</span> OpenStreetMap
         </button>
       </div>
 
-      <div ref={containerRef} className="w-full h-[450px] bg-sand/20" />
+      <div ref={containerRef} className="w-full h-[450px] bg-paper" />
     </div>
   );
 }

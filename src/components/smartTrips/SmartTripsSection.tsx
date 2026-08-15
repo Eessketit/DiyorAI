@@ -83,9 +83,9 @@ export default function SmartTripsSection({
   const remainingBudget = maxBudgetLimit === Infinity ? Infinity : maxBudgetLimit - combinedCost;
 
   return (
-    <section id="smart-trips" className="my-16 bg-white border border-sand rounded-3xl p-6 sm:p-10 shadow-xs scroll-mt-24">
+    <section id="smart-trips" className="my-16 bg-white border border-majolica/20 rounded-3xl p-6 sm:p-10 shadow-xs scroll-mt-24">
       {/* Section Header */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8 pb-6 border-b border-sand/80">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8 pb-6 border-b border-majolica/15">
         <div>
           <div className="flex items-center gap-2 mb-2">
             <Coins className="w-4 h-4 text-majolica" />
@@ -117,7 +117,7 @@ export default function SmartTripsSection({
       </div>
 
       {/* Interactive Tool: What can I do for my budget? */}
-      <div className="bg-paper/70 border border-sand/80 rounded-2xl p-5 mb-8 space-y-4">
+      <div className="bg-paper/70 border border-majolica/20 rounded-2xl p-5 mb-8 space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center gap-2">
             <Coins className="w-4 h-4 text-gold" />
@@ -152,7 +152,7 @@ export default function SmartTripsSection({
         </div>
 
         {/* Category Pills (Secondary Buttons) */}
-        <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none pt-1 border-t border-sand/60">
+        <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none pt-1 border-t border-majolica/20">
           {[
             { id: "all", label: language === "uz" ? "Barcha mavzular" : language === "en" ? "All Themes" : "Все темы", Icon: Sparkles },
             { id: "nature", label: language === "uz" ? "Tabiat & Ko'l" : language === "en" ? "Nature & Lakes" : "Природа & Озера", Icon: Waves },
@@ -180,7 +180,7 @@ export default function SmartTripsSection({
         </div>
       </div>
 
-      {/* Live Budget Impact Banner if trips are added (Strictly majolica or brick) */}
+      {/* Live Budget Impact Banner if trips are added */}
       {addedTrips.length > 0 && (
         <div
           className={`p-4 sm:p-5 rounded-2xl border mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 transition-all ${
@@ -242,8 +242,8 @@ export default function SmartTripsSection({
       {/* Cheaper Alternatives Modal if triggered */}
       {alternativeTarget && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-night/70 backdrop-blur-xs animate-fade-in">
-          <div className="bg-paper rounded-3xl p-6 border border-sand max-w-lg w-full shadow-2xl space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-sand">
+          <div className="bg-paper rounded-3xl p-6 border border-majolica/30 max-w-lg w-full shadow-2xl space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-majolica/20">
               <h4 className="font-display font-bold text-night text-base flex items-center gap-2">
                 <Lightbulb className="w-4 h-4 text-gold" />
                 <span>{language === "uz" ? "Hamyonbop muqobil variantlar" : language === "en" ? "Similar Budget-Friendly Alternatives" : "Релевантные экономные варианты"}</span>
@@ -251,7 +251,7 @@ export default function SmartTripsSection({
               <button
                 type="button"
                 onClick={() => setAlternativeTarget(null)}
-                className="w-7 h-7 rounded-full bg-sand/40 hover:bg-sand flex items-center justify-center text-xs font-bold text-night"
+                className="w-7 h-7 rounded-full bg-paper border border-majolica/30 hover:bg-majolica/10 flex items-center justify-center text-xs font-bold text-night"
               >
                 <X className="w-3.5 h-3.5" />
               </button>
@@ -269,10 +269,10 @@ export default function SmartTripsSection({
               {getCheaperAlternatives(alternativeTarget, alternativeTarget.pricePerAdult, travelers).map((alt) => (
                 <div
                   key={alt.id}
-                  className="p-4 rounded-2xl border border-sand bg-white flex items-center justify-between gap-3 text-xs"
+                  className="p-4 rounded-2xl border border-majolica/20 bg-white flex items-center justify-between gap-3 text-xs"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-paper border border-sand flex items-center justify-center text-majolica shrink-0">
+                    <div className="w-10 h-10 rounded-xl bg-paper border border-majolica/20 flex items-center justify-center text-majolica shrink-0">
                       <ExperienceIcon name={alt.image} className="w-5 h-5 text-majolica" />
                     </div>
                     <div>
@@ -305,8 +305,8 @@ export default function SmartTripsSection({
       {/* Surprise Me Modal */}
       {isSurpriseOpen && surpriseData && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-night/70 backdrop-blur-xs animate-fade-in">
-          <div className="bg-paper rounded-3xl p-6 sm:p-8 border border-sand max-w-lg w-full shadow-2xl space-y-5 animate-scale-in text-night">
-            <div className="flex items-center justify-between pb-3 border-b border-sand">
+          <div className="bg-paper rounded-3xl p-6 sm:p-8 border border-majolica/30 max-w-lg w-full shadow-2xl space-y-5 animate-scale-in text-night">
+            <div className="flex items-center justify-between pb-3 border-b border-majolica/20">
               <div className="flex items-center gap-2">
                 <Dices className="w-6 h-6 text-majolica" />
                 <div>
@@ -321,15 +321,15 @@ export default function SmartTripsSection({
               <button
                 type="button"
                 onClick={() => setIsSurpriseOpen(false)}
-                className="w-8 h-8 rounded-full bg-sand/40 hover:bg-sand flex items-center justify-center text-night"
+                className="w-8 h-8 rounded-full bg-paper border border-majolica/30 hover:bg-majolica/10 flex items-center justify-center text-night"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            <div className="p-4 bg-white border border-sand/70 rounded-2xl flex items-center justify-between gap-3">
+            <div className="p-4 bg-white border border-majolica/20 rounded-2xl flex items-center justify-between gap-3">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-2xl bg-paper border border-sand flex items-center justify-center text-majolica">
+                <div className="w-12 h-12 rounded-2xl bg-paper border border-majolica/20 flex items-center justify-center text-majolica">
                   <ExperienceIcon name={surpriseData.trip.image} className="w-6 h-6 text-majolica" />
                 </div>
                 <div>
@@ -340,7 +340,7 @@ export default function SmartTripsSection({
                 </div>
               </div>
               <span className="text-xs font-mono font-bold text-gold bg-gold/10 px-2.5 py-1 rounded-full flex items-center gap-1">
-                <Target className="w-3.5 h-3.5" />
+                <Target className="w-3.5 h-3.5 text-gold" />
                 <span>{surpriseData.trip.matchScore || 98}% {t.guides.matchScoreLabel}</span>
               </span>
             </div>

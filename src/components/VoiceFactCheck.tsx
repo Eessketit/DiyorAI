@@ -83,21 +83,21 @@ export default function VoiceFactCheck({ onTranscript, isProcessing }: VoiceFact
   };
 
   return (
-    <div className="bg-gradient-to-r from-clay/10 via-registan/10 to-sand/40 border border-clay/30 rounded-2xl p-5 mb-6 shadow-xs">
+    <div className="bg-paper border border-majolica/30 rounded-2xl p-5 mb-6 shadow-xs">
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <div
             className={`w-12 h-12 rounded-full flex items-center justify-center text-xl transition-all ${
               isListening
-                ? "bg-red-500 text-white animate-ping"
-                : "bg-clay text-plaster shadow-md hover:scale-105"
+                ? "bg-brick text-paper animate-ping"
+                : "bg-majolica text-paper shadow-md hover:scale-105"
             }`}
           >
             {isListening ? "⏹️" : "🎙️"}
           </div>
           <div>
-            <h3 className="font-display text-base font-bold text-ink">{buttonText[language]}</h3>
-            <p className="text-xs text-night/70">{tipText[language]}</p>
+            <h3 className="font-display text-base font-bold text-night">{buttonText[language]}</h3>
+            <p className="text-xs text-night/70 font-light">{tipText[language]}</p>
           </div>
         </div>
 
@@ -107,8 +107,8 @@ export default function VoiceFactCheck({ onTranscript, isProcessing }: VoiceFact
           disabled={isListening || isProcessing}
           className={`px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all shadow-sm shrink-0 ${
             isListening
-              ? "bg-red-500 text-white animate-pulse"
-              : "bg-clay hover:bg-clay/90 text-plaster hover:shadow-md"
+              ? "bg-brick text-paper animate-pulse"
+              : "bg-majolica hover:bg-majolica/90 text-paper hover:shadow-md"
           }`}
         >
           {isListening ? "Запись…" : "Включить микрофон"}
@@ -116,7 +116,7 @@ export default function VoiceFactCheck({ onTranscript, isProcessing }: VoiceFact
       </div>
 
       {interimText && (
-        <div className="mt-4 p-3 bg-white/90 rounded-xl border border-sand text-sm text-ink italic animate-fade-in">
+        <div className="mt-4 p-3 bg-white rounded-xl border border-majolica/20 text-sm text-night italic animate-fade-in">
           🗣️ &quot;{interimText}&quot;
         </div>
       )}

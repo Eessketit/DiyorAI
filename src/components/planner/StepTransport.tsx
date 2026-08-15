@@ -84,7 +84,7 @@ export default function StepTransport({
   return (
     <div className="space-y-6">
       <div className="text-center sm:text-left">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-paper border border-sand text-xs font-mono font-bold text-night uppercase tracking-wider mb-2">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-paper border border-majolica/20 text-xs font-mono font-bold text-night uppercase tracking-wider mb-2">
           Этап 1 из 3
         </div>
         <h2 className="text-2xl sm:text-3xl font-display font-bold text-night flex items-center gap-2">
@@ -98,7 +98,7 @@ export default function StepTransport({
       </div>
 
       {/* Transport Type Tabs (Secondary Buttons) */}
-      <div className="flex items-center gap-2 p-1.5 bg-paper rounded-2xl border border-sand">
+      <div className="flex items-center gap-2 p-1.5 bg-paper rounded-2xl border border-majolica/20">
         <button
           type="button"
           onClick={() => setTab("train")}
@@ -136,14 +136,14 @@ export default function StepTransport({
 
       {/* Round trip toggle */}
       {tab !== "car" && (
-        <div className="flex items-center justify-between bg-white p-3.5 rounded-xl border border-sand text-xs font-mono">
+        <div className="flex items-center justify-between bg-white p-3.5 rounded-xl border border-majolica/20 text-xs font-mono">
           <span className="font-semibold text-night">{t.planner.passengersCount}:</span>
           <div className="flex items-center gap-2">
             <button
               type="button"
               onClick={() => setIsRoundTrip(false)}
               className={`px-3.5 py-1.5 rounded-lg font-bold transition-colors ${
-                !isRoundTrip ? "bg-majolica text-paper" : "bg-paper border border-sand text-night"
+                !isRoundTrip ? "bg-majolica text-paper" : "bg-paper border border-majolica/20 text-night"
               }`}
             >
               {t.planner.oneWay}
@@ -152,7 +152,7 @@ export default function StepTransport({
               type="button"
               onClick={() => setIsRoundTrip(true)}
               className={`px-3.5 py-1.5 rounded-lg font-bold transition-colors ${
-                isRoundTrip ? "bg-majolica text-paper" : "bg-paper border border-sand text-night"
+                isRoundTrip ? "bg-majolica text-paper" : "bg-paper border border-majolica/20 text-night"
               }`}
             >
               {t.planner.roundTrip}
@@ -176,12 +176,12 @@ export default function StepTransport({
                 className={`p-4 sm:p-5 rounded-2xl border transition-all cursor-pointer bg-white ${
                   isSelected
                     ? "border-majolica ring-2 ring-majolica/30 shadow-md bg-paper/40"
-                    : "border-sand hover:border-majolica/60 shadow-xs"
+                    : "border-majolica/20 hover:border-majolica/60 shadow-xs"
                 }`}
               >
                 <div className="flex items-center justify-between gap-4 flex-wrap">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-xl bg-paper border border-sand flex items-center justify-center text-majolica shrink-0">
+                    <div className="w-12 h-12 rounded-xl bg-paper border border-majolica/20 flex items-center justify-center text-majolica shrink-0">
                       <Plane className="w-6 h-6 text-majolica" />
                     </div>
                     <div>
@@ -189,7 +189,7 @@ export default function StepTransport({
                         <span className="font-display font-bold text-night text-sm sm:text-base">
                           {f.airline}
                         </span>
-                        <span className="text-[10px] bg-paper border border-sand px-2 py-0.5 rounded font-mono font-bold text-night/70">
+                        <span className="text-[10px] bg-paper border border-majolica/20 px-2 py-0.5 rounded font-mono font-bold text-night/70">
                           {f.flightNumber}
                         </span>
                       </div>
@@ -209,7 +209,7 @@ export default function StepTransport({
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between border-t border-sand/60 pt-3 mt-3 text-xs text-night/80 font-mono">
+                <div className="flex items-center justify-between border-t border-majolica/15 pt-3 mt-3 text-xs text-night/80 font-mono">
                   <div className="flex items-center gap-4">
                     <span>Вылет: <strong>{f.departureTime}</strong></span>
                     <span>Прибытие: <strong>{f.arrivalTime}</strong></span>
@@ -241,12 +241,12 @@ export default function StepTransport({
                 className={`p-4 sm:p-5 rounded-2xl border transition-all cursor-pointer bg-white ${
                   isSelected
                     ? "border-majolica ring-2 ring-majolica/30 shadow-md bg-paper/40"
-                    : "border-sand hover:border-majolica/60 shadow-xs"
+                    : "border-majolica/20 hover:border-majolica/60 shadow-xs"
                 }`}
               >
                 <div className="flex items-center justify-between gap-4 flex-wrap">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-xl bg-paper border border-sand flex items-center justify-center text-majolica shrink-0">
+                    <div className="w-12 h-12 rounded-xl bg-paper border border-majolica/20 flex items-center justify-center text-majolica shrink-0">
                       <Train className="w-6 h-6 text-majolica" />
                     </div>
                     <div>
@@ -254,7 +254,7 @@ export default function StepTransport({
                         <span className="font-display font-bold text-night text-sm sm:text-base">
                           {t.name}
                         </span>
-                        <span className="text-[10px] bg-majolica/15 text-majolica px-2 py-0.5 rounded font-mono font-bold uppercase">
+                        <span className="text-[10px] bg-majolica/10 border border-majolica/30 text-night px-2 py-0.5 rounded font-mono font-bold uppercase">
                           {t.trainClass}
                         </span>
                       </div>
@@ -274,7 +274,7 @@ export default function StepTransport({
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between border-t border-sand/60 pt-3 mt-3 text-xs text-night/80 font-mono">
+                <div className="flex items-center justify-between border-t border-majolica/15 pt-3 mt-3 text-xs text-night/80 font-mono">
                   <div className="flex items-center gap-4">
                     <span>Отправление: <strong>{t.departureTime}</strong></span>
                     <span>Прибытие: <strong>{t.arrivalTime}</strong></span>
@@ -293,9 +293,9 @@ export default function StepTransport({
 
       {/* Car view */}
       {tab === "car" && (
-        <div className="p-6 bg-white rounded-2xl border border-sand space-y-4">
+        <div className="p-6 bg-white rounded-2xl border border-majolica/20 space-y-4">
           <div className="flex items-start gap-4">
-            <div className="w-14 h-14 rounded-2xl bg-paper border border-sand flex items-center justify-center text-majolica shrink-0">
+            <div className="w-14 h-14 rounded-2xl bg-paper border border-majolica/20 flex items-center justify-center text-majolica shrink-0">
               <Car className="w-7 h-7 text-majolica" />
             </div>
             <div>
@@ -309,19 +309,19 @@ export default function StepTransport({
           </div>
 
           <div className="grid sm:grid-cols-3 gap-3 pt-2 text-center text-xs font-mono">
-            <div className="p-3 bg-paper rounded-xl border border-sand">
+            <div className="p-3 bg-paper rounded-xl border border-majolica/20">
               <span className="text-night/60 block">Расстояние</span>
               <span className="font-mono font-bold text-base text-night">
                 ~{region === "samarkand" ? 310 : region === "bukhara" ? 570 : region === "khiva" ? 980 : 85} км
               </span>
             </div>
-            <div className="p-3 bg-paper rounded-xl border border-sand">
+            <div className="p-3 bg-paper rounded-xl border border-majolica/20">
               <span className="text-night/60 block">Время в пути</span>
               <span className="font-mono font-bold text-base text-night">
                 ~{Math.round((region === "samarkand" ? 310 : region === "bukhara" ? 570 : region === "khiva" ? 980 : 85) / 70)} ч.
               </span>
             </div>
-            <div className="p-3 bg-paper rounded-xl border border-sand">
+            <div className="p-3 bg-paper rounded-xl border border-majolica/20">
               <span className="text-night/60 block">Расход на топливо</span>
               <span className="font-mono font-bold text-base text-gold">
                 ~${selectedTransport?.totalCostUsd || 35}
@@ -332,7 +332,7 @@ export default function StepTransport({
       )}
 
       {/* Navigation buttons: Secondary (Back) vs Primary (Next) */}
-      <div className="flex items-center justify-between gap-4 pt-4 border-t border-sand">
+      <div className="flex items-center justify-between gap-4 pt-4 border-t border-majolica/15">
         <button
           type="button"
           onClick={onBack}

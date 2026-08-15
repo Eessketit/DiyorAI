@@ -2,8 +2,9 @@ import React from "react";
 import { SmartTrip, TravelersModel } from "@/lib/types";
 import { useTranslation } from "@/lib/i18n";
 import { calculateSmartTripGroupCost } from "@/lib/smartTrips";
-import { Target, Check, Plus, ArrowRight } from "lucide-react";
+import { Target, Check, Plus } from "lucide-react";
 import ExperienceIcon from "../common/ExperienceIcon";
+import CategoryBadge from "../common/CategoryBadge";
 
 interface SmartTripCardProps {
   trip: SmartTrip;
@@ -31,31 +32,27 @@ export default function SmartTripCard({
   return (
     <div
       className={`bg-white border rounded-3xl p-5 flex flex-col justify-between shadow-xs hover:shadow-md transition-all group ${
-        isAdded ? "border-majolica ring-2 ring-majolica/25 bg-paper/40" : "border-sand hover:border-majolica/70"
+        isAdded ? "border-majolica ring-2 ring-majolica/25 bg-paper/40" : "border-majolica/20 hover:border-majolica/70"
       }`}
     >
       <div>
         {/* Top Badges & Icon */}
         <div className="flex items-start justify-between gap-3 mb-3">
           <div className="flex items-center gap-3">
-            <div className="w-13 h-13 rounded-2xl bg-paper border border-sand flex items-center justify-center text-majolica shrink-0 group-hover:scale-105 transition-transform">
+            <div className="w-13 h-13 rounded-2xl bg-paper border border-majolica/20 flex items-center justify-center text-majolica shrink-0 group-hover:scale-105 transition-transform">
               <ExperienceIcon name={trip.image} className="w-6 h-6 text-majolica" />
             </div>
             <div>
               <div className="flex items-center gap-1.5 flex-wrap">
-                {tag && (
-                  <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-md bg-majolica/10 text-majolica uppercase">
-                    {tag}
-                  </span>
-                )}
+                {tag && <CategoryBadge label={tag} icon={trip.image} />}
                 {isAdded && (
-                  <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-md bg-majolica/20 text-majolica flex items-center gap-1">
-                    <Check className="w-3 h-3" />
+                  <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full border border-majolica bg-majolica/15 text-night flex items-center gap-1">
+                    <Check className="w-3 h-3 text-majolica" />
                     <span>{language === "uz" ? "Qo'shilgan" : language === "en" ? "Added" : "В маршруте"}</span>
                   </span>
                 )}
               </div>
-              <h3 className="font-display font-bold text-night text-base sm:text-lg leading-snug mt-1 group-hover:text-majolica transition-colors">
+              <h3 className="font-display font-bold text-night text-base sm:text-lg leading-snug mt-1.5 group-hover:text-majolica transition-colors">
                 {title}
               </h3>
             </div>
@@ -63,7 +60,7 @@ export default function SmartTripCard({
         </div>
 
         {/* Price & Meta info with IBM Plex Mono */}
-        <div className="flex items-center justify-between gap-2 p-3 bg-paper/70 rounded-2xl border border-sand/70 mb-3">
+        <div className="flex items-center justify-between gap-2 p-3 bg-paper/70 rounded-2xl border border-majolica/20 mb-3">
           <div>
             <div className="flex items-baseline gap-1">
               <span className="font-mono font-black text-lg text-night">
@@ -81,12 +78,12 @@ export default function SmartTripCard({
             )}
           </div>
 
-          <div className="text-right border-l border-sand/80 pl-3 shrink-0">
+          <div className="text-right border-l border-majolica/20 pl-3 shrink-0">
             <span className="text-xs font-mono font-bold text-gold flex items-center justify-end gap-1 leading-none">
               <Target className="w-3 h-3 text-gold" />
               <span>{matchScore}%</span>
             </span>
-            <span className="text-[9px] uppercase tracking-wider text-night/50 font-mono font-bold block mt-0.5">
+            <span className="text-[9px] uppercase tracking-wider text-night/60 font-mono font-bold block mt-0.5">
               {t.guides.matchScoreLabel}
             </span>
           </div>
@@ -109,7 +106,7 @@ export default function SmartTripCard({
       </div>
 
       {/* Action Buttons: Secondary vs Primary */}
-      <div className="grid grid-cols-2 gap-2 pt-3 border-t border-sand/60 mt-1">
+      <div className="grid grid-cols-2 gap-2 pt-3 border-t border-majolica/20 mt-1">
         {/* Secondary Button */}
         <button
           type="button"
