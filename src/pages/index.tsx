@@ -5,6 +5,7 @@ import TilePattern from "@/components/TilePattern";
 import PresetCards from "@/components/PresetCards";
 import SmartTripsSection from "@/components/smartTrips/SmartTripsSection";
 import GuidebookPromo from "@/components/GuidebookPromo";
+import TravelDirectory from "@/components/TravelDirectory";
 import StepTransport from "@/components/planner/StepTransport";
 import StepTransfer from "@/components/planner/StepTransfer";
 import StepHotel from "@/components/planner/StepHotel";
@@ -632,6 +633,9 @@ export default function Home() {
            SCENARIO D: COMPACT EXPLORE UZBEKISTAN GUIDEBOOK BLOCK
            ======================================================== */}
         <GuidebookPromo />
+
+        {/* Travel Directory by Categories (Cities, Nature, History, Food, etc.) */}
+        <TravelDirectory />
 
         {/* Accredited Guides Preview */}
         <div className="p-6 sm:p-8 rounded-3xl bg-white border border-sand flex flex-col sm:flex-row items-center justify-between gap-6 shadow-xs">

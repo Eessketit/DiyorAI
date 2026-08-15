@@ -22,6 +22,7 @@ export default function Layout({ children }: { children: ReactNode }) {
     { href: "/#ready-routes", sectionId: "ready-routes", label: language === "uz" ? "Tayyor marshrutlar" : language === "en" ? "Ready Routes" : "Готовые маршруты" },
     { href: "/#smart-trips", sectionId: "smart-trips", label: language === "uz" ? "Smart Trips" : language === "en" ? "Smart Trips" : "Smart Trips" },
     { href: "/#trip-constructor", sectionId: "trip-constructor", label: language === "uz" ? "Konstruktor" : language === "en" ? "Constructor" : "Конструктор" },
+    { href: "/#travel-directory", sectionId: "travel-directory", label: language === "uz" ? "Katalog" : language === "en" ? "Directory" : "Справочник" },
     { href: "/guides", label: t.nav.guides },
     { href: "/verify", label: t.nav.verify },
     { href: "/faq", label: t.nav.faq },

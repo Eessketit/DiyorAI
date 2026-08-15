@@ -13,6 +13,8 @@ import { trackEvent } from "@/lib/analytics";
 import ExperienceIcon from "@/components/common/ExperienceIcon";
 import { Coins, Sparkles, Check, ShieldCheck, Users, Lightbulb, Car, Landmark } from "lucide-react";
 
+import { TRIP_PRESETS } from "@/data/presets";
+
 const MapView = dynamic(() => import("@/components/MapView"), { ssr: false });
 
 export default function TripPage() {
@@ -32,7 +34,16 @@ export default function TripPage() {
   useEffect(() => {
     const raw = sessionStorage.getItem("diyorai-trip");
     if (!raw) {
-      setNotFound(true);
+      // Fallback to signature Samarkand preset instead of blank redirect
+      const defaultPlan = TRIP_PRESETS[0]?.plan;
+      if (defaultPlan) {
+        setPlan(defaultPlan);
+        if (defaultPlan.preferences.travelers?.type === "family") {
+          setSplitMode("family_share");
+        }
+      } else {
+        setNotFound(true);
+      }
       return;
     }
     try {
@@ -42,7 +53,12 @@ export default function TripPage() {
         setSplitMode("family_share");
       }
     } catch {
-      setNotFound(true);
+      const defaultPlan = TRIP_PRESETS[0]?.plan;
+      if (defaultPlan) {
+        setPlan(defaultPlan);
+      } else {
+        setNotFound(true);
+      }
     }
   }, []);
 

@@ -1,43 +1,46 @@
 import React, { useState } from "react";
 import Link from "next/link";
-import { ICON_MAP } from "@/lib/iconMap";
 import { useTranslation } from "@/lib/i18n";
+import { BookOpen, UserCheck, ArrowRight, MapPin } from "lucide-react";
+import ExperienceIcon from "./common/ExperienceIcon";
 
 export default function TravelDirectory() {
-  const { t } = useTranslation();
+  const { t, language } = useTranslation();
   const [activeCategory, setActiveCategory] = useState<string>("cities");
 
   const categories = t.directory.categories;
   const currentCat = categories.find((c) => c.id === activeCategory) || categories[0];
 
   return (
-    <section className="my-16 bg-white border border-sand rounded-3xl p-6 sm:p-10 shadow-sm">
+    <section id="travel-directory" className="my-16 bg-white border border-sand rounded-3xl p-6 sm:p-10 shadow-xs scroll-mt-24">
       {/* Hero Header */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8 pb-6 border-b border-sand/80">
         <div>
           <div className="flex items-center gap-2 mb-2">
-            <span className="text-xl">{ICON_MAP.directory}</span>
-            <span className="text-xs uppercase font-bold tracking-[0.2em] text-registan">
+            <BookOpen className="w-4 h-4 text-majolica" />
+            <span className="text-xs uppercase font-mono font-bold tracking-[0.2em] text-majolica">
               {t.directory.badge}
             </span>
           </div>
-          <h2 className="font-display text-2xl sm:text-4xl font-black text-ink">
+          <h2 className="font-display text-2xl sm:text-4xl font-bold text-night">
             {t.directory.title}
           </h2>
-          <p className="text-night/70 text-sm sm:text-base mt-1 max-w-2xl leading-relaxed">
+          <p className="text-night/70 text-sm sm:text-base mt-1 max-w-2xl leading-relaxed font-light">
             {t.directory.subtitle}
           </p>
         </div>
 
+        {/* Primary CTA button to Guides */}
         <Link
           href="/guides"
-          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-registan text-white text-xs font-bold hover:bg-registan/90 transition-all shadow-md shrink-0 self-start md:self-auto"
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-majolica hover:bg-majolica/90 text-paper text-xs font-bold transition-all shadow-md shrink-0 self-start md:self-auto hover:scale-102"
         >
-          <span>{ICON_MAP.guide}</span> {t.directory.findGuideCta}
+          <UserCheck className="w-4 h-4" />
+          <span>{t.directory.findGuideCta}</span>
         </Link>
       </div>
 
-      {/* Category Pills */}
+      {/* Category Pills (Secondary Buttons) */}
       <div className="flex gap-2 overflow-x-auto pb-3 mb-8 scrollbar-none">
         {categories.map((cat) => (
           <button
@@ -45,15 +48,15 @@ export default function TravelDirectory() {
             onClick={() => setActiveCategory(cat.id)}
             className={`px-4 py-2.5 rounded-2xl text-xs font-bold flex items-center gap-2 shrink-0 transition-all ${
               activeCategory === cat.id
-                ? "bg-registan text-white shadow-md scale-102"
-                : "bg-plaster border border-sand text-ink hover:bg-sand/40"
+                ? "bg-majolica text-paper shadow-md scale-102"
+                : "bg-paper border border-majolica/30 text-night hover:bg-majolica/10"
             }`}
           >
-            <span className="text-base">{cat.icon}</span>
+            <ExperienceIcon name={cat.icon} className={`w-4 h-4 ${activeCategory === cat.id ? "text-paper" : "text-majolica"}`} />
             <span>{cat.title}</span>
             <span
-              className={`text-[10px] px-2 py-0.5 rounded-full ${
-                activeCategory === cat.id ? "bg-white/20 text-white" : "bg-sand/50 text-night/60"
+              className={`text-[10px] font-mono px-2 py-0.5 rounded-full ${
+                activeCategory === cat.id ? "bg-white/25 text-paper" : "bg-sand/50 text-night/60"
               }`}
             >
               {cat.badge}
@@ -63,12 +66,14 @@ export default function TravelDirectory() {
       </div>
 
       {/* Category Description Banner */}
-      <div className="bg-sand/20 border border-sand/70 rounded-2xl p-4 sm:p-5 mb-6 flex items-start justify-between gap-4 flex-wrap">
-        <div className="flex items-center gap-3">
-          <span className="text-3xl p-2 bg-white rounded-xl shadow-xs shrink-0">{currentCat.icon}</span>
+      <div className="bg-paper border border-sand rounded-2xl p-4 sm:p-5 mb-6 flex items-start justify-between gap-4 flex-wrap">
+        <div className="flex items-center gap-3.5">
+          <div className="w-12 h-12 rounded-2xl bg-white border border-sand flex items-center justify-center text-majolica shrink-0 shadow-2xs">
+            <ExperienceIcon name={currentCat.icon} className="w-6 h-6 text-majolica" />
+          </div>
           <div>
-            <h3 className="font-display font-bold text-ink text-lg">{currentCat.title}</h3>
-            <p className="text-xs sm:text-sm text-night/70 mt-0.5">{currentCat.description}</p>
+            <h3 className="font-display font-bold text-night text-lg">{currentCat.title}</h3>
+            <p className="text-xs sm:text-sm text-night/70 mt-0.5 font-light">{currentCat.description}</p>
           </div>
         </div>
       </div>
@@ -78,27 +83,28 @@ export default function TravelDirectory() {
         {currentCat.items.map((item, idx) => (
           <div
             key={idx}
-            className="p-4 sm:p-5 rounded-2xl bg-plaster/50 border border-sand hover:bg-white hover:border-sand/90 hover:shadow-md transition-all flex flex-col justify-between"
+            className="p-5 rounded-2xl bg-paper/60 border border-sand hover:bg-white hover:border-majolica/60 hover:shadow-md transition-all flex flex-col justify-between group"
           >
             <div>
               <div className="flex items-center justify-between gap-2 mb-2">
-                <h4 className="font-display font-bold text-ink text-sm sm:text-base leading-snug">
+                <h4 className="font-display font-bold text-night text-sm sm:text-base leading-snug group-hover:text-majolica transition-colors">
                   {item.name}
                 </h4>
-                <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded-md bg-sand/40 text-registan shrink-0">
+                <span className="text-[10px] uppercase font-mono font-bold px-2 py-0.5 rounded-md bg-majolica/15 text-majolica shrink-0">
                   {item.tag}
                 </span>
               </div>
-              <p className="text-xs text-night/70 leading-relaxed">{item.details}</p>
+              <p className="text-xs text-night/70 leading-relaxed font-light">{item.details}</p>
             </div>
 
             {item.linkUrl && (
               <div className="mt-4 pt-3 border-t border-sand/60">
                 <Link
                   href={item.linkUrl}
-                  className="text-xs font-bold text-registan hover:underline inline-flex items-center gap-1"
+                  className="text-xs font-bold text-majolica hover:text-majolica/80 inline-flex items-center gap-1 font-mono"
                 >
-                  {t.directory.findGuideCta}
+                  <span>{t.directory.findGuideCta}</span>
+                  <ArrowRight className="w-3 h-3" />
                 </Link>
               </div>
             )}
