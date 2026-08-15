@@ -80,15 +80,15 @@ export default function PresetCards({ userBudget }: PresetCardsProps) {
         </div>
 
         {/* Region Filter Chips */}
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none flex-wrap">
+        <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none flex-wrap">
           {regions.map((reg) => (
             <button
               key={reg.id}
               onClick={() => setSelectedRegionFilter(reg.id)}
-              className={`px-3 py-1.5 rounded-xl text-xs font-semibold font-mono transition-all shrink-0 ${
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold font-mono transition-all shrink-0 cursor-pointer ${
                 selectedRegionFilter === reg.id
-                  ? "bg-majolica text-paper shadow-xs"
-                  : "bg-paper text-night/70 hover:text-night hover:bg-majolica/10 border border-majolica/20"
+                  ? "bg-gradient-to-r from-[#1E3A8A] to-[#2563EB] text-white shadow-md ring-2 ring-indigo-300 scale-102"
+                  : "bg-white text-slate-800 hover:border-indigo-400 hover:bg-indigo-50/50 border border-slate-200 shadow-2xs"
               }`}
             >
               {reg.label}
@@ -98,16 +98,11 @@ export default function PresetCards({ userBudget }: PresetCardsProps) {
       </div>
 
       {/* Grid of Ready Tours */}
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredPresets.map((p) => {
           const travelers = p.travelersCount || 2;
           const costPerPerson = p.pricePerPersonUsd;
           const totalCost = p.totalPriceUsd;
-
-          // Budget evaluation
-          const budgetLimit = userBudget || 500;
-          const isOverBudget = totalCost > budgetLimit;
-          const diffBudget = Math.abs(budgetLimit - totalCost);
 
           return (
             <div
@@ -205,7 +200,7 @@ export default function PresetCards({ userBudget }: PresetCardsProps) {
                   <Clock className="w-3.5 h-3.5 text-majolica" />
                   <span>{p.duration}</span>
                 </span>
-                <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-majolica text-paper hover:bg-majolica/90 font-bold transition-all shadow-xs group-hover:scale-102 font-mono">
+                <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-[#1E3A8A] to-[#2563EB] text-white font-bold transition-all shadow-xs group-hover:scale-105 font-mono">
                   <span>{language === "uz" ? "Tanlash" : language === "en" ? "Select" : "Выбрать"}</span>
                   <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                 </span>

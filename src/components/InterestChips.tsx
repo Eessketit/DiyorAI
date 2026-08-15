@@ -39,10 +39,10 @@ export default function InterestChips({
             type="button"
             onClick={() => toggle(cat)}
             aria-pressed={active}
-            className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold border transition-all ${
+            className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold border transition-all duration-200 cursor-pointer ${
               active
-                ? "bg-primary text-white border-primary shadow-xs scale-102"
-                : "bg-transparent border-sand-border text-ink hover:border-primary hover:bg-primary/5"
+                ? "bg-gradient-to-r from-[#1E3A8A] to-[#2563EB] text-white border-transparent shadow-md ring-2 ring-indigo-300 scale-102"
+                : "bg-white border-slate-200 text-slate-800 hover:border-indigo-400 hover:bg-indigo-50/50 shadow-2xs"
             }`}
           >
             {t.categories[cat] || cat}

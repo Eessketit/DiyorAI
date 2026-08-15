@@ -175,24 +175,24 @@ export default function AiChatWidget() {
           <button
             type="button"
             onClick={() => setIsOpen(true)}
-            className="group relative flex items-center gap-2.5 px-4 py-3.5 rounded-full bg-night text-paper border border-majolica/40 shadow-2xl hover:shadow-majolica/30 hover:scale-105 transition-all duration-300 backdrop-blur-md cursor-pointer animate-fade-in"
+            className="group relative flex items-center gap-3 px-4 py-3.5 rounded-full bg-gradient-to-r from-[#131E3A] via-[#1E3A8A] to-[#2563EB] text-white border-2 border-white/25 shadow-2xl hover:shadow-indigo-500/40 hover:scale-105 transition-all duration-300 cursor-pointer animate-fade-in"
             title="Открыть DiyorAI Консьерж"
           >
             {/* Animated Pulse Glow */}
-            <span className="absolute -top-1 -right-1 flex h-3.5 w-3.5">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-majolica opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-majolica"></span>
+            <span className="absolute -top-1 -right-1 flex h-4 w-4">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-4 w-4 bg-emerald-500 border-2 border-white"></span>
             </span>
 
-            <div className="w-8 h-8 rounded-full bg-majolica/20 flex items-center justify-center text-gold group-hover:rotate-12 transition-transform">
-              <Sparkles className="w-4 h-4 text-gold" />
+            <div className="w-8 h-8 rounded-full bg-amber-400/20 border border-amber-300/40 flex items-center justify-center text-amber-300 group-hover:rotate-12 transition-transform shadow-inner">
+              <Sparkles className="w-4 h-4 text-amber-300" />
             </div>
 
-            <div className="flex flex-col text-left pr-1">
-              <span className="font-display font-bold text-xs sm:text-sm leading-tight text-paper">
+            <div className="flex flex-col text-left pr-1.5">
+              <span className="font-display font-bold text-xs sm:text-sm leading-tight text-white drop-shadow-xs">
                 DiyorAI AI
               </span>
-              <span className="text-[9px] font-mono text-gold font-semibold uppercase tracking-wider">
+              <span className="text-[9px] font-mono text-amber-300 font-bold uppercase tracking-wider">
                 Alice AI LLM
               </span>
             </div>
@@ -201,24 +201,24 @@ export default function AiChatWidget() {
 
         {/* Collapsible Chat Window */}
         {isOpen && (
-          <div className="w-[calc(100vw-2.5rem)] sm:w-[410px] h-[540px] max-h-[85vh] bg-white/95 backdrop-blur-xl border-2 border-majolica/30 rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-scale-up z-50">
+          <div className="w-[calc(100vw-2.5rem)] sm:w-[410px] h-[540px] max-h-[85vh] bg-white border border-indigo-200 rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-scale-up z-50">
             {/* Window Header */}
-            <div className="p-4 bg-night text-paper border-b border-majolica/20 flex items-center justify-between gap-2 shrink-0">
+            <div className="p-4 bg-gradient-to-r from-[#131E3A] to-[#1E3A8A] text-white border-b border-indigo-900 flex items-center justify-between gap-2 shrink-0">
               <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-2xl bg-majolica/30 border border-majolica/40 flex items-center justify-center text-gold">
-                  <Sparkles className="w-5 h-5 text-gold" />
+                <div className="w-9 h-9 rounded-2xl bg-amber-400/20 border border-amber-300/30 flex items-center justify-center text-amber-300">
+                  <Sparkles className="w-5 h-5 text-amber-300" />
                 </div>
                 <div>
                   <div className="flex items-center gap-1.5">
-                    <h3 className="font-display font-bold text-sm text-paper">
+                    <h3 className="font-display font-bold text-sm text-white">
                       DiyorAI Concierge
                     </h3>
-                    <span className="px-1.5 py-0.2 rounded bg-majolica/30 text-[9px] font-mono font-bold text-gold uppercase">
+                    <span className="px-2 py-0.5 rounded-full bg-amber-400/20 text-[9px] font-mono font-bold text-amber-300 uppercase border border-amber-400/30">
                       Alice AI
                     </span>
                   </div>
-                  <p className="text-[10px] text-paper/60 font-mono flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+                  <p className="text-[10px] text-white/80 font-mono flex items-center gap-1.5 mt-0.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                     <span>Онлайн · Эксперт по Узбекистану</span>
                   </p>
                 </div>
@@ -228,7 +228,7 @@ export default function AiChatWidget() {
                 <button
                   type="button"
                   onClick={handleClearChat}
-                  className="p-1.5 rounded-lg text-paper/60 hover:text-paper hover:bg-paper/10 transition-colors"
+                  className="p-1.5 rounded-lg text-white/70 hover:text-white hover:bg-white/15 transition-colors"
                   title="Очистить диалог"
                 >
                   <Trash2 className="w-4 h-4" />
@@ -236,7 +236,7 @@ export default function AiChatWidget() {
                 <button
                   type="button"
                   onClick={() => setIsOpen(false)}
-                  className="p-1.5 rounded-lg text-paper/60 hover:text-paper hover:bg-paper/10 transition-colors"
+                  className="p-1.5 rounded-lg text-white/70 hover:text-white hover:bg-white/15 transition-colors"
                   title="Свернуть окно"
                 >
                   <X className="w-4 h-4" />
@@ -245,7 +245,7 @@ export default function AiChatWidget() {
             </div>
 
             {/* Messages Area */}
-            <div className="flex-1 p-4 overflow-y-auto space-y-3 bg-paper/30">
+            <div className="flex-1 p-4 overflow-y-auto space-y-3 bg-[#F8FAFC]">
               {messages.map((msg, idx) => {
                 const isUser = msg.role === "user";
                 return (
@@ -256,18 +256,18 @@ export default function AiChatWidget() {
                     <div
                       className={`w-7 h-7 rounded-xl flex items-center justify-center shrink-0 text-xs ${
                         isUser
-                          ? "bg-night text-paper font-bold"
-                          : "bg-majolica text-paper font-bold shadow-xs"
+                          ? "bg-[#1E3A8A] text-white font-bold"
+                          : "bg-gradient-to-tr from-[#1E3A8A] to-[#2563EB] text-white font-bold shadow-xs"
                       }`}
                     >
                       {isUser ? <User className="w-3.5 h-3.5" /> : <Bot className="w-3.5 h-3.5" />}
                     </div>
 
                     <div
-                      className={`p-3.5 rounded-2xl max-w-[85%] ${
+                      className={`p-3.5 rounded-2xl max-w-[85%] text-xs sm:text-sm leading-relaxed ${
                         isUser
-                          ? "bg-majolica text-paper rounded-tr-xs shadow-xs"
-                          : "bg-white text-night border border-majolica/20 rounded-tl-xs shadow-xs"
+                          ? "bg-[#1E3A8A] text-white rounded-tr-xs shadow-xs"
+                          : "bg-white text-slate-800 border border-slate-200/80 rounded-tl-xs shadow-xs"
                       }`}
                     >
                       {formatMessageText(msg.text)}
@@ -279,14 +279,14 @@ export default function AiChatWidget() {
               {/* Typing Indicator */}
               {loading && (
                 <div className="flex items-center gap-2.5">
-                  <div className="w-7 h-7 rounded-xl bg-majolica text-paper flex items-center justify-center shrink-0">
+                  <div className="w-7 h-7 rounded-xl bg-gradient-to-tr from-[#1E3A8A] to-[#2563EB] text-white flex items-center justify-center shrink-0">
                     <Bot className="w-3.5 h-3.5" />
                   </div>
-                  <div className="p-3.5 rounded-2xl bg-white border border-majolica/20 rounded-tl-xs flex items-center gap-1.5 text-night/60">
-                    <span className="w-2 h-2 rounded-full bg-majolica animate-bounce" style={{ animationDelay: "0ms" }} />
-                    <span className="w-2 h-2 rounded-full bg-majolica animate-bounce" style={{ animationDelay: "150ms" }} />
-                    <span className="w-2 h-2 rounded-full bg-majolica animate-bounce" style={{ animationDelay: "300ms" }} />
-                    <span className="text-xs font-mono ml-1">DiyorAI думает...</span>
+                  <div className="p-3 rounded-2xl bg-white border border-slate-200 rounded-tl-xs flex items-center gap-1.5 text-slate-600">
+                    <span className="w-2 h-2 rounded-full bg-[#1E3A8A] animate-bounce" style={{ animationDelay: "0ms" }} />
+                    <span className="w-2 h-2 rounded-full bg-[#1E3A8A] animate-bounce" style={{ animationDelay: "150ms" }} />
+                    <span className="w-2 h-2 rounded-full bg-[#1E3A8A] animate-bounce" style={{ animationDelay: "300ms" }} />
+                    <span className="text-xs font-mono ml-1 text-slate-500">DiyorAI думает...</span>
                   </div>
                 </div>
               )}
@@ -295,14 +295,14 @@ export default function AiChatWidget() {
             </div>
 
             {/* Quick Question Chips */}
-            <div className="px-3 py-2 bg-paper/60 border-t border-majolica/15 flex gap-1.5 overflow-x-auto scrollbar-none shrink-0">
+            <div className="px-3 py-2 bg-slate-100 border-t border-slate-200 flex gap-1.5 overflow-x-auto shrink-0 scrollbar-none">
               {quickQuestions.map((q, i) => (
                 <button
                   key={i}
                   type="button"
                   onClick={() => handleSendMessage(q.query)}
                   disabled={loading}
-                  className="px-2.5 py-1 rounded-xl bg-white hover:bg-majolica hover:text-paper border border-majolica/25 text-[11px] font-mono font-medium text-night/80 transition-all shrink-0 cursor-pointer disabled:opacity-50"
+                  className="px-3 py-1 rounded-xl bg-white hover:bg-[#1E3A8A] hover:text-white border border-slate-300 text-[11px] font-medium text-slate-700 transition-all shrink-0 cursor-pointer disabled:opacity-50 shadow-2xs"
                 >
                   {q.label}
                 </button>
@@ -315,7 +315,7 @@ export default function AiChatWidget() {
                 e.preventDefault();
                 handleSendMessage();
               }}
-              className="p-3 bg-white border-t border-majolica/20 flex items-center gap-2 shrink-0"
+              className="p-3 bg-white border-t border-slate-200 flex items-center gap-2 shrink-0"
             >
               <input
                 ref={inputRef}
@@ -330,13 +330,13 @@ export default function AiChatWidget() {
                     : "Спросите о городах, билетах, ценах..."
                 }
                 disabled={loading}
-                className="flex-1 px-3.5 py-2.5 rounded-xl border border-majolica/25 bg-paper/40 text-xs sm:text-sm text-night outline-none focus:border-majolica font-sans"
+                className="flex-1 px-3.5 py-2.5 rounded-xl border border-slate-300 bg-slate-50 text-xs sm:text-sm text-slate-900 outline-none focus:border-[#1E3A8A] focus:bg-white focus:ring-1 focus:ring-[#1E3A8A] transition-all font-sans"
               />
 
               <button
                 type="submit"
                 disabled={!input.trim() || loading}
-                className="p-2.5 rounded-xl bg-majolica hover:bg-majolica/90 disabled:opacity-40 text-paper transition-all shadow-xs shrink-0 cursor-pointer"
+                className="p-2.5 rounded-xl bg-[#1E3A8A] hover:bg-[#152a65] disabled:opacity-40 text-white transition-all shadow-xs shrink-0 cursor-pointer"
                 title="Отправить"
               >
                 <Send className="w-4 h-4" />

@@ -458,10 +458,10 @@ export default function ConstructorPage() {
                     key={type}
                     type="button"
                     onClick={() => handleTravelerTypeChange(type)}
-                    className={`px-3 py-2.5 rounded-2xl text-xs font-mono font-bold transition-all border ${
+                    className={`px-3 py-2.5 rounded-2xl text-xs font-mono font-bold transition-all border cursor-pointer ${
                       active
-                        ? "bg-majolica text-paper border-majolica shadow-xs"
-                        : "bg-paper text-night/70 hover:bg-majolica/10 border-majolica/20"
+                        ? "bg-gradient-to-r from-[#1E3A8A] to-[#2563EB] text-white border-transparent shadow-md ring-2 ring-indigo-300 scale-102"
+                        : "bg-white text-slate-800 hover:border-indigo-400 hover:bg-indigo-50/50 border-slate-200 shadow-2xs"
                     }`}
                   >
                     {labels[type]}
@@ -694,16 +694,16 @@ export default function ConstructorPage() {
                     key={r}
                     type="button"
                     onClick={() => setRegion(r)}
-                    className={`p-3.5 rounded-2xl text-left border transition-all ${
+                    className={`p-3.5 rounded-2xl text-left border transition-all cursor-pointer ${
                       active
-                        ? "border-primary bg-primary/10 shadow-xs ring-2 ring-primary/30"
-                        : "border-sand-border bg-white/70 hover:bg-primary/5 text-ink"
+                        ? "border-[#1E3A8A] bg-gradient-to-br from-indigo-50/90 to-blue-50/90 shadow-sm ring-2 ring-[#1E3A8A]/30 scale-102"
+                        : "border-slate-200 bg-white hover:border-indigo-300 hover:bg-indigo-50/30 text-slate-800 shadow-2xs"
                     }`}
                   >
-                    <span className="text-xs font-bold text-night block mb-0.5">
+                    <span className="text-xs font-bold text-slate-900 block mb-0.5">
                       {t.regions[r] || REGION_LABELS[r]}
                     </span>
-                    <span className="text-[10px] text-night/50 font-mono">
+                    <span className="text-[10px] text-slate-500 font-mono">
                       {REGION_SUBTITLES[r]?.[language] || REGION_SUBTITLES[r]?.ru}
                     </span>
                   </button>
@@ -742,10 +742,10 @@ export default function ConstructorPage() {
                     key={p}
                     type="button"
                     onClick={() => setPace(p)}
-                    className={`p-3 rounded-xl border text-xs font-mono font-bold transition-all ${
+                    className={`p-3 rounded-xl border text-xs font-mono font-bold transition-all cursor-pointer ${
                       active
-                        ? "bg-primary text-white border-primary shadow-xs"
-                        : "bg-white/80 text-ink hover:bg-primary/10 border-sand-border"
+                        ? "bg-gradient-to-r from-[#1E3A8A] to-[#2563EB] text-white border-transparent shadow-md ring-2 ring-indigo-300 scale-102"
+                        : "bg-white text-slate-800 hover:border-indigo-400 hover:bg-indigo-50/50 border-slate-200 shadow-2xs"
                     }`}
                   >
                     {PACE_LABELS[p]}
@@ -756,10 +756,10 @@ export default function ConstructorPage() {
           </div>
 
           {/* CTA: Next to Logistics & Stays */}
-          <div className="pt-6 border-t border-sand-border flex items-center justify-between gap-4 flex-wrap">
+          <div className="pt-6 border-t border-slate-200 flex items-center justify-between gap-4 flex-wrap">
             <Link
               href="/"
-              className="px-6 py-3 rounded-xl border border-sand-border text-xs font-semibold text-ink bg-white/80 hover:bg-sand transition-colors"
+              className="px-6 py-3 rounded-xl border border-slate-300 text-xs font-semibold text-slate-700 bg-white hover:bg-slate-100 transition-colors shadow-2xs"
             >
               {language === "uz" ? "Bosh sahifaga qaytish" : language === "en" ? "Back to Home" : "На главную"}
             </Link>
@@ -767,7 +767,7 @@ export default function ConstructorPage() {
             <button
               type="button"
               onClick={() => setActiveStep(1)}
-              className="px-8 py-3.5 rounded-2xl bg-secondary hover:bg-secondary-hover text-white font-bold text-xs sm:text-sm transition-all shadow-md flex items-center gap-2 cursor-pointer"
+              className="px-8 py-3.5 rounded-2xl bg-gradient-to-r from-[#1E3A8A] to-[#2563EB] hover:from-[#152a65] hover:to-[#1d4ed8] text-white font-bold text-xs sm:text-sm transition-all shadow-lg hover:shadow-indigo-500/25 flex items-center gap-2 cursor-pointer hover:scale-102"
             >
               <span>{language === "uz" ? "Keyingi: Transport va Logistika" : language === "en" ? "Next: Transport & Stays" : "Далее: Выбор транспорта и отеля"}</span>
               <ArrowRight className="w-4 h-4" />
