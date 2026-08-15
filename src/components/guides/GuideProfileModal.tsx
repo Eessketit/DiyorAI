@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Guide } from "@/lib/types";
-import { useTranslation, Language } from "@/lib/i18n";
+import { Guide, Category } from "@/lib/types";
+import { useTranslation } from "@/lib/i18n";
 import { ICON_MAP } from "@/lib/iconMap";
 import { getGuideDisplayName } from "./GuideCard";
 
@@ -11,7 +11,7 @@ interface GuideProfileModalProps {
 }
 
 export default function GuideProfileModal({ guide, onClose, onBook }: GuideProfileModalProps) {
-  const { language } = useTranslation();
+  const { t, language } = useTranslation();
   const [activeTab, setActiveTab] = useState<"overview" | "trust" | "reviews">("overview");
 
   if (!guide) return null;
@@ -23,7 +23,7 @@ export default function GuideProfileModal({ guide, onClose, onBook }: GuideProfi
 
   const aboutText = guide.about
     ? guide.about[language] || guide.about.ru || guide.about.en
-    : "Профессиональный аккредитованный гид по историческим и культурным достопримечательностям Узбекистана.";
+    : "";
 
   const whyRecList = guide.whyRecommended
     ? guide.whyRecommended[language] || guide.whyRecommended.ru || []
@@ -46,16 +46,16 @@ export default function GuideProfileModal({ guide, onClose, onBook }: GuideProfi
                 <h2 className="font-display text-2xl font-black text-ink">{displayName}</h2>
                 {guide.verification?.status === "verified" && (
                   <span className="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold flex items-center gap-1">
-                    <span>{ICON_MAP.verified}</span> Проверен DiyorAI
+                    <span>{ICON_MAP.verified}</span> {t.guides.verifiedBadge} DiyorAI
                   </span>
                 )}
               </div>
               <p className="text-sm text-night/70 mt-1 flex items-center gap-2 flex-wrap">
                 <span>📍 {guide.city}</span>
                 <span>·</span>
-                <span>🧭 {guide.experienceYears ?? 7} лет опыта</span>
+                <span>🧭 {guide.experienceYears ?? 7} {t.trip.days}</span>
                 <span>·</span>
-                <span>⭐ {guide.rating.toFixed(1)} ({guide.completedTours ?? 150} туров)</span>
+                <span>⭐ {guide.rating.toFixed(1)} ({guide.completedTours ?? 150} {t.guides.toursCount})</span>
               </p>
             </div>
           </div>
@@ -80,7 +80,7 @@ export default function GuideProfileModal({ guide, onClose, onBook }: GuideProfi
                 : "text-night/70 hover:bg-sand/30"
             }`}
           >
-            📋 Обзор и специализация
+            {t.guides.modalOverviewTab}
           </button>
           <button
             type="button"
@@ -91,7 +91,7 @@ export default function GuideProfileModal({ guide, onClose, onBook }: GuideProfi
                 : "text-night/70 hover:bg-sand/30"
             }`}
           >
-            <span>{ICON_MAP.trust}</span> Аудит доверия (Trust Breakdown)
+            <span>{ICON_MAP.trust}</span> {t.guides.modalTrustTab}
           </button>
           <button
             type="button"
@@ -102,7 +102,7 @@ export default function GuideProfileModal({ guide, onClose, onBook }: GuideProfi
                 : "text-night/70 hover:bg-sand/30"
             }`}
           >
-            💬 Отзывы ({guide.reviews?.count ?? guide.reviewsList?.length ?? 0})
+            {t.guides.modalReviewsTab} ({guide.reviews?.count ?? guide.reviewsList?.length ?? 0})
           </button>
         </div>
 
@@ -115,7 +115,7 @@ export default function GuideProfileModal({ guide, onClose, onBook }: GuideProfi
                 <div className="p-4 rounded-2xl bg-white border border-sand shadow-xs">
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-xs font-bold text-night/60 uppercase tracking-wider">
-                      🛡 Trust Score (Надёжность)
+                      🛡 {t.guides.trustScoreLabel}
                     </span>
                     <span className="text-xl font-black text-ink">{trustScore}/100</span>
                   </div>
@@ -126,14 +126,14 @@ export default function GuideProfileModal({ guide, onClose, onBook }: GuideProfi
                     />
                   </div>
                   <p className="text-[11px] text-night/60 mt-2">
-                    Рассчитан на основе верификации личности, диплома, 100% истории туров и отзывов.
+                    {t.guides.modalTrustEvidenceDesc}
                   </p>
                 </div>
 
                 <div className="p-4 rounded-2xl bg-white border border-sand shadow-xs">
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-xs font-bold text-registan uppercase tracking-wider">
-                      🎯 Match Score (Персональное совпадение)
+                      🎯 {t.guides.matchScoreLabel}
                     </span>
                     <span className="text-xl font-black text-registan">{matchScore}%</span>
                   </div>
@@ -144,22 +144,24 @@ export default function GuideProfileModal({ guide, onClose, onBook }: GuideProfi
                     />
                   </div>
                   <p className="text-[11px] text-night/60 mt-2">
-                    Высокое совпадение по выбранным интересам, языку и формату вашей поездки.
+                    {t.guides.subtitle}
                   </p>
                 </div>
               </div>
 
               {/* About text */}
-              <div className="bg-white rounded-2xl p-5 border border-sand">
-                <h4 className="font-display font-bold text-ink text-sm mb-2">О гиде</h4>
-                <p className="text-sm text-night/80 leading-relaxed">{aboutText}</p>
-              </div>
+              {aboutText && (
+                <div className="bg-white rounded-2xl p-5 border border-sand">
+                  <h4 className="font-display font-bold text-ink text-sm mb-2">{t.guides.modalOverviewTab}</h4>
+                  <p className="text-sm text-night/80 leading-relaxed">{aboutText}</p>
+                </div>
+              )}
 
               {/* Specializations & Languages */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="bg-white rounded-2xl p-5 border border-sand">
                   <h4 className="font-display font-bold text-ink text-sm mb-3">
-                    Специализации и темы туров
+                    {t.guides.specFilter}
                   </h4>
                   <div className="flex gap-2 flex-wrap">
                     {guide.specializationTags.map((spec) => (
@@ -167,14 +169,14 @@ export default function GuideProfileModal({ guide, onClose, onBook }: GuideProfi
                         key={spec}
                         className="text-xs px-3 py-1 rounded-full bg-sand/30 border border-sand text-ink font-medium"
                       >
-                        {spec}
+                        {(t.categories as Record<string, string>)[spec] || spec}
                       </span>
                     ))}
                   </div>
                 </div>
 
                 <div className="bg-white rounded-2xl p-5 border border-sand">
-                  <h4 className="font-display font-bold text-ink text-sm mb-3">Языки проведения</h4>
+                  <h4 className="font-display font-bold text-ink text-sm mb-3">{t.guides.languageFilter}</h4>
                   <div className="space-y-2">
                     {guide.languages.map((lang, idx) => {
                       const label = typeof lang === "string" ? lang.toUpperCase() : lang.label;
@@ -196,7 +198,7 @@ export default function GuideProfileModal({ guide, onClose, onBook }: GuideProfi
               {whyRecList.length > 0 && (
                 <div className="bg-sand/20 border border-sand/80 rounded-2xl p-5">
                   <h4 className="font-display font-bold text-ink text-sm mb-3 flex items-center gap-2">
-                    <span>{ICON_MAP.match}</span> Почему DiyorAI рекомендует этого гида
+                    <span>{ICON_MAP.match}</span> {t.guides.modalWhyRecommendedTitle}
                   </h4>
                   <ul className="space-y-2 text-xs text-night/80">
                     {whyRecList.map((item, idx) => (
@@ -221,10 +223,10 @@ export default function GuideProfileModal({ guide, onClose, onBook }: GuideProfi
                   </div>
                   <div>
                     <h3 className="font-display font-black text-ink text-base">
-                      Доказательства надежности гида (Trust Evidence)
+                      {t.guides.modalTrustEvidenceTitle}
                     </h3>
                     <p className="text-xs text-night/60">
-                      Система строгой верификации и аудита каждого аккредитованного специалиста
+                      {t.guides.modalTrustEvidenceDesc}
                     </p>
                   </div>
                 </div>
@@ -233,9 +235,9 @@ export default function GuideProfileModal({ guide, onClose, onBook }: GuideProfi
                   <div className="p-3.5 rounded-xl bg-emerald-50/70 border border-emerald-200/80 flex items-start gap-3">
                     <span className="text-lg">🪪</span>
                     <div>
-                      <h5 className="font-bold text-xs text-emerald-950">Личность подтверждена</h5>
+                      <h5 className="font-bold text-xs text-emerald-950">{t.guides.modalIdentityVerified}</h5>
                       <p className="text-[11px] text-emerald-800 mt-0.5">
-                        Паспортные данные и биометрия проверены по госреестру
+                        {t.guides.modalIdentityDesc}
                       </p>
                     </div>
                   </div>
@@ -243,9 +245,9 @@ export default function GuideProfileModal({ guide, onClose, onBook }: GuideProfi
                   <div className="p-3.5 rounded-xl bg-blue-50/70 border border-blue-200/80 flex items-start gap-3">
                     <span className="text-lg">🎓</span>
                     <div>
-                      <h5 className="font-bold text-xs text-blue-950">Лицензия Комитета по туризму</h5>
+                      <h5 className="font-bold text-xs text-blue-950">{t.guides.modalLicenseVerified}</h5>
                       <p className="text-[11px] text-blue-800 mt-0.5">
-                        Действующий государственный сертификат гида-экскурсовода
+                        {t.guides.modalLicenseDesc}
                       </p>
                     </div>
                   </div>
@@ -254,10 +256,10 @@ export default function GuideProfileModal({ guide, onClose, onBook }: GuideProfi
                     <span className="text-lg">🧭</span>
                     <div>
                       <h5 className="font-bold text-xs text-ink">
-                        {guide.completedTours ?? 200}+ проверенных туров
+                        {guide.completedTours ?? 200}+ {t.guides.toursCount}
                       </h5>
                       <p className="text-[11px] text-night/60 mt-0.5">
-                        Подтвержденные маршруты с реальными туристами
+                        {t.guides.modalExperienceDesc}
                       </p>
                     </div>
                   </div>
@@ -266,10 +268,10 @@ export default function GuideProfileModal({ guide, onClose, onBook }: GuideProfi
                     <span className="text-lg">⏱</span>
                     <div>
                       <h5 className="font-bold text-xs text-ink">
-                        {guide.performance?.punctualityRate ?? 99}% пунктуальность
+                        {guide.performance?.punctualityRate ?? 99}% {t.guides.modalStatsPunctuality}
                       </h5>
                       <p className="text-[11px] text-night/60 mt-0.5">
-                        Прибытие на место встречи точно в назначенное время
+                        {t.guides.modalPunctualityDesc}
                       </p>
                     </div>
                   </div>
@@ -280,12 +282,12 @@ export default function GuideProfileModal({ guide, onClose, onBook }: GuideProfi
               {guide.reviews && (
                 <div className="bg-white border border-sand rounded-2xl p-6 shadow-xs">
                   <h4 className="font-display font-bold text-ink text-sm mb-4">
-                    Оценки по ключевым критериям (Customer Experience)
+                    {t.guides.modalRadarTitle}
                   </h4>
                   <div className="space-y-3">
                     <div>
                       <div className="flex justify-between text-xs font-semibold mb-1">
-                        <span>📚 Глубина исторических знаний</span>
+                        <span>{t.guides.modalKnowledge}</span>
                         <span>{guide.reviews.knowledge.toFixed(1)} / 5.0</span>
                       </div>
                       <div className="w-full bg-sand/40 h-2 rounded-full overflow-hidden">
@@ -298,7 +300,7 @@ export default function GuideProfileModal({ guide, onClose, onBook }: GuideProfi
 
                     <div>
                       <div className="flex justify-between text-xs font-semibold mb-1">
-                        <span>🗣 Коммуникация и подача материала</span>
+                        <span>{t.guides.modalCommunication}</span>
                         <span>{guide.reviews.communication.toFixed(1)} / 5.0</span>
                       </div>
                       <div className="w-full bg-sand/40 h-2 rounded-full overflow-hidden">
@@ -311,7 +313,7 @@ export default function GuideProfileModal({ guide, onClose, onBook }: GuideProfi
 
                     <div>
                       <div className="flex justify-between text-xs font-semibold mb-1">
-                        <span>😊 Забота и уровень сервиса</span>
+                        <span>{t.guides.modalService}</span>
                         <span>{guide.reviews.service.toFixed(1)} / 5.0</span>
                       </div>
                       <div className="w-full bg-sand/40 h-2 rounded-full overflow-hidden">
@@ -324,7 +326,7 @@ export default function GuideProfileModal({ guide, onClose, onBook }: GuideProfi
 
                     <div>
                       <div className="flex justify-between text-xs font-semibold mb-1">
-                        <span>⏱ Организация тайминга и логистики</span>
+                        <span>{t.guides.modalOrganization}</span>
                         <span>{guide.reviews.organization.toFixed(1)} / 5.0</span>
                       </div>
                       <div className="w-full bg-sand/40 h-2 rounded-full overflow-hidden">
@@ -337,7 +339,7 @@ export default function GuideProfileModal({ guide, onClose, onBook }: GuideProfi
 
                     <div>
                       <div className="flex justify-between text-xs font-semibold mb-1">
-                        <span>🛡 Безопасность и сопровождение</span>
+                        <span>{t.guides.modalSafety}</span>
                         <span>{guide.reviews.safety.toFixed(1)} / 5.0</span>
                       </div>
                       <div className="w-full bg-sand/40 h-2 rounded-full overflow-hidden">
@@ -359,7 +361,7 @@ export default function GuideProfileModal({ guide, onClose, onBook }: GuideProfi
                       {guide.performance.completionRate}%
                     </span>
                     <span className="text-[10px] uppercase tracking-wider text-night/50 font-bold">
-                      Завершение туров
+                      {t.guides.modalStatsCompleted}
                     </span>
                   </div>
                   <div className="p-3 bg-white border border-sand rounded-xl">
@@ -367,7 +369,7 @@ export default function GuideProfileModal({ guide, onClose, onBook }: GuideProfi
                       {guide.performance.punctualityRate}%
                     </span>
                     <span className="text-[10px] uppercase tracking-wider text-night/50 font-bold">
-                      Вовремя
+                      {t.guides.modalStatsPunctuality}
                     </span>
                   </div>
                   <div className="p-3 bg-white border border-sand rounded-xl">
@@ -375,7 +377,7 @@ export default function GuideProfileModal({ guide, onClose, onBook }: GuideProfi
                       {guide.performance.responseTime}
                     </span>
                     <span className="text-[10px] uppercase tracking-wider text-night/50 font-bold">
-                      Ответ на заявку
+                      {t.guides.modalStatsResponse}
                     </span>
                   </div>
                   <div className="p-3 bg-white border border-sand rounded-xl">
@@ -383,7 +385,7 @@ export default function GuideProfileModal({ guide, onClose, onBook }: GuideProfi
                       {guide.performance.cancellationRate}%
                     </span>
                     <span className="text-[10px] uppercase tracking-wider text-night/50 font-bold">
-                      Отмены гидом
+                      {t.guides.modalStatsCancellation}
                     </span>
                   </div>
                 </div>
@@ -413,8 +415,7 @@ export default function GuideProfileModal({ guide, onClose, onBook }: GuideProfi
                 ))
               ) : (
                 <div className="p-8 text-center bg-white border border-sand rounded-2xl text-night/60 text-xs">
-                  Все {guide.completedTours ?? 100}+ отзывов проверены модерацией DiyorAI. Средний
-                  рейтинг гида: ⭐ {guide.rating.toFixed(1)} / 5.0
+                  {guide.completedTours ?? 100}+ {t.guides.toursCount}. ⭐ {guide.rating.toFixed(1)} / 5.0
                 </div>
               )}
             </div>
@@ -424,10 +425,10 @@ export default function GuideProfileModal({ guide, onClose, onBook }: GuideProfi
         {/* Footer CTA */}
         <div className="bg-white border-t border-sand p-6 flex items-center justify-between gap-4 shrink-0">
           <div>
-            <span className="text-xs text-night/60 block">Стоимость экскурсии</span>
+            <span className="text-xs text-night/60 block">{t.booking.totalCostLabel}</span>
             <div className="flex items-baseline gap-1">
               <span className="text-2xl font-black text-ink">{price}</span>
-              <span className="text-xs text-night/50 font-medium">/ тур (до {guide.maxGroupSize ?? 8} чел.)</span>
+              <span className="text-xs text-night/50 font-medium">/ {t.guides.perTour}</span>
             </div>
           </div>
 
@@ -437,7 +438,7 @@ export default function GuideProfileModal({ guide, onClose, onBook }: GuideProfi
               onClick={onClose}
               className="px-4 py-2.5 rounded-xl border border-sand text-xs font-bold text-ink hover:bg-sand/30 transition-colors"
             >
-              Закрыть
+              {t.guides.modalCloseBtn}
             </button>
             <button
               type="button"
@@ -447,7 +448,7 @@ export default function GuideProfileModal({ guide, onClose, onBook }: GuideProfi
               }}
               className="px-6 py-2.5 rounded-xl bg-registan hover:bg-registan/90 text-white text-xs font-bold transition-all shadow-md flex items-center gap-2"
             >
-              <span>🔒</span> Забронировать гида
+              <span>🔒</span> {t.guides.modalBookGuideBtn}
             </button>
           </div>
         </div>

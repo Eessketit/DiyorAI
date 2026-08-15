@@ -11,12 +11,12 @@ interface GuideCardProps {
 
 export function getGuideDisplayName(name: Guide["name"], lang: Language): string {
   if (typeof name === "string") return name;
-  if (!name) return "Аккредитованный гид";
+  if (!name) return "";
   return name[lang] || name.ru || name.en || "";
 }
 
 export default function GuideCard({ guide, onViewProfile, onBook }: GuideCardProps) {
-  const { language } = useTranslation();
+  const { t, language } = useTranslation();
   const displayName = getGuideDisplayName(guide.name, language);
 
   const trustScore = guide.trustScore ?? 92;
@@ -50,7 +50,7 @@ export default function GuideCard({ guide, onViewProfile, onBook }: GuideCardPro
 
           <div className="text-right shrink-0">
             <span className="text-sm font-bold text-ink block">{price}</span>
-            <span className="text-[10px] text-night/50 font-medium">за тур</span>
+            <span className="text-[10px] text-night/50 font-medium">{t.guides.perTour}</span>
           </div>
         </div>
 
@@ -63,7 +63,7 @@ export default function GuideCard({ guide, onViewProfile, onBook }: GuideCardPro
                 {trustScore}/100
               </span>
               <span className="text-[9px] uppercase tracking-wider text-night/50 font-bold">
-                Trust Score
+                {t.guides.trustScoreLabel}
               </span>
             </div>
           </div>
@@ -75,7 +75,7 @@ export default function GuideCard({ guide, onViewProfile, onBook }: GuideCardPro
                 {matchScore}%
               </span>
               <span className="text-[9px] uppercase tracking-wider text-registan/70 font-bold">
-                Совпадение
+                {t.guides.matchScoreLabel}
               </span>
             </div>
           </div>
@@ -86,21 +86,19 @@ export default function GuideCard({ guide, onViewProfile, onBook }: GuideCardPro
           {guide.verification?.identity && (
             <span
               className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200 text-[11px] font-semibold"
-              title="Личность подтверждена по паспорту"
             >
-              <span>{ICON_MAP.verified}</span> Проверен
+              <span>{ICON_MAP.verified}</span> {t.guides.verifiedBadge}
             </span>
           )}
           {guide.verification?.qualification && (
             <span
               className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-blue-50 text-blue-800 border border-blue-200 text-[11px] font-semibold"
-              title="Аккредитация Комитета по туризму"
             >
-              <span>{ICON_MAP.qualification}</span> Лицензия
+              <span>{ICON_MAP.qualification}</span> {t.guides.licenseBadge}
             </span>
           )}
           <span className="text-[11px] text-night/60 font-medium ml-auto">
-            ⭐ {guide.rating.toFixed(1)} · {completedTours} туров
+            ⭐ {guide.rating.toFixed(1)} · {completedTours} {t.guides.toursCount}
           </span>
         </div>
 
@@ -111,7 +109,7 @@ export default function GuideCard({ guide, onViewProfile, onBook }: GuideCardPro
               key={tag}
               className="text-[11px] px-2.5 py-0.5 rounded-full bg-sand/30 text-ink/80 font-medium"
             >
-              {tag}
+              {(t.categories as Record<string, string>)[tag] || tag}
             </span>
           ))}
           {extraSpecsCount > 0 && (
@@ -129,7 +127,7 @@ export default function GuideCard({ guide, onViewProfile, onBook }: GuideCardPro
           onClick={() => onViewProfile(guide)}
           className="px-3 py-2 rounded-xl border border-sand bg-white hover:bg-sand/30 text-xs font-bold text-ink transition-colors text-center"
         >
-          🔍 Профиль и аудит
+          {t.guides.viewProfileBtn}
         </button>
 
         <button
@@ -137,7 +135,7 @@ export default function GuideCard({ guide, onViewProfile, onBook }: GuideCardPro
           onClick={() => onBook(guide)}
           className="px-3 py-2 rounded-xl bg-registan hover:bg-registan/90 text-white text-xs font-bold transition-all shadow-xs text-center"
         >
-          🔒 Забронировать
+          {t.guides.bookGuideBtn}
         </button>
       </div>
     </div>

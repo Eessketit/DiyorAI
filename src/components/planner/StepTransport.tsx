@@ -8,6 +8,7 @@ import {
   TransportType,
   TravelersModel,
 } from "@/lib/types";
+import { useTranslation } from "@/lib/i18n";
 
 interface StepTransportProps {
   region: Region;
@@ -26,6 +27,7 @@ export default function StepTransport({
   onNext,
   onBack,
 }: StepTransportProps) {
+  const { t } = useTranslation();
   const [tab, setTab] = useState<TransportType>(selectedTransport?.type || "train");
   const [isRoundTrip, setIsRoundTrip] = useState<boolean>(selectedTransport?.isRoundTrip ?? true);
 
@@ -102,7 +104,7 @@ export default function StepTransport({
             tab === "train" ? "bg-ink text-plaster shadow-md" : "text-ink hover:bg-white/60"
           }`}
         >
-          <span>🚆</span> Поезд (Afrosiyob)
+          <span>{t.planner.trainTab}</span>
         </button>
         <button
           type="button"
@@ -111,7 +113,7 @@ export default function StepTransport({
             tab === "flight" ? "bg-ink text-plaster shadow-md" : "text-ink hover:bg-white/60"
           }`}
         >
-          <span>✈️</span> Самолёт
+          <span>{t.planner.flightTab}</span>
         </button>
         <button
           type="button"
@@ -123,14 +125,14 @@ export default function StepTransport({
             tab === "car" ? "bg-ink text-plaster shadow-md" : "text-ink hover:bg-white/60"
           }`}
         >
-          <span>🚗</span> На машине
+          <span>{t.planner.carTab}</span>
         </button>
       </div>
 
       {/* Round trip toggle */}
       {tab !== "car" && (
         <div className="flex items-center justify-between bg-white p-3.5 rounded-xl border border-sand text-xs">
-          <span className="font-semibold text-ink">Тип билетов:</span>
+          <span className="font-semibold text-ink">{t.planner.passengersCount}:</span>
           <div className="flex items-center gap-2">
             <button
               type="button"
@@ -139,7 +141,7 @@ export default function StepTransport({
                 !isRoundTrip ? "bg-registan text-plaster" : "bg-sand/40 text-night/80"
               }`}
             >
-              В одну сторону
+              {t.planner.oneWay}
             </button>
             <button
               type="button"
@@ -148,7 +150,7 @@ export default function StepTransport({
                 isRoundTrip ? "bg-registan text-plaster" : "bg-sand/40 text-night/80"
               }`}
             >
-              Туда и обратно (Round trip)
+              {t.planner.roundTrip}
             </button>
           </div>
         </div>

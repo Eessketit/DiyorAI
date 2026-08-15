@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { trackEvent } from "@/lib/analytics";
 import { LeadContact, TripPlan } from "@/lib/types";
+import { useTranslation } from "@/lib/i18n";
 
 interface BookingModalProps {
   isOpen: boolean;
@@ -10,6 +11,7 @@ interface BookingModalProps {
 }
 
 export default function BookingModal({ isOpen, onClose, plan }: BookingModalProps) {
+  const { t } = useTranslation();
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
@@ -28,7 +30,7 @@ export default function BookingModal({ isOpen, onClose, plan }: BookingModalProp
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim() || !phone.trim()) {
-      setError("Пожалуйста, укажите ваше имя и контактный телефон");
+      setError(t.booking.fullNameLabel);
       return;
     }
 
@@ -58,13 +60,13 @@ export default function BookingModal({ isOpen, onClose, plan }: BookingModalProp
 
       const data = await res.json();
       if (!res.ok || !data.success) {
-        throw new Error(data.error || "Ошибка бронирования");
+        throw new Error(data.error || "Error");
       }
 
       setBookingSuccess(data.booking);
       trackEvent("booking_completed", { bookingId: data.booking.bookingId });
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : "Не удалось отправить заявку");
+      setError(err instanceof Error ? err.message : "Error");
     } finally {
       setLoading(false);
     }
@@ -89,40 +91,44 @@ export default function BookingModal({ isOpen, onClose, plan }: BookingModalProp
             </div>
             <div>
               <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink">
-                Поездка успешно забронирована!
+                {t.booking.successTitle}
               </h2>
               <p className="text-xs sm:text-sm text-night/70 mt-1 max-w-md mx-auto">
-                Спасибо! Мы получили ваши данные и свяжемся с вами в течение 15 минут для подтверждения бронирования.
+                {t.booking.successSubtitle}
               </p>
             </div>
 
             {/* Booking Details Card */}
             <div className="bg-plaster/50 border border-sand rounded-2xl p-4 sm:p-5 text-left text-xs space-y-2.5">
               <div className="flex items-center justify-between pb-2 border-b border-sand">
-                <span className="text-night/60 font-semibold">Номер бронирования (Booking ID):</span>
+                <span className="text-night/60 font-semibold">{t.booking.bookingIdLabel}:</span>
                 <span className="font-mono font-black text-sm text-registan bg-registan/10 px-2.5 py-0.5 rounded-md">
                   {bookingSuccess.bookingId}
                 </span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-night/60">Направление:</span>
-                <span className="font-bold text-ink uppercase">{bookingSuccess.destination}</span>
+                <span className="text-night/60">{t.planner.stepFormat}:</span>
+                <span className="font-bold text-ink uppercase">{t.regions[bookingSuccess.destination] || bookingSuccess.destination}</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-night/60">Путешественники:</span>
-                <span className="font-bold text-ink">{travelers.total} чел. ({travelers.adults} взр.{travelers.children > 0 ? `, ${travelers.children} дет.` : ""})</span>
+                <span className="text-night/60">{t.booking.travelersLabel}:</span>
+                <span className="font-bold text-ink">{travelers.total} ({travelers.adults} {t.booking.adults}{travelers.children > 0 ? `, ${travelers.children} ${t.booking.children}` : ""})</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-night/60">Продолжительность:</span>
-                <span className="font-bold text-ink">{plan.preferences.duration?.totalDays || plan.preferences.days || 3} дней</span>
+                <span className="text-night/60">{t.planner.totalDaysLabel}:</span>
+                <span className="font-bold text-ink">{plan.preferences.duration?.totalDays || plan.preferences.days || 3} {t.trip.days}</span>
               </div>
               <div className="flex items-center justify-between pt-2 border-t border-sand">
-                <span className="font-bold text-ink">Расчетная стоимость:</span>
+                <span className="font-bold text-ink">{t.booking.totalCostLabel}:</span>
                 <span className="font-display font-black text-base text-ink">
                   ${bookingSuccess.totalCostUsd}
                 </span>
               </div>
             </div>
+
+            <p className="text-xs text-night/60">
+              {t.booking.contactNotice}
+            </p>
 
             <div className="flex flex-col sm:flex-row gap-3 pt-2">
               <button
@@ -130,13 +136,13 @@ export default function BookingModal({ isOpen, onClose, plan }: BookingModalProp
                 onClick={onClose}
                 className="flex-1 py-3 px-4 rounded-xl border border-sand bg-white hover:bg-sand/30 text-xs font-bold text-ink transition-colors"
               >
-                Вернуться к маршруту
+                {t.booking.returnBtn}
               </button>
               <Link
                 href="/"
                 className="flex-1 py-3 px-4 rounded-xl bg-clay hover:bg-clay/90 text-plaster text-xs font-bold text-center transition-colors shadow-md"
               >
-                На главную
+                {t.trip.backToForm}
               </Link>
             </div>
           </div>
@@ -145,13 +151,13 @@ export default function BookingModal({ isOpen, onClose, plan }: BookingModalProp
           <div>
             <div className="mb-6">
               <span className="text-xs uppercase tracking-wider text-registan font-bold block mb-1">
-                🔒 Безопасное бронирование
+                🔒 {t.booking.modalTitle}
               </span>
               <h2 className="font-display text-2xl font-bold text-ink">
-                Оформление поездки DiyorAI
+                {t.booking.tripBookingSubtitle}
               </h2>
               <p className="text-xs text-night/70 mt-1">
-                Все выбранные услуги и расчет маршрута уже привязаны к вашей заявке.
+                {t.home.subtitle}
               </p>
             </div>
 
@@ -159,14 +165,14 @@ export default function BookingModal({ isOpen, onClose, plan }: BookingModalProp
             <div className="bg-sand/30 rounded-xl p-3.5 mb-6 text-xs flex items-center justify-between gap-2 flex-wrap border border-sand">
               <div>
                 <span className="font-bold text-ink block">
-                  {destination.toUpperCase()} · {plan.preferences.duration?.totalDays || plan.preferences.days || 3} дней ({travelers.total} чел.)
+                  {t.regions[destination]} · {plan.preferences.duration?.totalDays || plan.preferences.days || 3} {t.trip.days} ({travelers.total})
                 </span>
                 <span className="text-[11px] text-night/60">
-                  {plan.transport ? `Транспорт: ${plan.transport.type}` : "Без транспорта"} · {plan.hotel ? plan.hotel.hotel.name : "Без отеля"}
+                  {plan.transport ? `${t.trip.costTransport}: ${plan.transport.type}` : ""} · {plan.hotel ? plan.hotel.hotel.name : ""}
                 </span>
               </div>
               <div className="text-right">
-                <span className="text-xs text-night/60 block">Итого:</span>
+                <span className="text-xs text-night/60 block">{t.trip.costTotal}:</span>
                 <span className="font-display font-black text-lg text-ink">${totalCost}</span>
               </div>
             </div>
@@ -174,13 +180,13 @@ export default function BookingModal({ isOpen, onClose, plan }: BookingModalProp
             <form onSubmit={handleSubmit} className="space-y-4 text-xs">
               <div>
                 <label className="block font-bold text-ink mb-1.5" htmlFor="book-name">
-                  Ваше имя *
+                  {t.booking.fullNameLabel}
                 </label>
                 <input
                   id="book-name"
                   type="text"
                   required
-                  placeholder="Например, Азиз Рахимов"
+                  placeholder={t.booking.fullNamePlaceholder}
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   className="w-full px-3.5 py-2.5 rounded-xl border border-sand bg-plaster/40 focus:bg-white text-ink text-xs focus:outline-none focus:border-clay"
@@ -190,7 +196,7 @@ export default function BookingModal({ isOpen, onClose, plan }: BookingModalProp
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block font-bold text-ink mb-1.5" htmlFor="book-phone">
-                    Телефон (Telegram / WhatsApp) *
+                    {t.booking.phoneLabel}
                   </label>
                   <input
                     id="book-phone"
@@ -205,7 +211,7 @@ export default function BookingModal({ isOpen, onClose, plan }: BookingModalProp
 
                 <div>
                   <label className="block font-bold text-ink mb-1.5" htmlFor="book-email">
-                    Email (для ваучера поездки)
+                    {t.booking.emailLabel}
                   </label>
                   <input
                     id="book-email"
@@ -220,7 +226,7 @@ export default function BookingModal({ isOpen, onClose, plan }: BookingModalProp
 
               <div>
                 <label className="block font-bold text-ink mb-1.5">
-                  Удобный способ связи
+                  {t.booking.contactMethodLabel}
                 </label>
                 <div className="grid grid-cols-3 gap-2">
                   {(["telegram", "whatsapp", "phone"] as const).map((method) => (
@@ -234,7 +240,7 @@ export default function BookingModal({ isOpen, onClose, plan }: BookingModalProp
                           : "border-sand bg-plaster/30 text-ink hover:border-sand/90"
                       }`}
                     >
-                      {method === "telegram" ? "✈️ Telegram" : method === "whatsapp" ? "💬 WhatsApp" : "📞 Звонок"}
+                      {method === "telegram" ? "✈️ Telegram" : method === "whatsapp" ? "💬 WhatsApp" : "📞 Phone"}
                     </button>
                   ))}
                 </div>
@@ -242,12 +248,12 @@ export default function BookingModal({ isOpen, onClose, plan }: BookingModalProp
 
               <div>
                 <label className="block font-bold text-ink mb-1.5" htmlFor="book-comments">
-                  Пожелания или комментарии к поездке
+                  {t.booking.commentsLabel}
                 </label>
                 <textarea
                   id="book-comments"
                   rows={2}
-                  placeholder="Детское кресло в авто, вегетарианское меню, ранний заезд в отель..."
+                  placeholder={t.booking.commentsPlaceholder}
                   value={comments}
                   onChange={(e) => setComments(e.target.value)}
                   className="w-full px-3.5 py-2 rounded-xl border border-sand bg-plaster/40 focus:bg-white text-ink text-xs focus:outline-none focus:border-clay"
@@ -261,7 +267,7 @@ export default function BookingModal({ isOpen, onClose, plan }: BookingModalProp
                 disabled={loading}
                 className="w-full bg-clay hover:bg-clay/90 disabled:opacity-60 text-plaster font-bold py-3.5 rounded-xl transition-all shadow-md text-sm uppercase tracking-wider mt-2"
               >
-                {loading ? "Отправка заявки..." : "Подтвердить бронирование"}
+                {loading ? t.booking.submitting : t.booking.submitBtn}
               </button>
             </form>
           </div>

@@ -53,7 +53,7 @@ export default function GuideBookingModal({ guide, isOpen, onClose }: GuideBooki
           phone,
           email,
           contactMethod,
-          comments: `[Гид: ${displayName} (${guide?.city})] ${comments}`,
+          comments: `[${t.booking.guideLabel}: ${displayName} (${guide?.city})] ${comments}`,
           destination: guide?.region || "samarkand",
           travelers,
           duration: { totalDays: 1, activeDays: 1, restDays: 0 },
@@ -93,37 +93,37 @@ export default function GuideBookingModal({ guide, isOpen, onClose }: GuideBooki
               🎉
             </div>
             <h3 className="font-display text-2xl font-black text-ink">
-              Гид успешно забронирован!
+              {t.booking.successTitle}
             </h3>
             <p className="text-sm text-night/70">
-              Ваша заявка направлена гиду <strong>{displayName}</strong>.
+              {t.booking.successSubtitle}
             </p>
 
             <div className="bg-sand/30 border border-sand rounded-2xl p-4 text-left text-xs space-y-2">
               <div className="flex justify-between">
-                <span className="text-night/60">Номер бронирования:</span>
+                <span className="text-night/60">{t.booking.bookingIdLabel}:</span>
                 <span className="font-mono font-bold text-registan text-sm">{bookingSuccessId}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-night/60">Гид:</span>
+                <span className="text-night/60">{t.booking.guideLabel}:</span>
                 <span className="font-bold text-ink">{displayName} ({guide.city})</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-night/60">Дата экскурсии:</span>
+                <span className="text-night/60">{t.booking.tourDateLabel}:</span>
                 <span className="font-bold text-ink">{date}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-night/60">Участников:</span>
-                <span className="font-bold text-ink">{totalTravelers} чел.</span>
+                <span className="text-night/60">{t.booking.travelersCountLabel}:</span>
+                <span className="font-bold text-ink">{totalTravelers}</span>
               </div>
               <div className="flex justify-between border-t border-sand/80 pt-1.5 font-bold">
-                <span>Стоимость экскурсии:</span>
+                <span>{t.booking.totalCostLabel}:</span>
                 <span className="text-emerald-800 font-black text-sm">${price}</span>
               </div>
             </div>
 
             <p className="text-xs text-night/60">
-              Гид свяжется с вами через <strong>{contactMethod.toUpperCase()}</strong> в течение 10–15 минут для подтверждения времени и точки встречи.
+              {t.booking.contactNotice}
             </p>
 
             <button
@@ -131,7 +131,7 @@ export default function GuideBookingModal({ guide, isOpen, onClose }: GuideBooki
               onClick={handleReset}
               className="w-full py-3 rounded-xl bg-registan text-white font-bold text-xs hover:bg-registan/90 transition-all shadow-md"
             >
-              Отлично, вернуться к каталогу
+              {t.booking.returnBtn}
             </button>
           </div>
         ) : (
@@ -140,7 +140,7 @@ export default function GuideBookingModal({ guide, isOpen, onClose }: GuideBooki
             <div className="bg-white border-b border-sand p-6 flex items-center justify-between">
               <div>
                 <span className="text-[10px] uppercase font-bold tracking-wider text-registan block">
-                  Бронирование экскурсии
+                  {t.booking.guideBookingSubtitle}
                 </span>
                 <h3 className="font-display font-black text-xl text-ink">
                   {displayName}
@@ -160,7 +160,7 @@ export default function GuideBookingModal({ guide, isOpen, onClose }: GuideBooki
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="text-xs font-bold text-night/70 block mb-1">
-                    📅 Дата экскурсии
+                    📅 {t.booking.dateLabel}
                   </label>
                   <input
                     type="date"
@@ -173,11 +173,11 @@ export default function GuideBookingModal({ guide, isOpen, onClose }: GuideBooki
 
                 <div>
                   <label className="text-xs font-bold text-night/70 block mb-1">
-                    👥 Участников
+                    👥 {t.booking.travelersLabel}
                   </label>
                   <div className="flex items-center gap-2">
                     <div className="flex-1">
-                      <span className="text-[10px] text-night/50 block">Взрослые</span>
+                      <span className="text-[10px] text-night/50 block">{t.booking.adults}</span>
                       <input
                         type="number"
                         min="1"
@@ -188,7 +188,7 @@ export default function GuideBookingModal({ guide, isOpen, onClose }: GuideBooki
                       />
                     </div>
                     <div className="flex-1">
-                      <span className="text-[10px] text-night/50 block">Дети</span>
+                      <span className="text-[10px] text-night/50 block">{t.booking.children}</span>
                       <input
                         type="number"
                         min="0"
@@ -207,7 +207,7 @@ export default function GuideBookingModal({ guide, isOpen, onClose }: GuideBooki
                 <div className="p-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 text-xs flex items-start gap-2">
                   <span className="text-base shrink-0">⚠️</span>
                   <div>
-                    <strong>Большая группа ({totalTravelers} чел.):</strong> Данный гид оптимально проводит экскурсии для групп до {maxCapacity} человек. Для комфорта группы гид может предоставить индивидуальные радиогиды (гарнитуры).
+                    {t.booking.capacityWarning}
                   </div>
                 </div>
               )}
@@ -215,17 +215,17 @@ export default function GuideBookingModal({ guide, isOpen, onClose }: GuideBooki
               {/* Contact Information */}
               <div className="space-y-3 pt-2 border-t border-sand/60">
                 <h4 className="text-xs font-bold text-ink uppercase tracking-wider">
-                  Контактные данные для связи
+                  {t.booking.contactInfoTitle}
                 </h4>
 
                 <div>
                   <label className="text-xs font-semibold text-night/70 block mb-1">
-                    Ваше имя и фамилия *
+                    {t.booking.fullNameLabel}
                   </label>
                   <input
                     type="text"
                     required
-                    placeholder="Например: Азиз Рахимов"
+                    placeholder={t.booking.fullNamePlaceholder}
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     className="w-full px-3 py-2 rounded-xl border border-sand bg-white text-xs font-medium text-ink focus:outline-hidden focus:border-registan"
@@ -235,7 +235,7 @@ export default function GuideBookingModal({ guide, isOpen, onClose }: GuideBooki
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
                     <label className="text-xs font-semibold text-night/70 block mb-1">
-                      Телефон (с кодом) *
+                      {t.booking.phoneLabel}
                     </label>
                     <input
                       type="tel"
@@ -249,7 +249,7 @@ export default function GuideBookingModal({ guide, isOpen, onClose }: GuideBooki
 
                   <div>
                     <label className="text-xs font-semibold text-night/70 block mb-1">
-                      Email (для подтверждения)
+                      {t.booking.emailLabel}
                     </label>
                     <input
                       type="email"
@@ -263,13 +263,13 @@ export default function GuideBookingModal({ guide, isOpen, onClose }: GuideBooki
 
                 <div>
                   <label className="text-xs font-semibold text-night/70 block mb-1">
-                    Предпочтительный способ связи
+                    {t.booking.contactMethodLabel}
                   </label>
                   <div className="grid grid-cols-3 gap-2">
                     {[
                       { id: "telegram", label: "Telegram", icon: "✈️" },
                       { id: "whatsapp", label: "WhatsApp", icon: "💬" },
-                      { id: "phone", label: "Звонок", icon: "📞" },
+                      { id: "phone", label: "Phone", icon: "📞" },
                     ].map((m) => (
                       <button
                         key={m.id}
@@ -289,11 +289,11 @@ export default function GuideBookingModal({ guide, isOpen, onClose }: GuideBooki
 
                 <div>
                   <label className="text-xs font-semibold text-night/70 block mb-1">
-                    Пожелания к маршруту (необязательно)
+                    {t.booking.commentsLabel}
                   </label>
                   <textarea
                     rows={2}
-                    placeholder="Например: хотим сделать акцент на фото на закате и попробовать плов в чайхане..."
+                    placeholder={t.booking.commentsPlaceholder}
                     value={comments}
                     onChange={(e) => setComments(e.target.value)}
                     className="w-full px-3 py-2 rounded-xl border border-sand bg-white text-xs font-medium text-ink focus:outline-hidden focus:border-registan"
@@ -304,7 +304,7 @@ export default function GuideBookingModal({ guide, isOpen, onClose }: GuideBooki
 
             <div className="bg-white border-t border-sand p-6 flex items-center justify-between gap-4">
               <div>
-                <span className="text-[10px] text-night/50 block">Итого к оплате на месте</span>
+                <span className="text-[10px] text-night/50 block">{t.booking.totalToPay}</span>
                 <span className="text-xl font-black text-emerald-800">${price}</span>
               </div>
 
@@ -313,7 +313,7 @@ export default function GuideBookingModal({ guide, isOpen, onClose }: GuideBooki
                 disabled={isSubmitting || !name || !phone}
                 className="px-6 py-2.5 rounded-xl bg-registan text-white font-bold text-xs hover:bg-registan/90 transition-all shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isSubmitting ? "Отправка..." : "✓ Подтвердить бронирование"}
+                {isSubmitting ? t.booking.submitting : t.booking.submitBtn}
               </button>
             </div>
           </form>

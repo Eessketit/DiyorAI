@@ -8,52 +8,6 @@ import GuideProfileModal from "@/components/guides/GuideProfileModal";
 import GuideBookingModal from "@/components/guides/GuideBookingModal";
 import { MOCK_EXTENDED_GUIDES } from "@/data/guidesData";
 
-const LOCATIONS = [
-  { id: "all", label: "Все локации" },
-  { id: "samarkand", label: "Самарканд" },
-  { id: "bukhara", label: "Бухара" },
-  { id: "khiva", label: "Хива" },
-  { id: "tashkent", label: "Ташкент (Город)" },
-  { id: "tashkent_region", label: "Ташкентская обл. (Чимган/Амирсой)" },
-  { id: "shahrisabz", label: "Шахрисабз" },
-  { id: "fergana", label: "Фергана & Риштан" },
-  { id: "andijan", label: "Андижан" },
-  { id: "nukus", label: "Нукус & Арал" },
-  { id: "termez", label: "Термез" },
-];
-
-const SPECIALIZATIONS = [
-  { id: "all", label: "Все темы" },
-  { id: "history", label: "🏛 История" },
-  { id: "architecture", label: "🕌 Архитектура" },
-  { id: "gastronomy", label: "🍽 Гастрономия" },
-  { id: "crafts_bazaars", label: "🏺 Ремесла" },
-  { id: "nature_hiking", label: "🏔 Горы & Хайкинг" },
-  { id: "photography", label: "📸 Фотография" },
-  { id: "night_tours", label: "🌙 Ночные туры" },
-  { id: "family_travel", label: "👨‍👩‍👧 Семейные туры" },
-  { id: "archaeology", label: "🏺 Археология" },
-  { id: "culture", label: "🎨 Культура" },
-];
-
-const LANGUAGES = [
-  { id: "all", label: "Все языки" },
-  { id: "ru", label: "🇷🇺 Русский" },
-  { id: "en", label: "🇬🇧 English" },
-  { id: "uz", label: "🇺🇿 O'zbek" },
-  { id: "fr", label: "🇫🇷 Français" },
-  { id: "de", label: "🇩🇪 Deutsch" },
-];
-
-const SORT_OPTIONS = [
-  { id: "recommended", label: "✨ Рекомендуемые DiyorAI" },
-  { id: "trust", label: "🛡 Наивысший Trust Score" },
-  { id: "match", label: "🎯 Лучшее совпадение (Match)" },
-  { id: "rating", label: "⭐ Высокий рейтинг" },
-  { id: "experience", label: "🧭 Наибольший опыт" },
-  { id: "price_asc", label: "💰 Сначала доступные" },
-];
-
 export default function GuidesPage() {
   const router = useRouter();
   const { t, language } = useTranslation();
@@ -75,6 +29,51 @@ export default function GuidesPage() {
       setSelectedLocation(router.query.region);
     }
   }, [router.isReady, router.query.region]);
+
+  const LOCATIONS = useMemo(() => [
+    { id: "all", label: language === "uz" ? "Barcha manzillar" : language === "en" ? "All Locations" : "Все локации" },
+    { id: "samarkand", label: t.regions.samarkand },
+    { id: "bukhara", label: t.regions.bukhara },
+    { id: "khiva", label: t.regions.khiva },
+    { id: "tashkent", label: t.regions.tashkent },
+    { id: "tashkent_region", label: t.regions.tashkent_region },
+    { id: "shahrisabz", label: "Шахрисабз" },
+    { id: "fergana", label: "Фергана & Риштан" },
+    { id: "andijan", label: "Андижан" },
+    { id: "nukus", label: "Нукус & Арал" },
+    { id: "termez", label: "Термез" },
+  ], [language, t.regions]);
+
+  const SPECIALIZATIONS = useMemo(() => [
+    { id: "all", label: language === "uz" ? "Barcha mavzular" : language === "en" ? "All Specialties" : "Все темы" },
+    { id: "history", label: `🏛 ${t.categories.history}` },
+    { id: "architecture", label: `🕌 ${t.categories.architecture}` },
+    { id: "gastronomy", label: `🍽 ${t.categories.gastronomy}` },
+    { id: "crafts_bazaars", label: `🏺 ${t.categories.crafts_bazaars}` },
+    { id: "nature_hiking", label: `🏔 ${t.categories.nature_hiking}` },
+    { id: "photography", label: `📸 ${t.categories.photography}` },
+    { id: "night_tours", label: `🌙 ${t.categories.night_tours}` },
+    { id: "family_travel", label: `👨‍👩‍👧 ${t.categories.family_travel}` },
+    { id: "archaeology", label: `🏺 ${t.categories.archaeology}` },
+  ], [language, t.categories]);
+
+  const LANGUAGES = useMemo(() => [
+    { id: "all", label: language === "uz" ? "Barcha tillar" : language === "en" ? "All Languages" : "Все языки" },
+    { id: "ru", label: "🇷🇺 Русский" },
+    { id: "en", label: "🇬🇧 English" },
+    { id: "uz", label: "🇺🇿 O'zbek" },
+    { id: "fr", label: "🇫🇷 Français" },
+    { id: "de", label: "🇩🇪 Deutsch" },
+  ], [language]);
+
+  const SORT_OPTIONS = useMemo(() => [
+    { id: "recommended", label: language === "uz" ? "✨ DiyorAI tavsiya qilganlar" : language === "en" ? "✨ Recommended by DiyorAI" : "✨ Рекомендуемые DiyorAI" },
+    { id: "trust", label: language === "uz" ? "🛡 Eng yuqori Trust Score" : language === "en" ? "🛡 Highest Trust Score" : "🛡 Наивысший Trust Score" },
+    { id: "match", label: language === "uz" ? "🎯 Eng yaxshi moslik (Match)" : language === "en" ? "🎯 Best Match" : "🎯 Лучшее совпадение (Match)" },
+    { id: "rating", label: language === "uz" ? "⭐ Yuqori reyting" : language === "en" ? "⭐ Highest Rated" : "⭐ Высокий рейтинг" },
+    { id: "experience", label: language === "uz" ? "🧭 Eng tajribali" : language === "en" ? "🧭 Most Experienced" : "🧭 Наибольший опыт" },
+    { id: "price_asc", label: language === "uz" ? "💰 Avval arzonroq" : language === "en" ? "💰 Lowest Price" : "💰 Сначала доступные" },
+  ], [language]);
 
   const filteredGuides = useMemo(() => {
     let list = [...MOCK_EXTENDED_GUIDES];
@@ -118,91 +117,90 @@ export default function GuidesPage() {
 
     // Sorting
     list.sort((a, b) => {
-      switch (sortBy) {
-        case "trust":
-          return (b.trustScore ?? 0) - (a.trustScore ?? 0);
-        case "match":
-          return (b.matchScore ?? 95) - (a.matchScore ?? 95);
-        case "rating":
-          return b.rating - a.rating;
-        case "experience":
-          return (b.experienceYears ?? 0) - (a.experienceYears ?? 0);
-        case "price_asc":
-          return (a.pricePerTourUsd ?? 40) - (b.pricePerTourUsd ?? 40);
-        case "recommended":
-        default:
-          return (b.trustScore ?? 90) * 0.5 + b.rating * 10 - ((a.trustScore ?? 90) * 0.5 + a.rating * 10);
-      }
+      if (sortBy === "trust") return (b.trustScore ?? 90) - (a.trustScore ?? 90);
+      if (sortBy === "match") return (b.matchScore ?? 90) - (a.matchScore ?? 90);
+      if (sortBy === "rating") return b.rating - a.rating;
+      if (sortBy === "experience") return (b.experienceYears ?? 5) - (a.experienceYears ?? 5);
+      if (sortBy === "price_asc") return (a.pricePerTourUsd ?? 40) - (b.pricePerTourUsd ?? 40);
+      // Default: recommended
+      return (b.trustScore ?? 90) * 0.5 + (b.matchScore ?? 90) * 0.5 - ((a.trustScore ?? 90) * 0.5 + (a.matchScore ?? 90) * 0.5);
     });
 
     return list;
-  }, [selectedLocation, selectedSpec, selectedLanguage, sortBy, verifiedOnly, searchQuery]);
+  }, [selectedLocation, selectedSpec, selectedLanguage, verifiedOnly, searchQuery, sortBy]);
 
   return (
-    <div className="max-w-6xl mx-auto px-6 py-12">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
       {/* Header Banner */}
       <div className="text-center max-w-3xl mx-auto mb-10">
-        <p className="uppercase tracking-[0.2em] text-registan text-xs font-bold mb-2">
-          {ICON_MAP.guide} Аккредитованные гиды Узбекистана · Trust & Verification
-        </p>
-        <h1 className="font-display text-3xl sm:text-4xl text-ink font-black mb-3">
-          Найдите проверенного гида для вашего путешествия
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sand/60 text-xs font-bold text-ink uppercase tracking-wider mb-3">
+          <span>{ICON_MAP.trust}</span> {t.guides.badge}
+        </div>
+        <h1 className="font-display text-3xl sm:text-5xl font-black text-ink mb-3 tracking-tight">
+          {t.guides.title}
         </h1>
         <p className="text-night/70 text-sm sm:text-base leading-relaxed">
-          Каждый гид в DiyorAI проходит аудит личности, лицензии и профессиональной надёжности.
-          Изучайте подтверждённые отзывы и бронируйте без наценок.
+          {t.guides.subtitle}
         </p>
-      </div>
 
-      {/* Trust Guarantee Banner */}
-      <div className="bg-white border border-sand rounded-2xl p-4 sm:p-5 mb-8 shadow-xs flex items-center justify-between gap-4 flex-wrap">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center text-xl font-bold shrink-0">
-            {ICON_MAP.trust}
+        {/* Trust Guarantee Highlights */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-6 text-left">
+          <div className="p-3.5 bg-white border border-sand rounded-2xl flex items-center gap-3 shadow-xs">
+            <span className="text-2xl p-2 bg-emerald-50 text-emerald-800 rounded-xl">🪪</span>
+            <div>
+              <span className="text-xs font-bold text-ink block">{t.guides.modalIdentityVerified}</span>
+              <span className="text-[11px] text-night/60">{t.guides.modalIdentityDesc}</span>
+            </div>
           </div>
-          <div>
-            <h4 className="font-display font-bold text-ink text-sm">
-              Гарантия надёжности DiyorAI (Trust Guarantee)
-            </h4>
-            <p className="text-xs text-night/60">
-              100% аккредитация Комитета по туризму · Проверка биометрии · Прозрачный рейтинг
-            </p>
+
+          <div className="p-3.5 bg-white border border-sand rounded-2xl flex items-center gap-3 shadow-xs">
+            <span className="text-2xl p-2 bg-blue-50 text-blue-800 rounded-xl">🎓</span>
+            <div>
+              <span className="text-xs font-bold text-ink block">{t.guides.modalLicenseVerified}</span>
+              <span className="text-[11px] text-night/60">{t.guides.modalLicenseDesc}</span>
+            </div>
+          </div>
+
+          <div className="p-3.5 bg-white border border-sand rounded-2xl flex items-center gap-3 shadow-xs">
+            <span className="text-2xl p-2 bg-amber-50 text-amber-800 rounded-xl">⭐</span>
+            <div>
+              <span className="text-xs font-bold text-ink block">100% Verified Reviews</span>
+              <span className="text-[11px] text-night/60">{t.guides.avgTrustScore}</span>
+            </div>
           </div>
         </div>
-
-        <div className="flex items-center gap-2">
-          <span className="text-xs px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 font-bold">
-            ✓ 25+ проверенных гидов
-          </span>
-          <span className="text-xs px-3 py-1 rounded-full bg-sand/40 text-ink font-bold">
-            🛡 Средний Trust Score: 94/100
-          </span>
-        </div>
       </div>
 
-      {/* Search & Filter Controls */}
-      <div className="bg-white border border-sand rounded-3xl p-6 mb-8 space-y-5 shadow-xs">
-        {/* Search input and Sort dropdown */}
-        <div className="flex items-center justify-between gap-4 flex-wrap">
-          <div className="relative flex-1 min-w-[240px]">
-            <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-night/40 text-sm">
-              🔍
-            </span>
+      {/* Search & Filter Toolbar */}
+      <div className="bg-white border border-sand rounded-3xl p-5 sm:p-6 mb-8 shadow-xs space-y-4">
+        {/* Search Bar & Sort */}
+        <div className="flex flex-col sm:flex-row items-center gap-3">
+          <div className="relative flex-1 w-full">
+            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-night/40">🔍</span>
             <input
               type="text"
-              placeholder="Поиск по имени гида или городу..."
+              placeholder={t.guides.searchPlaceholder}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-sand bg-plaster/50 text-xs text-ink focus:outline-hidden focus:border-registan transition-colors"
+              className="w-full pl-11 pr-4 py-2.5 rounded-2xl border border-sand bg-plaster/40 text-xs sm:text-sm font-medium text-ink placeholder:text-night/40 focus:outline-hidden focus:border-registan focus:bg-white"
             />
+            {searchQuery && (
+              <button
+                type="button"
+                onClick={() => setSearchQuery("")}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-night/40 hover:text-ink"
+              >
+                ✕
+              </button>
+            )}
           </div>
 
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-bold text-night/60 shrink-0">Сортировка:</span>
+          <div className="flex items-center gap-2 w-full sm:w-auto shrink-0">
+            <span className="text-xs text-night/60 font-semibold hidden sm:inline">{t.guides.sortLabel}:</span>
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="px-3 py-2.5 rounded-xl border border-sand bg-white text-xs font-bold text-ink focus:outline-hidden focus:border-registan shadow-xs"
+              className="w-full sm:w-auto px-4 py-2.5 rounded-2xl border border-sand bg-white text-xs font-bold text-ink focus:outline-hidden focus:border-registan"
             >
               {SORT_OPTIONS.map((opt) => (
                 <option key={opt.id} value={opt.id}>
@@ -213,18 +211,20 @@ export default function GuidesPage() {
           </div>
         </div>
 
-        {/* Location selector pills */}
+        {/* Location Pills */}
         <div>
-          <span className="text-xs font-bold text-night/70 block mb-2">📍 Локация / Город:</span>
-          <div className="flex gap-2 flex-wrap">
+          <span className="text-[11px] uppercase tracking-wider font-bold text-night/60 block mb-2">
+            📍 {t.guides.locationFilter}
+          </span>
+          <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-none">
             {LOCATIONS.map((loc) => (
               <button
                 key={loc.id}
                 onClick={() => setSelectedLocation(loc.id)}
-                className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all ${
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold shrink-0 transition-all ${
                   selectedLocation === loc.id
-                    ? "bg-registan text-white border-registan shadow-xs"
-                    : "border-sand bg-white text-ink hover:bg-sand/30"
+                    ? "bg-registan text-white shadow-xs"
+                    : "bg-plaster border border-sand text-ink hover:bg-sand/40"
                 }`}
               >
                 {loc.label}
@@ -233,55 +233,47 @@ export default function GuidesPage() {
           </div>
         </div>
 
-        {/* Specialization pills & Language dropdown & Verified checkbox */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-3 border-t border-sand/60">
-          <div className="md:col-span-2">
-            <span className="text-xs font-bold text-night/70 block mb-2">
-              🎯 Тематика экскурсии:
-            </span>
-            <div className="flex gap-1.5 flex-wrap">
-              {SPECIALIZATIONS.map((spec) => (
-                <button
-                  key={spec.id}
-                  onClick={() => setSelectedSpec(spec.id)}
-                  className={`px-2.5 py-1 rounded-lg text-[11px] font-semibold border transition-colors ${
-                    selectedSpec === spec.id
-                      ? "bg-sand text-ink border-sand-dark font-bold"
-                      : "border-sand/70 bg-white text-night/70 hover:bg-sand/20"
-                  }`}
-                >
-                  {spec.label}
-                </button>
-              ))}
-            </div>
+        {/* Specialty Pills & Additional Filters */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pt-3 border-t border-sand/60">
+          <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none flex-1">
+            {SPECIALIZATIONS.map((spec) => (
+              <button
+                key={spec.id}
+                onClick={() => setSelectedSpec(spec.id)}
+                className={`px-3 py-1 rounded-lg text-xs font-semibold shrink-0 transition-colors ${
+                  selectedSpec === spec.id
+                    ? "bg-ink text-plaster"
+                    : "bg-sand/30 text-night/80 hover:bg-sand/60"
+                }`}
+              >
+                {spec.label}
+              </button>
+            ))}
           </div>
 
-          <div className="space-y-3">
-            <div>
-              <span className="text-xs font-bold text-night/70 block mb-1">🗣 Язык гида:</span>
-              <select
-                value={selectedLanguage}
-                onChange={(e) => setSelectedLanguage(e.target.value)}
-                className="w-full px-3 py-1.5 rounded-xl border border-sand bg-white text-xs font-semibold text-ink"
-              >
-                {LANGUAGES.map((l) => (
-                  <option key={l.id} value={l.id}>
-                    {l.label}
-                  </option>
-                ))}
-              </select>
-            </div>
+          <div className="flex items-center gap-4 shrink-0 flex-wrap">
+            {/* Language dropdown */}
+            <select
+              value={selectedLanguage}
+              onChange={(e) => setSelectedLanguage(e.target.value)}
+              className="px-3 py-1.5 rounded-xl border border-sand bg-white text-xs font-semibold text-ink"
+            >
+              {LANGUAGES.map((l) => (
+                <option key={l.id} value={l.id}>
+                  {l.label}
+                </option>
+              ))}
+            </select>
 
-            <label className="flex items-center gap-2 cursor-pointer pt-1">
+            {/* Verified only toggle */}
+            <label className="flex items-center gap-2 cursor-pointer text-xs font-bold text-ink">
               <input
                 type="checkbox"
                 checked={verifiedOnly}
                 onChange={(e) => setVerifiedOnly(e.target.checked)}
                 className="w-4 h-4 rounded text-registan focus:ring-registan"
               />
-              <span className="text-xs font-bold text-ink flex items-center gap-1">
-                <span>{ICON_MAP.verified}</span> Только 100% проверенные гиды
-              </span>
+              <span>{t.guides.verifiedOnlyLabel}</span>
             </label>
           </div>
         </div>
@@ -289,15 +281,16 @@ export default function GuidesPage() {
 
       {/* Guides Grid */}
       {filteredGuides.length === 0 ? (
-        <div className="bg-white border border-sand rounded-3xl p-12 text-center space-y-3 shadow-xs">
-          <span className="text-4xl block">🔍</span>
-          <h3 className="font-display text-xl font-bold text-ink">
-            По выбранным фильтрам гиды не найдены
+        <div className="text-center py-16 bg-white border border-sand rounded-3xl p-8">
+          <span className="text-4xl block mb-3">🔍</span>
+          <h3 className="font-display font-bold text-lg text-ink mb-1">
+            {t.guides.empty}
           </h3>
-          <p className="text-xs text-night/60 max-w-md mx-auto">
-            Попробуйте выбрать «Все локации» или сбросить фильтры тематики.
+          <p className="text-xs text-night/60 max-w-md mx-auto mb-6">
+            {t.guides.subtitle}
           </p>
           <button
+            type="button"
             onClick={() => {
               setSelectedLocation("all");
               setSelectedSpec("all");
@@ -305,9 +298,9 @@ export default function GuidesPage() {
               setVerifiedOnly(false);
               setSearchQuery("");
             }}
-            className="px-4 py-2 rounded-xl bg-sand/50 text-ink font-bold text-xs hover:bg-sand"
+            className="px-5 py-2.5 rounded-xl bg-registan text-white text-xs font-bold hover:bg-registan/90 transition-all shadow-xs"
           >
-            Сбросить фильтры
+            {t.guides.resetFilters}
           </button>
         </div>
       ) : (
@@ -323,13 +316,17 @@ export default function GuidesPage() {
         </div>
       )}
 
-      {/* Guide Modals */}
+      {/* Guide Profile Modal */}
       <GuideProfileModal
         guide={selectedGuideForProfile}
         onClose={() => setSelectedGuideForProfile(null)}
-        onBook={(g) => setSelectedGuideForBooking(g)}
+        onBook={(g) => {
+          setSelectedGuideForProfile(null);
+          setSelectedGuideForBooking(g);
+        }}
       />
 
+      {/* Guide Booking Modal */}
       <GuideBookingModal
         guide={selectedGuideForBooking}
         isOpen={Boolean(selectedGuideForBooking)}

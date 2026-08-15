@@ -275,64 +275,59 @@ export default function TripPage() {
             <div className="flex items-center justify-between gap-4 flex-wrap pb-4 border-b border-sand">
               <div>
                 <span className="text-xs uppercase tracking-wider text-registan font-bold block">
-                  💰 Финансовый отчет поездки
+                  💰 {t.trip.financialSummary}
                 </span>
                 <h2 className="text-2xl font-display font-bold text-ink">
-                  Trip Summary & Распределение расходов
+                  {t.planner.stepBudget}
                 </h2>
               </div>
-              <div>
-                {costResult.isOverBudget ? (
-                  <div className="px-3.5 py-1.5 rounded-xl bg-red-100 border border-red-300 text-red-800 text-xs font-bold">
-                    🔴 Превышение бюджета на ${costResult.overBudgetAmountUsd}
-                  </div>
-                ) : (
-                  <div className="px-3.5 py-1.5 rounded-xl bg-emerald-100 border border-emerald-300 text-emerald-900 text-xs font-bold">
-                    🟢 В пределах бюджета (Остаток: ${costResult.budgetRemainingUsd})
-                  </div>
-                )}
+              <div className="text-right">
+                <span className="text-xs text-night/50 font-semibold block">{t.trip.costTotal}:</span>
+                <span className="font-display font-black text-2xl sm:text-3xl text-emerald-800">
+                  ${costResult.totalCostUsd}
+                </span>
               </div>
             </div>
 
-            {/* Financial Grid */}
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
+            {/* Service-by-service breakdown grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
               <div className="p-4 bg-plaster/40 rounded-2xl border border-sand">
-                <span className="text-night/50 block">Транспорт до места:</span>
+                <span className="text-night/50 block">{t.trip.costTransport}:</span>
                 <span className="font-display font-black text-xl text-ink">
                   ${costResult.breakdown.transport}
                 </span>
                 <span className="text-[10px] text-night/60 block mt-0.5">
-                  {plan.transport ? `${plan.transport.type}` : "Самостоятельно"}
+                  {plan.transport ? `${plan.transport.type}` : ""}
                 </span>
               </div>
 
               <div className="p-4 bg-plaster/40 rounded-2xl border border-sand">
-                <span className="text-night/50 block">Трансфер на месте:</span>
+                <span className="text-night/50 block">{t.trip.costTransfer}:</span>
                 <span className="font-display font-black text-xl text-ink">
                   ${costResult.breakdown.transfer}
                 </span>
                 <span className="text-[10px] text-night/60 block mt-0.5">
-                  {plan.transfer ? `${plan.transfer.vehicle.title}` : "Не выбран"}
+                  {plan.transfer ? `${plan.transfer.vehicle.title}` : ""}
                 </span>
               </div>
 
               <div className="p-4 bg-plaster/40 rounded-2xl border border-sand">
-                <span className="text-night/50 block">Проживание (Отель):</span>
+                <span className="text-night/50 block">{t.trip.costHotel}:</span>
                 <span className="font-display font-black text-xl text-ink">
                   ${costResult.breakdown.hotel}
                 </span>
                 <span className="text-[10px] text-night/60 block mt-0.5">
-                  {plan.hotel ? `${plan.hotel.nights} ноч., ${plan.hotel.numberOfRooms} ном.` : "Не выбран"}
+                  {plan.hotel ? `${plan.hotel.nights} ${t.planner.nightsCount}, ${plan.hotel.numberOfRooms}` : ""}
                 </span>
               </div>
 
               <div className="p-4 bg-plaster/40 rounded-2xl border border-sand">
-                <span className="text-night/50 block">Питание, музеи и прочее:</span>
+                <span className="text-night/50 block">{t.trip.costActivitiesFood}:</span>
                 <span className="font-display font-black text-xl text-ink">
                   ${costResult.breakdown.activitiesAndFood + costResult.breakdown.other}
                 </span>
                 <span className="text-[10px] text-night/60 block mt-0.5">
-                  ~${Math.round((costResult.breakdown.activitiesAndFood) / totalDays)}/день на группу
+                  ~${Math.round((costResult.breakdown.activitiesAndFood) / totalDays)}/{t.trip.day}
                 </span>
               </div>
             </div>
@@ -341,25 +336,25 @@ export default function TripPage() {
             <div className="p-5 bg-sand/30 rounded-2xl border border-sand flex items-center justify-between gap-4 flex-wrap">
               <div>
                 <span className="text-xs text-night/60 block font-semibold">
-                  ОБЩАЯ СТОИМОСТЬ ПОЕЗДКИ:
+                  {t.trip.costTotal}:
                 </span>
                 <span className="font-display font-black text-3xl sm:text-4xl text-ink">
                   ${costResult.totalCostUsd}
                 </span>
                 <span className="text-xs text-night/70 block mt-1">
-                  Лимит бюджета: ${costResult.budgetMaxUsd} · Остаток: ${costResult.budgetRemainingUsd}
+                  {costResult.budgetMaxUsd === Infinity ? t.planner.unlimited : `${t.planner.budgetLimitLabel}: $${costResult.budgetMaxUsd}`}
                 </span>
               </div>
 
               <div className="text-right">
                 <span className="text-xs text-night/60 block font-semibold">
-                  Стоимость на 1 человека:
+                  {t.trip.costPerPerson}:
                 </span>
                 <span className="font-display font-black text-2xl text-registan">
                   ~${costResult.costPerPersonUsd}
                 </span>
                 <span className="text-xs text-night/70 block mt-0.5">
-                  Всего участников: {travelers.total} чел.
+                  {travelers.total} {t.booking.travelersLabel}
                 </span>
               </div>
             </div>
@@ -368,7 +363,7 @@ export default function TripPage() {
             <div className="p-5 bg-plaster/30 rounded-2xl border border-sand space-y-3">
               <div className="flex items-center justify-between gap-2 flex-wrap">
                 <span className="text-xs font-bold text-ink uppercase tracking-wider">
-                  👥 Калькулятор распределения расходов (&quot;Кто сколько платит&quot;)
+                  👥 {t.trip.payerSplitTitle}
                 </span>
 
                 {travelers.type === "couple" && (
@@ -379,7 +374,7 @@ export default function TripPage() {
                         splitMode === "equal" ? "bg-registan text-plaster" : "text-night/70"
                       }`}
                     >
-                      Пополам (50 / 50)
+                      {t.trip.splitEqual}
                     </button>
                     <button
                       onClick={() => setSplitMode("single_payer")}
@@ -387,7 +382,7 @@ export default function TripPage() {
                         splitMode === "single_payer" ? "bg-registan text-plaster" : "text-night/70"
                       }`}
                     >
-                      Один платит всё
+                      {t.trip.splitSingle}
                     </button>
                   </div>
                 )}
@@ -412,7 +407,7 @@ export default function TripPage() {
             {costResult.isOverBudget && costResult.savingTips.length > 0 && (
               <div className="p-4 bg-amber-500/10 border border-amber-500/30 rounded-2xl text-xs text-amber-950 space-y-1.5">
                 <p className="font-bold flex items-center gap-1.5">
-                  <span>💡</span> Рекомендации по оптимизации бюджета:
+                  <span>💡</span> {t.planner.budgetTipPrefix}:
                 </p>
                 {costResult.savingTips.map((tip, i) => (
                   <p key={i} className="leading-relaxed pl-2">
@@ -431,7 +426,7 @@ export default function TripPage() {
                 onClick={handleOpenBooking}
                 className="w-full sm:w-auto px-10 py-4 bg-clay hover:bg-clay/90 text-plaster font-bold text-base sm:text-lg rounded-2xl transition-all shadow-lg hover:shadow-xl uppercase tracking-wider flex items-center justify-center gap-3 mx-auto"
               >
-                <span>🔒 ЗАБРОНИРОВАТЬ ЭТУ ПОЕЗДКУ (${costResult.totalCostUsd})</span>
+                <span>{t.trip.bookTripCta} (${costResult.totalCostUsd})</span>
               </button>
               <p className="text-[11px] text-night/50 mt-2">
                 Мгновенное оформление · Персональный менеджер свяжется с вами в Telegram/WhatsApp
