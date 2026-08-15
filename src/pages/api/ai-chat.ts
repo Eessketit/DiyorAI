@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import OpenAI from "openai";
 import { buildSystemPrompt, ChatMessage, UserPageContext } from "@/lib/aiPrompts";
 
 interface AiChatRequestBody {
@@ -20,73 +21,71 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const apiKey = process.env.YANDEX_API_KEY;
   const folderId = process.env.YANDEX_FOLDER_ID;
-  const modelUri = process.env.YANDEX_MODEL_URI || (folderId ? `gpt://${folderId}/alice-ai-llm/latest` : undefined);
+  const promptId = process.env.YANDEX_PROMPT_ID || "fvtr09ofbgji99u1j62k";
+  const modelUri = process.env.YANDEX_MODEL_URI || (folderId ? `gpt://${folderId}/yandexgpt/latest` : undefined);
 
-  // System prompt assembly
-  const systemPromptText = buildSystemPrompt(language, pageContext);
-
-  // Format messages for Yandex Foundation Models Completions API
-  const yandexMessages = [
-    {
-      role: "system",
-      text: systemPromptText,
-    },
-    ...messages.map((m) => ({
-      role: m.role === "assistant" ? "assistant" : "user",
-      text: m.text,
-    })),
-  ];
-
-  // If credentials are not configured yet, provide intelligent local fallback
-  if (!apiKey || !modelUri) {
-    const lastUserMessage = messages[messages.length - 1]?.text?.toLowerCase() || "";
-    let reply = "";
-
-    if (lastUserMessage.includes("плов") || lastUserMessage.includes("еда") || lastUserMessage.includes("поесть")) {
-      reply = `🥘 **Где поесть лучший плов и национальные блюда:**\n\n` +
-        `• **Ташкент**: Легендарный *Besh Qozon* (Ош Маркази у телебашни). Плов готовят к 12:00 в казанах на 3 тонны! Обязательно попробуйте свадебный плов с казы и перепелиными яйцами (~35 000 сум).\n` +
-        `• **Самарканд**: *Центр плова на Пенджикентской* или *Osh Markazi*. Самаркандский плов слоеный, не перемешивается и подается с желтой морковью и нутом.\n` +
-        `• **Бухара**: *The Plov Lounge* или ресторан *Minzifa* у Ляби-Хауза с видом на старый город.`;
-    } else if (lastUserMessage.includes("афросиаб") || lastUserMessage.includes("поезд") || lastUserMessage.includes("билет")) {
-      reply = `🚆 **Скоростной поезд Afrosiyob (Афросиаб):**\n\n` +
-        `• **Маршруты и время в пути**:\n` +
-        `  - Ташкент ↔ Самарканд: **2 часа 15 минут**\n` +
-        `  - Ташкент ↔ Бухара: **3 часа 50 минут**\n\n` +
-        `• **Где покупать**: Официальный сайт и приложение **railway.uz**.\n` +
-        `• 💡 **Важно**: Билеты открываются за **45 дней** до поездки и быстро раскупаются в сезон (весна/осень). Рекомендуем брать заранее!`;
-    } else if (lastUserMessage.includes("чарвак") || lastUserMessage.includes("чимган") || lastUserMessage.includes("горы") || lastUserMessage.includes("амирсой")) {
-      reply = `🏔️ **Поездка в горы Ташкентской области (Чарвак, Чимган, Амирсой):**\n\n` +
-        `• **Расстояние**: ~85–95 км от Ташкента (1 час 15 минут на авто).\n` +
-        `• **Чарвак**: Бирюзовое водохранилище, катание на катерах ($15–20/30 мин), пляжи и знаменитый горный шашлык в комплексе «Бочка».\n` +
-        `• **Амирсой**: Круглогодичный горный курорт европейского уровня с гондольными подъемниками Doppelmayr на вершину 2290м.\n` +
-        `• 🚗 **Как добраться**: Такси Yandex Go (тариф Межгород от 150 000 сум) или индивидуальный трансфер в нашем конструкторе.`;
-    } else if (lastUserMessage.includes("бюджет") || lastUserMessage.includes("цена") || lastUserMessage.includes("сколько стоит")) {
-      reply = `💰 **Ориентировочный бюджет на поездку по Узбекистану:**\n\n` +
-        `• **Бюджетный (Low-Budget)**: ~$30–45 на человека в день (уютные аутентичные гостевые дома, вкусный уличный стритфуд, метро и общественный транспорт).\n` +
-        `• **Комфорт (Optimal)**: ~$75–110 в день на человека (отели 3–4* с завтраком, поезд Afrosiyob, индивидуальные экскурсии и рестораны национальной кухни).\n` +
-        `• **Премиум**: от $180+ в день (бутик-отели в медресе, персональный минивэн с водителем, топ-гиды с лицензией).`;
-    } else {
-      reply = `✨ **Здравствуйте! Я DiyorAI — ваш персональный AI-помощник по Узбекистану.**\n\n` +
-        `Я могу помочь вам:\n` +
-        `• Спланировать маршрут по **Самарканду, Бухаре, Хиве и Ташкенту**;\n` +
-        `• Подсказать расписание поездов **Afrosiyob** и трансферов;\n` +
-        `• Подобрать лучшие чайханы, рестораны и видовые точки;\n` +
-        `• Рассчитать точный бюджет на вашу семью или компанию.\n\n` +
-        `*Спросите меня о чем угодно или выберите одну из быстрых подсказок ниже!*`;
-    }
-
+  // If credentials are missing, return structured fallback
+  if (!apiKey) {
     return res.status(200).json({
-      reply,
+      reply: "✨ Здравствуйте! Я DiyorAI — ваш персональный AI-помощник по Узбекистану. Чем я могу помочь?",
       isDemo: true,
-      hint: "Для подключения реальной Alice AI LLM укажите YANDEX_API_KEY и YANDEX_MODEL_URI в .env.local",
     });
   }
 
+  const lastUserMessage = messages[messages.length - 1]?.text || "";
+
+  // 1. Try Yandex AI Studio Responses API (Custom Prompt with Alice AI LLM)
+  if (apiKey && folderId && promptId) {
+    try {
+      const client = new OpenAI({
+        apiKey,
+        baseURL: "https://ai.api.cloud.yandex.net/v1",
+        defaultHeaders: {
+          "OpenAI-Project": folderId,
+        },
+      });
+
+      // Assemble contextual input
+      let inputWithContext = lastUserMessage;
+      if (pageContext?.region || pageContext?.totalDays || pageContext?.budgetMaxUsd) {
+        inputWithContext = `[Контекст: Направление: ${pageContext.region || "Узбекистан"}, Дней: ${pageContext.totalDays || "не указано"}, Бюджет: $${pageContext.budgetMaxUsd || "не указан"}]\n\nВопрос: ${lastUserMessage}`;
+      }
+
+      const response: any = await (client as any).responses.create({
+        prompt: {
+          id: promptId,
+        },
+        input: inputWithContext,
+      });
+
+      const replyText = response?.output_text || response?.choices?.[0]?.message?.content;
+      if (replyText) {
+        return res.status(200).json({
+          reply: replyText,
+          isDemo: false,
+          source: "yandex_studio_prompt",
+        });
+      }
+    } catch (err: any) {
+      console.warn("Yandex Studio Responses API failed, trying Foundation Models API...", err?.message);
+    }
+  }
+
+  // 2. Fallback to Foundation Models Completions API
   try {
     const yandexUrl = "https://llm.api.cloud.yandex.net/foundationModels/v1/completion";
+    const systemPromptText = buildSystemPrompt(language, pageContext);
+
+    const yandexMessages = [
+      { role: "system", text: systemPromptText },
+      ...messages.map((m) => ({
+        role: m.role === "assistant" ? "assistant" : "user",
+        text: m.text,
+      })),
+    ];
 
     const payload = {
-      modelUri,
+      modelUri: modelUri || `gpt://${folderId}/yandexgpt/latest`,
       completionOptions: {
         stream: false,
         temperature: 0.3,
@@ -99,24 +98,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       "Content-Type": "application/json",
       "Authorization": `Api-Key ${apiKey}`,
     };
+    if (folderId) headers["x-folder-id"] = folderId;
 
-    if (folderId) {
-      headers["x-folder-id"] = folderId;
-    }
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 12000);
 
     const response = await fetch(yandexUrl, {
       method: "POST",
       headers,
       body: JSON.stringify(payload),
+      signal: controller.signal,
     });
+    clearTimeout(timeoutId);
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error("Yandex LLM API Error:", response.status, errorText);
-      return res.status(response.status).json({
-        error: "Yandex AI Studio API error",
-        details: errorText,
-      });
+      throw new Error(`Yandex API status ${response.status}: ${errorText}`);
     }
 
     const data = await response.json();
@@ -125,13 +122,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(200).json({
       reply: assistantText,
       isDemo: false,
+      source: "yandex_foundation_models",
       usage: data?.result?.usage,
     });
   } catch (error: any) {
     console.error("AI Chat Handler Error:", error);
     return res.status(500).json({
       error: "Internal server error connecting to AI model",
-      message: error?.message,
+      message: error?.message || "Failed to reach AI service",
     });
   }
 }
