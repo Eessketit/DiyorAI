@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { useTranslation } from "@/lib/i18n";
+import { GUIDEBOOK_URL } from "@/lib/config";
 import { BookOpen, Compass, ArrowRight } from "lucide-react";
 
 export default function GuidebookPromo() {
@@ -19,23 +20,15 @@ export default function GuidebookPromo() {
   };
 
   const description = {
-    ru: "Полный цифровой справочник для подготовки к поездке: от расписания поездов Afrosiyob до этикета в чайханах и секретных горных локаций.",
-    en: "Your comprehensive digital companion to Uzbekistan: from Afrosiyob train tips to teahouse etiquette and secret mountain trails.",
-    uz: "Sayohatga to'liq tayyorgarlik uchun raqamli ma'lumotnoma: Afrosiyob poyezdlaridan tortib choyxona odoblari va yashirin tog' manzillarigacha.",
+    ru: "Полный цифровой справочник Diyorpedia для подготовки к поездке: от расписания поездов Afrosiyob до этикета в чайханах и секретных горных локаций.",
+    en: "Your comprehensive digital companion Diyorpedia to Uzbekistan: from Afrosiyob train tips to teahouse etiquette and secret mountain trails.",
+    uz: "Sayohatga to'liq tayyorgarlik uchun raqamli ma'lumotnoma Diyorpedia: Afrosiyob poyezdlaridan tortib choyxona odoblari va yashirin tog' manzillarigacha.",
   };
 
   const ctaText = {
-    ru: "Открыть полный справочник",
-    en: "Open Guidebook",
-    uz: "Qo'llanmani ochish",
-  };
-
-  const handleScrollToDirectory = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    const el = document.getElementById("travel-directory");
-    if (el) {
-      e.preventDefault();
-      el.scrollIntoView({ behavior: "smooth" });
-    }
+    ru: "Открыть Diyorpedia",
+    en: "Open Diyorpedia",
+    uz: "Diyorpedia-ni ochish",
   };
 
   return (
@@ -44,7 +37,7 @@ export default function GuidebookPromo() {
         <div className="flex items-center gap-2">
           <Compass className="w-4 h-4 text-majolica" />
           <span className="text-[11px] uppercase font-mono tracking-[0.2em] text-gold font-bold">
-            Travel Guidebook · DiyorAI
+            Travel Guidebook · Diyorpedia
           </span>
         </div>
         <h3 className="font-display text-xl sm:text-2xl font-bold text-paper">
@@ -58,16 +51,15 @@ export default function GuidebookPromo() {
         </p>
       </div>
 
-      {/* Primary CTA Button scrolling to on-page Travel Directory */}
-      <Link
-        href="/#travel-directory"
-        onClick={handleScrollToDirectory}
+      {/* Primary CTA Button to Diyorpedia */}
+      <a
+        href={GUIDEBOOK_URL}
         className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-majolica hover:bg-majolica/90 text-paper font-bold text-xs sm:text-sm transition-all shadow-md hover:scale-102 shrink-0 self-start md:self-center font-mono cursor-pointer"
       >
         <BookOpen className="w-4 h-4 text-paper" />
         <span>{ctaText[language]}</span>
         <ArrowRight className="w-4 h-4" />
-      </Link>
+      </a>
     </div>
   );
 }

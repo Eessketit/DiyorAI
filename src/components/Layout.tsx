@@ -22,7 +22,7 @@ export default function Layout({ children }: { children: ReactNode }) {
     { href: "/#ready-routes", sectionId: "ready-routes", label: language === "uz" ? "Tayyor marshrutlar" : language === "en" ? "Ready Routes" : "Готовые маршруты" },
     { href: "/#smart-trips", sectionId: "smart-trips", label: language === "uz" ? "Smart Trips" : language === "en" ? "Smart Trips" : "Smart Trips" },
     { href: "/#trip-constructor", sectionId: "trip-constructor", label: language === "uz" ? "Konstruktor" : language === "en" ? "Constructor" : "Конструктор" },
-    { href: "/#travel-directory", sectionId: "travel-directory", label: language === "uz" ? "Katalog" : language === "en" ? "Directory" : "Справочник" },
+    { href: "/directory", label: language === "uz" ? "Diyorpedia" : language === "en" ? "Diyorpedia" : "Diyorpedia" },
     { href: "/guides", label: t.nav.guides },
     { href: "/verify", label: t.nav.verify },
     { href: "/faq", label: t.nav.faq },
@@ -101,6 +101,7 @@ export default function Layout({ children }: { children: ReactNode }) {
             <Link href="/#ready-routes" className="hover:text-registan transition-colors">Готовые маршруты</Link>
             <Link href="/#smart-trips" className="hover:text-registan transition-colors">Smart Trips</Link>
             <Link href="/#trip-constructor" className="hover:text-registan transition-colors">Конструктор</Link>
+            <Link href="/directory" className="hover:text-registan transition-colors font-bold text-majolica">Diyorpedia</Link>
             <Link href="/guides" className="hover:text-registan transition-colors">Гиды & Trust</Link>
             <Link href="/verify" className="hover:text-registan transition-colors">Фактчек</Link>
             <Link href="/faq" className="hover:text-registan transition-colors">FAQ & Помощь</Link>
