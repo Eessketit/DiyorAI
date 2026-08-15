@@ -3,6 +3,7 @@ import Link from "next/link";
 import { trackEvent } from "@/lib/analytics";
 import { LeadContact, TripPlan } from "@/lib/types";
 import { useTranslation } from "@/lib/i18n";
+import { CheckCircle, Send, MessageSquare, Phone, Lock, X } from "lucide-react";
 
 interface BookingModalProps {
   isOpen: boolean;
@@ -73,60 +74,60 @@ export default function BookingModal({ isOpen, onClose, plan }: BookingModalProp
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-ink/70 backdrop-blur-sm overflow-y-auto">
-      <div className="bg-white rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl border border-sand my-8 relative">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-night/70 backdrop-blur-xs overflow-y-auto">
+      <div className="bg-paper rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl border border-sand my-8 relative text-night">
         {/* Close button */}
         <button
           onClick={onClose}
-          className="absolute top-5 right-5 text-night/50 hover:text-ink w-8 h-8 rounded-full bg-sand/30 flex items-center justify-center font-bold text-sm"
+          className="absolute top-5 right-5 text-night/50 hover:text-night w-8 h-8 rounded-full bg-sand/30 flex items-center justify-center font-bold text-sm"
         >
-          ✕
+          <X className="w-4 h-4" />
         </button>
 
         {bookingSuccess ? (
           /* Success Screen */
           <div className="text-center py-4 space-y-5 animate-in fade-in">
-            <div className="w-16 h-16 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center text-3xl mx-auto">
-              🎉
+            <div className="w-16 h-16 bg-majolica/15 text-majolica rounded-full flex items-center justify-center text-3xl mx-auto">
+              <CheckCircle className="w-8 h-8 text-majolica" />
             </div>
             <div>
-              <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink">
+              <h2 className="font-display text-2xl sm:text-3xl font-bold text-night">
                 {t.booking.successTitle}
               </h2>
-              <p className="text-xs sm:text-sm text-night/70 mt-1 max-w-md mx-auto">
+              <p className="text-xs sm:text-sm text-night/70 mt-1 max-w-md mx-auto font-light">
                 {t.booking.successSubtitle}
               </p>
             </div>
 
             {/* Booking Details Card */}
-            <div className="bg-plaster/50 border border-sand rounded-2xl p-4 sm:p-5 text-left text-xs space-y-2.5">
+            <div className="bg-white border border-sand rounded-2xl p-4 sm:p-5 text-left text-xs space-y-2.5 font-mono">
               <div className="flex items-center justify-between pb-2 border-b border-sand">
                 <span className="text-night/60 font-semibold">{t.booking.bookingIdLabel}:</span>
-                <span className="font-mono font-black text-sm text-registan bg-registan/10 px-2.5 py-0.5 rounded-md">
+                <span className="font-mono font-black text-sm text-gold bg-gold/10 px-2.5 py-0.5 rounded-md">
                   {bookingSuccess.bookingId}
                 </span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-night/60">{t.planner.stepFormat}:</span>
-                <span className="font-bold text-ink uppercase">{t.regions[bookingSuccess.destination] || bookingSuccess.destination}</span>
+                <span className="font-bold text-night uppercase">{t.regions[bookingSuccess.destination] || bookingSuccess.destination}</span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-night/60">{t.booking.travelersLabel}:</span>
-                <span className="font-bold text-ink">{travelers.total} ({travelers.adults} {t.booking.adults}{travelers.children > 0 ? `, ${travelers.children} ${t.booking.children}` : ""})</span>
+                <span className="font-bold text-night">{travelers.total} ({travelers.adults} {t.booking.adults}{travelers.children > 0 ? `, ${travelers.children} ${t.booking.children}` : ""})</span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-night/60">{t.planner.totalDaysLabel}:</span>
-                <span className="font-bold text-ink">{plan.preferences.duration?.totalDays || plan.preferences.days || 3} {t.trip.days}</span>
+                <span className="font-bold text-night">{plan.preferences.duration?.totalDays || plan.preferences.days || 3} {t.trip.days}</span>
               </div>
               <div className="flex items-center justify-between pt-2 border-t border-sand">
-                <span className="font-bold text-ink">{t.booking.totalCostLabel}:</span>
-                <span className="font-display font-black text-base text-ink">
+                <span className="font-bold text-night">{t.booking.totalCostLabel}:</span>
+                <span className="font-mono font-black text-base text-gold">
                   ${bookingSuccess.totalCostUsd}
                 </span>
               </div>
             </div>
 
-            <p className="text-xs text-night/60">
+            <p className="text-xs text-night/60 font-light">
               {t.booking.contactNotice}
             </p>
 
@@ -134,13 +135,13 @@ export default function BookingModal({ isOpen, onClose, plan }: BookingModalProp
               <button
                 type="button"
                 onClick={onClose}
-                className="flex-1 py-3 px-4 rounded-xl border border-sand bg-white hover:bg-sand/30 text-xs font-bold text-ink transition-colors"
+                className="flex-1 py-3 px-4 rounded-xl border border-majolica/40 bg-paper hover:bg-majolica/10 text-xs font-bold text-night transition-colors"
               >
                 {t.booking.returnBtn}
               </button>
               <Link
                 href="/"
-                className="flex-1 py-3 px-4 rounded-xl bg-clay hover:bg-clay/90 text-plaster text-xs font-bold text-center transition-colors shadow-md"
+                className="flex-1 py-3 px-4 rounded-xl bg-majolica hover:bg-majolica/90 text-paper text-xs font-bold text-center transition-colors shadow-md"
               >
                 {t.trip.backToForm}
               </Link>
@@ -150,21 +151,22 @@ export default function BookingModal({ isOpen, onClose, plan }: BookingModalProp
           /* Booking Form */
           <div>
             <div className="mb-6">
-              <span className="text-xs uppercase tracking-wider text-registan font-bold block mb-1">
-                🔒 {t.booking.modalTitle}
+              <span className="text-xs uppercase font-mono tracking-wider text-majolica font-bold flex items-center gap-1.5 mb-1">
+                <Lock className="w-3.5 h-3.5" />
+                <span>{t.booking.modalTitle}</span>
               </span>
-              <h2 className="font-display text-2xl font-bold text-ink">
+              <h2 className="font-display text-2xl font-bold text-night">
                 {t.booking.tripBookingSubtitle}
               </h2>
-              <p className="text-xs text-night/70 mt-1">
+              <p className="text-xs text-night/70 mt-1 font-light">
                 {t.home.subtitle}
               </p>
             </div>
 
             {/* Trip summary badge */}
-            <div className="bg-sand/30 rounded-xl p-3.5 mb-6 text-xs flex items-center justify-between gap-2 flex-wrap border border-sand">
+            <div className="bg-white rounded-2xl p-4 mb-6 text-xs flex items-center justify-between gap-2 flex-wrap border border-sand font-mono">
               <div>
-                <span className="font-bold text-ink block">
+                <span className="font-bold text-night block">
                   {t.regions[destination]} · {plan.preferences.duration?.totalDays || plan.preferences.days || 3} {t.trip.days} ({travelers.total})
                 </span>
                 <span className="text-[11px] text-night/60">
@@ -173,13 +175,13 @@ export default function BookingModal({ isOpen, onClose, plan }: BookingModalProp
               </div>
               <div className="text-right">
                 <span className="text-xs text-night/60 block">{t.trip.costTotal}:</span>
-                <span className="font-display font-black text-lg text-ink">${totalCost}</span>
+                <span className="font-mono font-black text-lg text-gold">${totalCost}</span>
               </div>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4 text-xs">
               <div>
-                <label className="block font-bold text-ink mb-1.5" htmlFor="book-name">
+                <label className="block font-bold text-night mb-1.5" htmlFor="book-name">
                   {t.booking.fullNameLabel}
                 </label>
                 <input
@@ -189,13 +191,13 @@ export default function BookingModal({ isOpen, onClose, plan }: BookingModalProp
                   placeholder={t.booking.fullNamePlaceholder}
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-sand bg-plaster/40 focus:bg-white text-ink text-xs focus:outline-none focus:border-clay"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-sand bg-white text-night text-xs focus:outline-hidden focus:border-majolica"
                 />
               </div>
 
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block font-bold text-ink mb-1.5" htmlFor="book-phone">
+                  <label className="block font-bold text-night mb-1.5" htmlFor="book-phone">
                     {t.booking.phoneLabel}
                   </label>
                   <input
@@ -205,12 +207,12 @@ export default function BookingModal({ isOpen, onClose, plan }: BookingModalProp
                     placeholder="+998 90 123-45-67"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-sand bg-plaster/40 focus:bg-white text-ink text-xs focus:outline-none focus:border-clay"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-sand bg-white text-night text-xs font-mono focus:outline-hidden focus:border-majolica"
                   />
                 </div>
 
                 <div>
-                  <label className="block font-bold text-ink mb-1.5" htmlFor="book-email">
+                  <label className="block font-bold text-night mb-1.5" htmlFor="book-email">
                     {t.booking.emailLabel}
                   </label>
                   <input
@@ -219,35 +221,39 @@ export default function BookingModal({ isOpen, onClose, plan }: BookingModalProp
                     placeholder="traveler@example.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-sand bg-plaster/40 focus:bg-white text-ink text-xs focus:outline-none focus:border-clay"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-sand bg-white text-night text-xs font-mono focus:outline-hidden focus:border-majolica"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block font-bold text-ink mb-1.5">
+                <label className="block font-bold text-night mb-1.5">
                   {t.booking.contactMethodLabel}
                 </label>
                 <div className="grid grid-cols-3 gap-2">
-                  {(["telegram", "whatsapp", "phone"] as const).map((method) => (
-                    <button
-                      key={method}
-                      type="button"
-                      onClick={() => setContactMethod(method)}
-                      className={`py-2 px-3 rounded-lg border text-xs font-semibold transition-all ${
-                        contactMethod === method
-                          ? "bg-ink text-plaster border-ink"
-                          : "border-sand bg-plaster/30 text-ink hover:border-sand/90"
-                      }`}
-                    >
-                      {method === "telegram" ? "✈️ Telegram" : method === "whatsapp" ? "💬 WhatsApp" : "📞 Phone"}
-                    </button>
-                  ))}
+                  {(["telegram", "whatsapp", "phone"] as const).map((method) => {
+                    const IconComp = method === "telegram" ? Send : method === "whatsapp" ? MessageSquare : Phone;
+                    return (
+                      <button
+                        key={method}
+                        type="button"
+                        onClick={() => setContactMethod(method)}
+                        className={`py-2 px-3 rounded-xl border text-xs font-semibold transition-all flex items-center justify-center gap-1.5 ${
+                          contactMethod === method
+                            ? "bg-majolica text-paper border-majolica shadow-xs"
+                            : "border-majolica/30 bg-white text-night hover:bg-majolica/10"
+                        }`}
+                      >
+                        <IconComp className="w-3.5 h-3.5" />
+                        <span>{method === "telegram" ? "Telegram" : method === "whatsapp" ? "WhatsApp" : "Phone"}</span>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
 
               <div>
-                <label className="block font-bold text-ink mb-1.5" htmlFor="book-comments">
+                <label className="block font-bold text-night mb-1.5" htmlFor="book-comments">
                   {t.booking.commentsLabel}
                 </label>
                 <textarea
@@ -256,16 +262,16 @@ export default function BookingModal({ isOpen, onClose, plan }: BookingModalProp
                   placeholder={t.booking.commentsPlaceholder}
                   value={comments}
                   onChange={(e) => setComments(e.target.value)}
-                  className="w-full px-3.5 py-2 rounded-xl border border-sand bg-plaster/40 focus:bg-white text-ink text-xs focus:outline-none focus:border-clay"
+                  className="w-full px-3.5 py-2 rounded-xl border border-sand bg-white text-night text-xs focus:outline-hidden focus:border-majolica"
                 />
               </div>
 
-              {error && <p className="text-trust-low font-bold text-xs">{error}</p>}
+              {error && <p className="text-brick font-mono font-bold text-xs">{error}</p>}
 
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-clay hover:bg-clay/90 disabled:opacity-60 text-plaster font-bold py-3.5 rounded-xl transition-all shadow-md text-sm uppercase tracking-wider mt-2"
+                className="w-full bg-majolica hover:bg-majolica/90 disabled:opacity-60 text-paper font-bold py-3.5 rounded-2xl transition-all shadow-md text-sm mt-2 hover:scale-102"
               >
                 {loading ? t.booking.submitting : t.booking.submitBtn}
               </button>

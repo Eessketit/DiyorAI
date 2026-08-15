@@ -3,8 +3,14 @@
 @tailwind utilities;
 
 :root {
-  --font-display: "Fraunces", serif;
-  --font-body: "Inter", sans-serif;
+  --font-display: "Spectral", serif;
+  --font-body: "Manrope", sans-serif;
+  --font-utility: "IBM Plex Mono", monospace;
+  --night: #151C2C;
+  --majolica: #2FA89B;
+  --gold: #C99A45;
+  --paper: #F3EFE3;
+  --brick: #A34B32;
 }
 
 html {
@@ -12,23 +18,74 @@ html {
 }
 
 body {
-  background-color: #f3ecdd;
-  color: #241f1c;
+  background-color: #F3EFE3;
+  color: #151C2C;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
 }
 
 ::selection {
-  background-color: #3a8fa0;
-  color: #f3ecdd;
+  background-color: #2FA89B;
+  color: #F3EFE3;
 }
 
-/* Visible keyboard focus everywhere */
+/* Accessible focus ring in brick */
 a:focus-visible,
 button:focus-visible,
 input:focus-visible,
 select:focus-visible,
 textarea:focus-visible {
-  outline: 2px solid #b5563c;
-  outline-offset: 2px;
+  outline: 2px solid #A34B32;
+  outline-offset: 3px;
+}
+
+/* Authentic Iwan Portal Arch Silhouette (Applied only to icon/badge header wrapper) */
+.arch-iwan-portal {
+  clip-path: polygon(
+    0% 100%,
+    0% 25%,
+    15% 12%,
+    35% 4%,
+    50% 0%,
+    65% 4%,
+    85% 12%,
+    100% 25%,
+    100% 100%
+  );
+}
+
+/* Signature Ikat / Silk Road zigzag divider */
+.ikat-divider {
+  height: 6px;
+  width: 100%;
+  background: repeating-linear-gradient(
+    -45deg,
+    #2FA89B 0,
+    #2FA89B 4px,
+    transparent 4px,
+    transparent 8px,
+    #C99A45 8px,
+    #C99A45 12px,
+    transparent 12px,
+    transparent 16px
+  );
+  opacity: 0.35;
+}
+
+/* Pulsing Silk Road Nodes */
+@keyframes silkPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  50% {
+    transform: scale(1.4);
+    opacity: 0.25;
+  }
+}
+
+.silk-node-pulse {
+  animation: silkPulse 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  transform-origin: center;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -37,9 +94,12 @@ textarea:focus-visible {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+  .silk-node-pulse {
+    animation: none !important;
+  }
 }
 
 .leaflet-container {
   font-family: var(--font-body);
-  border-radius: 0.75rem;
+  border-radius: 1rem;
 }

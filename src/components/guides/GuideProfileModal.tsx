@@ -1,8 +1,20 @@
 import React, { useState } from "react";
-import { Guide, Category } from "@/lib/types";
+import { Guide } from "@/lib/types";
 import { useTranslation } from "@/lib/i18n";
-import { ICON_MAP } from "@/lib/iconMap";
 import { getGuideDisplayName } from "./GuideCard";
+import {
+  UserCheck,
+  ShieldCheck,
+  Award,
+  Star,
+  MapPin,
+  Compass,
+  Clock,
+  Lock,
+  Target,
+  Check,
+  X,
+} from "lucide-react";
 
 interface GuideProfileModalProps {
   guide: Guide | null;
@@ -30,32 +42,33 @@ export default function GuideProfileModal({ guide, onClose, onBook }: GuideProfi
     : [];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-night/60 backdrop-blur-xs animate-fade-in overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-night/70 backdrop-blur-xs animate-fade-in overflow-y-auto">
       <div
-        className="bg-plaster border border-sand rounded-3xl w-full max-w-3xl my-8 overflow-hidden shadow-2xl animate-scale-in text-ink max-h-[90vh] flex flex-col"
+        className="bg-paper border border-sand rounded-3xl w-full max-w-3xl my-8 overflow-hidden shadow-2xl animate-scale-in text-night max-h-[90vh] flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header Bar */}
         <div className="bg-white border-b border-sand p-6 flex items-start justify-between gap-4 shrink-0">
           <div className="flex items-start gap-4">
-            <div className="w-16 h-16 rounded-2xl bg-sand/30 border border-sand flex items-center justify-center text-3xl shrink-0">
-              {guide.avatar || "👨‍🏫"}
+            <div className="w-16 h-16 rounded-2xl bg-paper border border-sand flex items-center justify-center text-majolica shrink-0">
+              <UserCheck className="w-8 h-8 text-majolica" />
             </div>
             <div>
               <div className="flex items-center gap-2 flex-wrap">
-                <h2 className="font-display text-2xl font-black text-ink">{displayName}</h2>
+                <h2 className="font-display text-2xl font-bold text-night">{displayName}</h2>
                 {guide.verification?.status === "verified" && (
-                  <span className="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold flex items-center gap-1">
-                    <span>{ICON_MAP.verified}</span> {t.guides.verifiedBadge} DiyorAI
+                  <span className="px-2.5 py-0.5 rounded-full bg-majolica/15 text-majolica text-xs font-mono font-bold flex items-center gap-1">
+                    <ShieldCheck className="w-3.5 h-3.5" />
+                    <span>{t.guides.verifiedBadge} DiyorAI</span>
                   </span>
                 )}
               </div>
-              <p className="text-sm text-night/70 mt-1 flex items-center gap-2 flex-wrap">
-                <span>📍 {guide.city}</span>
+              <p className="text-xs sm:text-sm text-night/70 mt-1 flex items-center gap-2 flex-wrap font-mono">
+                <span className="flex items-center gap-1"><MapPin className="w-3 h-3 text-majolica" /> {guide.city}</span>
                 <span>·</span>
-                <span>🧭 {guide.experienceYears ?? 7} {t.trip.days}</span>
+                <span className="flex items-center gap-1"><Compass className="w-3 h-3 text-majolica" /> {guide.experienceYears ?? 7} {t.trip.days}</span>
                 <span>·</span>
-                <span>⭐ {guide.rating.toFixed(1)} ({guide.completedTours ?? 150} {t.guides.toursCount})</span>
+                <span className="flex items-center gap-1"><Star className="w-3 h-3 fill-gold text-gold" /> {guide.rating.toFixed(1)} ({guide.completedTours ?? 150} {t.guides.toursCount})</span>
               </p>
             </div>
           </div>
@@ -63,21 +76,21 @@ export default function GuideProfileModal({ guide, onClose, onBook }: GuideProfi
           <button
             type="button"
             onClick={onClose}
-            className="w-9 h-9 rounded-full bg-sand/40 hover:bg-sand flex items-center justify-center text-sm font-bold text-ink transition-colors shrink-0"
+            className="w-9 h-9 rounded-full bg-sand/40 hover:bg-sand flex items-center justify-center text-night transition-colors shrink-0"
           >
-            ✕
+            <X className="w-4 h-4" />
           </button>
         </div>
 
-        {/* Tab Navigation */}
+        {/* Tab Navigation (Secondary Buttons) */}
         <div className="bg-white/80 border-b border-sand px-6 py-2 flex items-center gap-2 shrink-0">
           <button
             type="button"
             onClick={() => setActiveTab("overview")}
             className={`px-4 py-2 rounded-xl text-xs font-bold transition-colors ${
               activeTab === "overview"
-                ? "bg-registan text-white shadow-xs"
-                : "text-night/70 hover:bg-sand/30"
+                ? "bg-majolica text-paper shadow-xs"
+                : "text-night/70 hover:bg-majolica/10"
             }`}
           >
             {t.guides.modalOverviewTab}
@@ -87,19 +100,20 @@ export default function GuideProfileModal({ guide, onClose, onBook }: GuideProfi
             onClick={() => setActiveTab("trust")}
             className={`px-4 py-2 rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5 ${
               activeTab === "trust"
-                ? "bg-registan text-white shadow-xs"
-                : "text-night/70 hover:bg-sand/30"
+                ? "bg-majolica text-paper shadow-xs"
+                : "text-night/70 hover:bg-majolica/10"
             }`}
           >
-            <span>{ICON_MAP.trust}</span> {t.guides.modalTrustTab}
+            <ShieldCheck className="w-3.5 h-3.5" />
+            <span>{t.guides.modalTrustTab}</span>
           </button>
           <button
             type="button"
             onClick={() => setActiveTab("reviews")}
             className={`px-4 py-2 rounded-xl text-xs font-bold transition-colors ${
               activeTab === "reviews"
-                ? "bg-registan text-white shadow-xs"
-                : "text-night/70 hover:bg-sand/30"
+                ? "bg-majolica text-paper shadow-xs"
+                : "text-night/70 hover:bg-majolica/10"
             }`}
           >
             {t.guides.modalReviewsTab} ({guide.reviews?.count ?? guide.reviewsList?.length ?? 0})
@@ -114,36 +128,38 @@ export default function GuideProfileModal({ guide, onClose, onBook }: GuideProfi
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="p-4 rounded-2xl bg-white border border-sand shadow-xs">
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-xs font-bold text-night/60 uppercase tracking-wider">
-                      🛡 {t.guides.trustScoreLabel}
+                    <span className="text-xs font-mono font-bold text-night/60 uppercase tracking-wider flex items-center gap-1">
+                      <ShieldCheck className="w-3.5 h-3.5 text-majolica" />
+                      <span>{t.guides.trustScoreLabel}</span>
                     </span>
-                    <span className="text-xl font-black text-ink">{trustScore}/100</span>
+                    <span className="text-xl font-mono font-black text-night">{trustScore}/100</span>
                   </div>
-                  <div className="w-full bg-sand/40 h-2 rounded-full overflow-hidden">
+                  <div className="w-full bg-sand/30 h-2 rounded-full overflow-hidden">
                     <div
-                      className="bg-emerald-600 h-full rounded-full"
+                      className="bg-majolica h-full rounded-full"
                       style={{ width: `${trustScore}%` }}
                     />
                   </div>
-                  <p className="text-[11px] text-night/60 mt-2">
+                  <p className="text-[11px] text-night/60 mt-2 font-light">
                     {t.guides.modalTrustEvidenceDesc}
                   </p>
                 </div>
 
                 <div className="p-4 rounded-2xl bg-white border border-sand shadow-xs">
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-xs font-bold text-registan uppercase tracking-wider">
-                      🎯 {t.guides.matchScoreLabel}
+                    <span className="text-xs font-mono font-bold text-gold uppercase tracking-wider flex items-center gap-1">
+                      <Target className="w-3.5 h-3.5 text-gold" />
+                      <span>{t.guides.matchScoreLabel}</span>
                     </span>
-                    <span className="text-xl font-black text-registan">{matchScore}%</span>
+                    <span className="text-xl font-mono font-black text-gold">{matchScore}%</span>
                   </div>
-                  <div className="w-full bg-sand/40 h-2 rounded-full overflow-hidden">
+                  <div className="w-full bg-sand/30 h-2 rounded-full overflow-hidden">
                     <div
-                      className="bg-registan h-full rounded-full"
+                      className="bg-gold h-full rounded-full"
                       style={{ width: `${matchScore}%` }}
                     />
                   </div>
-                  <p className="text-[11px] text-night/60 mt-2">
+                  <p className="text-[11px] text-night/60 mt-2 font-light">
                     {t.guides.subtitle}
                   </p>
                 </div>
@@ -152,22 +168,22 @@ export default function GuideProfileModal({ guide, onClose, onBook }: GuideProfi
               {/* About text */}
               {aboutText && (
                 <div className="bg-white rounded-2xl p-5 border border-sand">
-                  <h4 className="font-display font-bold text-ink text-sm mb-2">{t.guides.modalOverviewTab}</h4>
-                  <p className="text-sm text-night/80 leading-relaxed">{aboutText}</p>
+                  <h4 className="font-display font-bold text-night text-sm mb-2">{t.guides.modalOverviewTab}</h4>
+                  <p className="text-sm text-night/80 leading-relaxed font-light">{aboutText}</p>
                 </div>
               )}
 
               {/* Specializations & Languages */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="bg-white rounded-2xl p-5 border border-sand">
-                  <h4 className="font-display font-bold text-ink text-sm mb-3">
+                  <h4 className="font-display font-bold text-night text-sm mb-3">
                     {t.guides.specFilter}
                   </h4>
                   <div className="flex gap-2 flex-wrap">
                     {guide.specializationTags.map((spec) => (
                       <span
                         key={spec}
-                        className="text-xs px-3 py-1 rounded-full bg-sand/30 border border-sand text-ink font-medium"
+                        className="text-xs px-3 py-1 rounded-full bg-paper border border-sand text-night font-medium"
                       >
                         {(t.categories as Record<string, string>)[spec] || spec}
                       </span>
@@ -176,15 +192,15 @@ export default function GuideProfileModal({ guide, onClose, onBook }: GuideProfi
                 </div>
 
                 <div className="bg-white rounded-2xl p-5 border border-sand">
-                  <h4 className="font-display font-bold text-ink text-sm mb-3">{t.guides.languageFilter}</h4>
+                  <h4 className="font-display font-bold text-night text-sm mb-3">{t.guides.languageFilter}</h4>
                   <div className="space-y-2">
                     {guide.languages.map((lang, idx) => {
                       const label = typeof lang === "string" ? lang.toUpperCase() : lang.label;
                       const level = typeof lang === "object" ? lang.level : "verified";
                       return (
-                        <div key={idx} className="flex items-center justify-between text-xs">
-                          <span className="font-semibold text-ink">{label}</span>
-                          <span className="px-2 py-0.5 rounded-full bg-sand/40 text-night/70 text-[10px] font-bold uppercase">
+                        <div key={idx} className="flex items-center justify-between text-xs font-mono">
+                          <span className="font-semibold text-night">{label}</span>
+                          <span className="px-2 py-0.5 rounded-full bg-paper text-night/70 text-[10px] font-bold uppercase border border-sand">
                             {level}
                           </span>
                         </div>
@@ -196,14 +212,15 @@ export default function GuideProfileModal({ guide, onClose, onBook }: GuideProfi
 
               {/* Why DiyorAI Recommends */}
               {whyRecList.length > 0 && (
-                <div className="bg-sand/20 border border-sand/80 rounded-2xl p-5">
-                  <h4 className="font-display font-bold text-ink text-sm mb-3 flex items-center gap-2">
-                    <span>{ICON_MAP.match}</span> {t.guides.modalWhyRecommendedTitle}
+                <div className="bg-paper/80 border border-sand rounded-2xl p-5">
+                  <h4 className="font-display font-bold text-night text-sm mb-3 flex items-center gap-2">
+                    <Target className="w-4 h-4 text-gold" />
+                    <span>{t.guides.modalWhyRecommendedTitle}</span>
                   </h4>
                   <ul className="space-y-2 text-xs text-night/80">
                     {whyRecList.map((item, idx) => (
                       <li key={idx} className="flex items-start gap-2">
-                        <span className="text-emerald-700 font-bold">✓</span>
+                        <Check className="w-3.5 h-3.5 text-majolica shrink-0 mt-0.5" />
                         <span>{item}</span>
                       </li>
                     ))}
@@ -218,59 +235,59 @@ export default function GuideProfileModal({ guide, onClose, onBook }: GuideProfi
               {/* Trust Evidence Box */}
               <div className="bg-white border border-sand rounded-2xl p-6 shadow-xs">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center text-xl font-bold">
-                    {ICON_MAP.trust}
+                  <div className="w-10 h-10 rounded-xl bg-majolica/15 text-majolica flex items-center justify-center text-xl font-bold">
+                    <ShieldCheck className="w-5 h-5 text-majolica" />
                   </div>
                   <div>
-                    <h3 className="font-display font-black text-ink text-base">
+                    <h3 className="font-display font-bold text-night text-base">
                       {t.guides.modalTrustEvidenceTitle}
                     </h3>
-                    <p className="text-xs text-night/60">
+                    <p className="text-xs text-night/60 font-light">
                       {t.guides.modalTrustEvidenceDesc}
                     </p>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-                  <div className="p-3.5 rounded-xl bg-emerald-50/70 border border-emerald-200/80 flex items-start gap-3">
-                    <span className="text-lg">🪪</span>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 font-mono">
+                  <div className="p-3.5 rounded-xl bg-majolica/10 border border-majolica/30 flex items-start gap-3">
+                    <ShieldCheck className="w-5 h-5 text-majolica shrink-0 mt-0.5" />
                     <div>
-                      <h5 className="font-bold text-xs text-emerald-950">{t.guides.modalIdentityVerified}</h5>
-                      <p className="text-[11px] text-emerald-800 mt-0.5">
+                      <h5 className="font-bold text-xs text-night">{t.guides.modalIdentityVerified}</h5>
+                      <p className="text-[11px] text-night/70 mt-0.5 font-light">
                         {t.guides.modalIdentityDesc}
                       </p>
                     </div>
                   </div>
 
-                  <div className="p-3.5 rounded-xl bg-blue-50/70 border border-blue-200/80 flex items-start gap-3">
-                    <span className="text-lg">🎓</span>
+                  <div className="p-3.5 rounded-xl bg-gold/10 border border-gold/30 flex items-start gap-3">
+                    <Award className="w-5 h-5 text-gold shrink-0 mt-0.5" />
                     <div>
-                      <h5 className="font-bold text-xs text-blue-950">{t.guides.modalLicenseVerified}</h5>
-                      <p className="text-[11px] text-blue-800 mt-0.5">
+                      <h5 className="font-bold text-xs text-night">{t.guides.modalLicenseVerified}</h5>
+                      <p className="text-[11px] text-night/70 mt-0.5 font-light">
                         {t.guides.modalLicenseDesc}
                       </p>
                     </div>
                   </div>
 
-                  <div className="p-3.5 rounded-xl bg-sand/30 border border-sand flex items-start gap-3">
-                    <span className="text-lg">🧭</span>
+                  <div className="p-3.5 rounded-xl bg-paper border border-sand flex items-start gap-3">
+                    <Compass className="w-5 h-5 text-majolica shrink-0 mt-0.5" />
                     <div>
-                      <h5 className="font-bold text-xs text-ink">
+                      <h5 className="font-bold text-xs text-night">
                         {guide.completedTours ?? 200}+ {t.guides.toursCount}
                       </h5>
-                      <p className="text-[11px] text-night/60 mt-0.5">
+                      <p className="text-[11px] text-night/60 mt-0.5 font-light">
                         {t.guides.modalExperienceDesc}
                       </p>
                     </div>
                   </div>
 
-                  <div className="p-3.5 rounded-xl bg-sand/30 border border-sand flex items-start gap-3">
-                    <span className="text-lg">⏱</span>
+                  <div className="p-3.5 rounded-xl bg-paper border border-sand flex items-start gap-3">
+                    <Clock className="w-5 h-5 text-majolica shrink-0 mt-0.5" />
                     <div>
-                      <h5 className="font-bold text-xs text-ink">
+                      <h5 className="font-bold text-xs text-night">
                         {guide.performance?.punctualityRate ?? 99}% {t.guides.modalStatsPunctuality}
                       </h5>
-                      <p className="text-[11px] text-night/60 mt-0.5">
+                      <p className="text-[11px] text-night/60 mt-0.5 font-light">
                         {t.guides.modalPunctualityDesc}
                       </p>
                     </div>
@@ -281,18 +298,18 @@ export default function GuideProfileModal({ guide, onClose, onBook }: GuideProfi
               {/* Customer Experience Radar Breakdown */}
               {guide.reviews && (
                 <div className="bg-white border border-sand rounded-2xl p-6 shadow-xs">
-                  <h4 className="font-display font-bold text-ink text-sm mb-4">
+                  <h4 className="font-display font-bold text-night text-sm mb-4">
                     {t.guides.modalRadarTitle}
                   </h4>
-                  <div className="space-y-3">
+                  <div className="space-y-3 font-mono">
                     <div>
                       <div className="flex justify-between text-xs font-semibold mb-1">
                         <span>{t.guides.modalKnowledge}</span>
                         <span>{guide.reviews.knowledge.toFixed(1)} / 5.0</span>
                       </div>
-                      <div className="w-full bg-sand/40 h-2 rounded-full overflow-hidden">
+                      <div className="w-full bg-sand/30 h-2 rounded-full overflow-hidden">
                         <div
-                          className="bg-registan h-full rounded-full"
+                          className="bg-majolica h-full rounded-full"
                           style={{ width: `${(guide.reviews.knowledge / 5) * 100}%` }}
                         />
                       </div>
@@ -303,9 +320,9 @@ export default function GuideProfileModal({ guide, onClose, onBook }: GuideProfi
                         <span>{t.guides.modalCommunication}</span>
                         <span>{guide.reviews.communication.toFixed(1)} / 5.0</span>
                       </div>
-                      <div className="w-full bg-sand/40 h-2 rounded-full overflow-hidden">
+                      <div className="w-full bg-sand/30 h-2 rounded-full overflow-hidden">
                         <div
-                          className="bg-registan h-full rounded-full"
+                          className="bg-majolica h-full rounded-full"
                           style={{ width: `${(guide.reviews.communication / 5) * 100}%` }}
                         />
                       </div>
@@ -316,9 +333,9 @@ export default function GuideProfileModal({ guide, onClose, onBook }: GuideProfi
                         <span>{t.guides.modalService}</span>
                         <span>{guide.reviews.service.toFixed(1)} / 5.0</span>
                       </div>
-                      <div className="w-full bg-sand/40 h-2 rounded-full overflow-hidden">
+                      <div className="w-full bg-sand/30 h-2 rounded-full overflow-hidden">
                         <div
-                          className="bg-registan h-full rounded-full"
+                          className="bg-majolica h-full rounded-full"
                           style={{ width: `${(guide.reviews.service / 5) * 100}%` }}
                         />
                       </div>
@@ -329,9 +346,9 @@ export default function GuideProfileModal({ guide, onClose, onBook }: GuideProfi
                         <span>{t.guides.modalOrganization}</span>
                         <span>{guide.reviews.organization.toFixed(1)} / 5.0</span>
                       </div>
-                      <div className="w-full bg-sand/40 h-2 rounded-full overflow-hidden">
+                      <div className="w-full bg-sand/30 h-2 rounded-full overflow-hidden">
                         <div
-                          className="bg-registan h-full rounded-full"
+                          className="bg-majolica h-full rounded-full"
                           style={{ width: `${(guide.reviews.organization / 5) * 100}%` }}
                         />
                       </div>
@@ -342,9 +359,9 @@ export default function GuideProfileModal({ guide, onClose, onBook }: GuideProfi
                         <span>{t.guides.modalSafety}</span>
                         <span>{guide.reviews.safety.toFixed(1)} / 5.0</span>
                       </div>
-                      <div className="w-full bg-sand/40 h-2 rounded-full overflow-hidden">
+                      <div className="w-full bg-sand/30 h-2 rounded-full overflow-hidden">
                         <div
-                          className="bg-registan h-full rounded-full"
+                          className="bg-majolica h-full rounded-full"
                           style={{ width: `${(guide.reviews.safety / 5) * 100}%` }}
                         />
                       </div>
@@ -355,9 +372,9 @@ export default function GuideProfileModal({ guide, onClose, onBook }: GuideProfi
 
               {/* Reliability Stats */}
               {guide.performance && (
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center font-mono">
                   <div className="p-3 bg-white border border-sand rounded-xl">
-                    <span className="text-xl font-black text-ink block">
+                    <span className="text-xl font-mono font-black text-night block">
                       {guide.performance.completionRate}%
                     </span>
                     <span className="text-[10px] uppercase tracking-wider text-night/50 font-bold">
@@ -365,7 +382,7 @@ export default function GuideProfileModal({ guide, onClose, onBook }: GuideProfi
                     </span>
                   </div>
                   <div className="p-3 bg-white border border-sand rounded-xl">
-                    <span className="text-xl font-black text-ink block">
+                    <span className="text-xl font-mono font-black text-night block">
                       {guide.performance.punctualityRate}%
                     </span>
                     <span className="text-[10px] uppercase tracking-wider text-night/50 font-bold">
@@ -373,7 +390,7 @@ export default function GuideProfileModal({ guide, onClose, onBook }: GuideProfi
                     </span>
                   </div>
                   <div className="p-3 bg-white border border-sand rounded-xl">
-                    <span className="text-xl font-black text-ink block">
+                    <span className="text-xl font-mono font-black text-night block">
                       {guide.performance.responseTime}
                     </span>
                     <span className="text-[10px] uppercase tracking-wider text-night/50 font-bold">
@@ -381,7 +398,7 @@ export default function GuideProfileModal({ guide, onClose, onBook }: GuideProfi
                     </span>
                   </div>
                   <div className="p-3 bg-white border border-sand rounded-xl">
-                    <span className="text-xl font-black text-ink block">
+                    <span className="text-xl font-mono font-black text-night block">
                       {guide.performance.cancellationRate}%
                     </span>
                     <span className="text-[10px] uppercase tracking-wider text-night/50 font-bold">
@@ -400,22 +417,23 @@ export default function GuideProfileModal({ guide, onClose, onBook }: GuideProfi
                   <div key={rev.id} className="p-4 bg-white border border-sand rounded-2xl shadow-xs">
                     <div className="flex items-center justify-between gap-2 mb-2">
                       <div>
-                        <span className="font-bold text-ink text-sm">{rev.author}</span>
-                        <span className="text-xs text-night/50 ml-2">({rev.date})</span>
+                        <span className="font-bold text-night text-sm">{rev.author}</span>
+                        <span className="text-xs text-night/50 ml-2 font-mono">({rev.date})</span>
                       </div>
-                      <span className="text-xs text-amber-600 font-bold">
-                        {"⭐".repeat(rev.rating)}
+                      <span className="text-xs text-gold font-mono font-bold flex items-center gap-1">
+                        <Star className="w-3 h-3 fill-gold text-gold" />
+                        <span>{rev.rating.toFixed(1)}</span>
                       </span>
                     </div>
-                    <p className="text-xs text-night/80 leading-relaxed mb-2">"{rev.text}"</p>
-                    <span className="text-[10px] px-2 py-0.5 rounded bg-sand/30 text-night/60 font-medium">
+                    <p className="text-xs text-night/80 leading-relaxed mb-2 font-light">"{rev.text}"</p>
+                    <span className="text-[10px] px-2 py-0.5 rounded bg-paper border border-sand text-night/60 font-mono">
                       {rev.tourType}
                     </span>
                   </div>
                 ))
               ) : (
-                <div className="p-8 text-center bg-white border border-sand rounded-2xl text-night/60 text-xs">
-                  {guide.completedTours ?? 100}+ {t.guides.toursCount}. ⭐ {guide.rating.toFixed(1)} / 5.0
+                <div className="p-8 text-center bg-white border border-sand rounded-2xl text-night/60 text-xs font-mono">
+                  {guide.completedTours ?? 100}+ {t.guides.toursCount}. ★ {guide.rating.toFixed(1)} / 5.0
                 </div>
               )}
             </div>
@@ -425,10 +443,10 @@ export default function GuideProfileModal({ guide, onClose, onBook }: GuideProfi
         {/* Footer CTA */}
         <div className="bg-white border-t border-sand p-6 flex items-center justify-between gap-4 shrink-0">
           <div>
-            <span className="text-xs text-night/60 block">{t.booking.totalCostLabel}</span>
+            <span className="text-xs text-night/60 font-mono block">{t.booking.totalCostLabel}</span>
             <div className="flex items-baseline gap-1">
-              <span className="text-2xl font-black text-ink">{price}</span>
-              <span className="text-xs text-night/50 font-medium">/ {t.guides.perTour}</span>
+              <span className="text-2xl font-mono font-black text-night">{price}</span>
+              <span className="text-xs text-night/50 font-mono">/ {t.guides.perTour}</span>
             </div>
           </div>
 
@@ -436,7 +454,7 @@ export default function GuideProfileModal({ guide, onClose, onBook }: GuideProfi
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2.5 rounded-xl border border-sand text-xs font-bold text-ink hover:bg-sand/30 transition-colors"
+              className="px-4 py-2.5 rounded-xl border border-majolica/40 bg-paper text-xs font-semibold text-night hover:bg-majolica/10 transition-colors"
             >
               {t.guides.modalCloseBtn}
             </button>
@@ -446,9 +464,10 @@ export default function GuideProfileModal({ guide, onClose, onBook }: GuideProfi
                 onClose();
                 onBook(guide);
               }}
-              className="px-6 py-2.5 rounded-xl bg-registan hover:bg-registan/90 text-white text-xs font-bold transition-all shadow-md flex items-center gap-2"
+              className="px-6 py-2.5 rounded-xl bg-majolica hover:bg-majolica/90 text-paper text-xs font-bold transition-all shadow-md flex items-center gap-2 hover:scale-102"
             >
-              <span>🔒</span> {t.guides.modalBookGuideBtn}
+              <Lock className="w-3.5 h-3.5" />
+              <span>{t.guides.modalBookGuideBtn}</span>
             </button>
           </div>
         </div>

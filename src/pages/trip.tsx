@@ -10,6 +10,8 @@ import SurvivalGuideModal from "@/components/SurvivalGuideModal";
 import BookingModal from "@/components/BookingModal";
 import { calculateTripCost } from "@/lib/costCalculator";
 import { trackEvent } from "@/lib/analytics";
+import ExperienceIcon from "@/components/common/ExperienceIcon";
+import { Coins, Sparkles, Check, ShieldCheck, Users, Lightbulb, Car, Landmark } from "lucide-react";
 
 const MapView = dynamic(() => import("@/components/MapView"), { ssr: false });
 
@@ -231,34 +233,38 @@ export default function TripPage() {
                 <button
                   key={d.dayNumber}
                   onClick={() => setActiveDay(d.dayNumber)}
-                  className={`px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider border transition-all flex items-center gap-1.5 ${
+                  className={`px-4 py-2.5 rounded-xl text-xs font-mono font-bold uppercase tracking-wider border transition-all flex items-center gap-1.5 ${
                     activeDay === d.dayNumber
-                      ? "bg-ink text-plaster border-ink shadow-md scale-105"
-                      : "border-sand hover:border-ink bg-white text-ink"
+                      ? "bg-night text-paper border-night shadow-md scale-105"
+                      : "border-majolica/30 hover:border-majolica bg-white text-night"
                   }`}
                 >
-                  {d.isRestDay ? "🌿" : "🏛️"} {t.trip.day} {d.dayNumber}
+                  {d.isRestDay ? <Sparkles className="w-3.5 h-3.5 text-majolica" /> : <Landmark className="w-3.5 h-3.5 text-majolica" />}
+                  <span>{t.trip.day} {d.dayNumber}</span>
                   {d.isRestDay && <span className="text-[10px] opacity-80">(Отдых)</span>}
                 </button>
               ))}
             </div>
 
             {currentDay.estimatedTotalKm && (
-              <span className="text-xs text-night/60 font-semibold bg-sand/30 px-3 py-1 rounded-full border border-sand">
-                🚗 Маршрут дня: ~{currentDay.estimatedTotalKm} км
+              <span className="text-xs font-mono text-night/70 font-semibold bg-paper px-3 py-1 rounded-full border border-sand flex items-center gap-1">
+                <Car className="w-3.5 h-3.5 text-majolica" />
+                <span>Маршрут дня: ~{currentDay.estimatedTotalKm} км</span>
               </span>
             )}
           </div>
 
-          {/* Rest Day Highlight Banner */}
+          {/* Rest Day banner */}
           {currentDay.isRestDay && (
-            <div className="mb-6 p-5 rounded-2xl bg-emerald-50 border border-emerald-300 text-emerald-950 flex items-start gap-4 shadow-sm">
-              <span className="text-3xl shrink-0">🌿</span>
+            <div className="mb-6 p-5 rounded-3xl bg-majolica/10 border border-majolica/30 flex items-start gap-4 text-night">
+              <div className="w-12 h-12 rounded-2xl bg-paper border border-sand flex items-center justify-center text-majolica shrink-0">
+                <Sparkles className="w-6 h-6 text-majolica" />
+              </div>
               <div>
-                <h3 className="font-display font-bold text-base text-emerald-900">
-                  {currentDay.title || "🌿 REST DAY — День отдыха и гастрономического релакса"}
+                <h3 className="font-display font-bold text-base sm:text-lg text-night">
+                  {language === "uz" ? "Dam olish va erkin kun" : language === "en" ? "Rest & Relaxation Day" : "День разгрузки и отдыха"}
                 </h3>
-                <p className="text-xs text-emerald-800 mt-1 leading-relaxed">
+                <p className="text-xs text-night/70 mt-1 leading-relaxed font-light">
                   {currentDay.summary || "День без беготни: неспешный завтрак, дегустация узбекских сладостей, спа или чайхана в тени чинар."}
                 </p>
               </div>
@@ -267,15 +273,15 @@ export default function TripPage() {
 
           {/* Added Smart Experiences */}
           {plan.smartTrips && plan.smartTrips.length > 0 && (
-            <div className="mb-8 p-6 rounded-3xl bg-sand/20 border border-sand shadow-xs space-y-4">
+            <div className="mb-8 p-6 rounded-3xl bg-paper/60 border border-sand shadow-xs space-y-4">
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2">
-                  <span className="text-xl">💰</span>
-                  <h3 className="font-display font-bold text-ink text-base sm:text-lg">
+                  <Coins className="w-5 h-5 text-majolica" />
+                  <h3 className="font-display font-bold text-night text-base sm:text-lg">
                     {language === "uz" ? "Qo'shilgan hamyonbop turlar (Smart Trips)" : language === "en" ? "Added Smart Local Experiences" : "Добавленные впечатления (Smart Trips)"}
                   </h3>
                 </div>
-                <span className="text-xs font-bold text-registan bg-registan/10 px-2.5 py-1 rounded-full">
+                <span className="text-xs font-mono font-bold text-gold bg-gold/10 px-3 py-1 rounded-full">
                   {plan.smartTrips.length} {language === "uz" ? "ta tanlangan" : language === "en" ? "selected" : "выбрано"}
                 </span>
               </div>
@@ -284,14 +290,17 @@ export default function TripPage() {
                 {plan.smartTrips.map((st) => (
                   <div key={st.id} className="p-4 rounded-2xl bg-white border border-sand flex items-center justify-between gap-3 text-xs shadow-2xs">
                     <div className="flex items-center gap-3">
-                      <span className="text-2xl p-2 bg-sand/30 rounded-xl">{st.image || "🏔"}</span>
+                      <div className="w-10 h-10 rounded-xl bg-paper border border-sand flex items-center justify-center text-majolica shrink-0">
+                        <ExperienceIcon name={st.image} className="w-5 h-5 text-majolica" />
+                      </div>
                       <div>
-                        <span className="font-bold text-ink block text-sm">{st.title[language] || st.title.ru}</span>
-                        <span className="text-night/60">📍 {st.destination} · ${st.pricePerAdult} / {t.trip.costPerPerson}</span>
+                        <span className="font-bold text-night block text-sm">{st.title[language] || st.title.ru}</span>
+                        <span className="text-night/60 font-mono">📍 {st.destination} · ${st.pricePerAdult} / {t.trip.costPerPerson}</span>
                       </div>
                     </div>
-                    <span className="text-emerald-700 font-bold text-xs bg-emerald-50 px-2 py-1 rounded-md border border-emerald-200">
-                      ✓ {language === "uz" ? "Qo'shildi" : language === "en" ? "Active" : "В плане"}
+                    <span className="text-majolica font-mono font-bold text-xs bg-majolica/15 px-2.5 py-1 rounded-md border border-majolica/30 flex items-center gap-1">
+                      <Check className="w-3 h-3" />
+                      <span>{language === "uz" ? "Qo'shildi" : language === "en" ? "Active" : "В плане"}</span>
                     </span>
                   </div>
                 ))}
@@ -304,10 +313,10 @@ export default function TripPage() {
 
           {/* Remaining Budget Recommendations */}
           {costResult.budgetRemainingUsd > 15 && costResult.budgetRemainingUsd !== Infinity && (
-            <div className="mt-8 p-6 rounded-3xl bg-emerald-50/70 border border-emerald-200 text-emerald-950 space-y-3">
+            <div className="mt-8 p-6 rounded-3xl bg-majolica/10 border border-majolica/30 text-night space-y-3">
               <div className="flex items-center justify-between gap-2 flex-wrap">
                 <div className="flex items-center gap-2">
-                  <span className="text-2xl">💰</span>
+                  <Coins className="w-5 h-5 text-majolica" />
                   <h4 className="font-display font-bold text-base">
                     {language === "uz"
                       ? `Sizda $${costResult.budgetRemainingUsd} qoldiq mavjud — sayohatingizni boyiting`
@@ -318,12 +327,12 @@ export default function TripPage() {
                 </div>
                 <Link
                   href="/#smart-trips"
-                  className="px-4 py-2 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs shadow-xs transition-all"
+                  className="px-4 py-2 rounded-xl bg-majolica hover:bg-majolica/90 text-paper font-bold text-xs shadow-xs transition-all"
                 >
                   {language === "uz" ? "Smart Trips katalogi →" : language === "en" ? "Explore Smart Trips →" : "Выбрать впечатления →"}
                 </Link>
               </div>
-              <p className="text-xs text-emerald-800">
+              <p className="text-xs text-night/75 font-light">
                 {language === "uz"
                   ? "Qoldiq byudjetingizga Chorvoq bo'ylab katerda sayr, So'qoq tog' oshi yoki Toshkent shahar sayrini qo'shishingiz mumkin."
                   : language === "en"
@@ -335,26 +344,27 @@ export default function TripPage() {
           <div className="mt-12 bg-white rounded-3xl border border-sand p-6 sm:p-8 shadow-xl space-y-6">
             <div className="flex items-center justify-between gap-4 flex-wrap pb-4 border-b border-sand">
               <div>
-                <span className="text-xs uppercase tracking-wider text-registan font-bold block">
-                  💰 {t.trip.financialSummary}
+                <span className="text-xs uppercase font-mono tracking-wider text-majolica font-bold flex items-center gap-1.5 mb-1">
+                  <Coins className="w-4 h-4 text-majolica" />
+                  <span>{t.trip.financialSummary}</span>
                 </span>
-                <h2 className="text-2xl font-display font-bold text-ink">
+                <h2 className="text-2xl font-display font-bold text-night">
                   {t.planner.stepBudget}
                 </h2>
               </div>
               <div className="text-right">
-                <span className="text-xs text-night/50 font-semibold block">{t.trip.costTotal}:</span>
-                <span className="font-display font-black text-2xl sm:text-3xl text-emerald-800">
+                <span className="text-xs text-night/50 font-mono font-semibold block">{t.trip.costTotal}:</span>
+                <span className="font-mono font-black text-2xl sm:text-3xl text-night">
                   ${costResult.totalCostUsd}
                 </span>
               </div>
             </div>
 
             {/* Service-by-service breakdown grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
-              <div className="p-4 bg-plaster/40 rounded-2xl border border-sand">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs font-mono">
+              <div className="p-4 bg-paper rounded-2xl border border-sand">
                 <span className="text-night/50 block">{t.trip.costTransport}:</span>
-                <span className="font-display font-black text-xl text-ink">
+                <span className="font-mono font-black text-xl text-night">
                   ${costResult.breakdown.transport}
                 </span>
                 <span className="text-[10px] text-night/60 block mt-0.5">
@@ -362,9 +372,9 @@ export default function TripPage() {
                 </span>
               </div>
 
-              <div className="p-4 bg-plaster/40 rounded-2xl border border-sand">
+              <div className="p-4 bg-paper rounded-2xl border border-sand">
                 <span className="text-night/50 block">{t.trip.costTransfer}:</span>
-                <span className="font-display font-black text-xl text-ink">
+                <span className="font-mono font-black text-xl text-night">
                   ${costResult.breakdown.transfer}
                 </span>
                 <span className="text-[10px] text-night/60 block mt-0.5">
@@ -372,9 +382,9 @@ export default function TripPage() {
                 </span>
               </div>
 
-              <div className="p-4 bg-plaster/40 rounded-2xl border border-sand">
+              <div className="p-4 bg-paper rounded-2xl border border-sand">
                 <span className="text-night/50 block">{t.trip.costHotel}:</span>
-                <span className="font-display font-black text-xl text-ink">
+                <span className="font-mono font-black text-xl text-night">
                   ${costResult.breakdown.hotel}
                 </span>
                 <span className="text-[10px] text-night/60 block mt-0.5">
@@ -382,9 +392,9 @@ export default function TripPage() {
                 </span>
               </div>
 
-              <div className="p-4 bg-plaster/40 rounded-2xl border border-sand">
+              <div className="p-4 bg-paper rounded-2xl border border-sand">
                 <span className="text-night/50 block">{t.trip.costActivitiesFood}:</span>
-                <span className="font-display font-black text-xl text-ink">
+                <span className="font-mono font-black text-xl text-night">
                   ${costResult.breakdown.activitiesAndFood + costResult.breakdown.other}
                 </span>
                 <span className="text-[10px] text-night/60 block mt-0.5">
@@ -394,45 +404,46 @@ export default function TripPage() {
             </div>
 
             {/* Total Summary Row */}
-            <div className="p-5 bg-sand/30 rounded-2xl border border-sand flex items-center justify-between gap-4 flex-wrap">
+            <div className="p-5 bg-paper/80 rounded-2xl border border-sand flex items-center justify-between gap-4 flex-wrap">
               <div>
-                <span className="text-xs text-night/60 block font-semibold">
+                <span className="text-xs text-night/60 font-mono block font-semibold">
                   {t.trip.costTotal}:
                 </span>
-                <span className="font-display font-black text-3xl sm:text-4xl text-ink">
+                <span className="font-mono font-black text-3xl sm:text-4xl text-night">
                   ${costResult.totalCostUsd}
                 </span>
-                <span className="text-xs text-night/70 block mt-1">
+                <span className="text-xs text-night/70 font-mono block mt-1">
                   {costResult.budgetMaxUsd === Infinity ? t.planner.unlimited : `${t.planner.budgetLimitLabel}: $${costResult.budgetMaxUsd}`}
                 </span>
               </div>
 
               <div className="text-right">
-                <span className="text-xs text-night/60 block font-semibold">
+                <span className="text-xs text-night/60 font-mono block font-semibold">
                   {t.trip.costPerPerson}:
                 </span>
-                <span className="font-display font-black text-2xl text-registan">
+                <span className="font-mono font-black text-2xl text-gold">
                   ~${costResult.costPerPersonUsd}
                 </span>
-                <span className="text-xs text-night/70 block mt-0.5">
+                <span className="text-xs text-night/70 font-mono block mt-0.5">
                   {travelers.total} {t.booking.travelersLabel}
                 </span>
               </div>
             </div>
 
             {/* 4. КАЛЬКУЛЯТОР "КТО СКОЛЬКО ПЛАТИТ" */}
-            <div className="p-5 bg-plaster/30 rounded-2xl border border-sand space-y-3">
+            <div className="p-5 bg-paper/50 rounded-2xl border border-sand space-y-3">
               <div className="flex items-center justify-between gap-2 flex-wrap">
-                <span className="text-xs font-bold text-ink uppercase tracking-wider">
-                  👥 {t.trip.payerSplitTitle}
+                <span className="text-xs font-mono font-bold text-night uppercase tracking-wider flex items-center gap-1.5">
+                  <Users className="w-4 h-4 text-majolica" />
+                  <span>{t.trip.payerSplitTitle}</span>
                 </span>
 
                 {travelers.type === "couple" && (
-                  <div className="flex items-center gap-1 bg-white p-1 rounded-lg border border-sand text-xs">
+                  <div className="flex items-center gap-1 bg-white p-1 rounded-lg border border-sand text-xs font-mono">
                     <button
                       onClick={() => setSplitMode("equal")}
                       className={`px-2.5 py-1 rounded font-semibold ${
-                        splitMode === "equal" ? "bg-registan text-plaster" : "text-night/70"
+                        splitMode === "equal" ? "bg-majolica text-paper" : "text-night/70"
                       }`}
                     >
                       {t.trip.splitEqual}
@@ -440,7 +451,7 @@ export default function TripPage() {
                     <button
                       onClick={() => setSplitMode("single_payer")}
                       className={`px-2.5 py-1 rounded font-semibold ${
-                        splitMode === "single_payer" ? "bg-registan text-plaster" : "text-night/70"
+                        splitMode === "single_payer" ? "bg-majolica text-paper" : "text-night/70"
                       }`}
                     >
                       {t.trip.splitSingle}
@@ -456,7 +467,7 @@ export default function TripPage() {
                     className="p-3 bg-white rounded-xl border border-sand flex items-center justify-between"
                   >
                     <span className="text-night/80 font-medium">{share.label}</span>
-                    <span className="font-display font-black text-sm text-ink">
+                    <span className="font-mono font-black text-sm text-night">
                       ${share.amountUsd}
                     </span>
                   </div>
@@ -466,12 +477,13 @@ export default function TripPage() {
 
             {/* Savings suggestions if over budget */}
             {costResult.isOverBudget && costResult.savingTips.length > 0 && (
-              <div className="p-4 bg-amber-500/10 border border-amber-500/30 rounded-2xl text-xs text-amber-950 space-y-1.5">
-                <p className="font-bold flex items-center gap-1.5">
-                  <span>💡</span> {t.planner.budgetTipPrefix}:
+              <div className="p-4 bg-gold/10 border border-gold/30 rounded-2xl text-xs text-night space-y-1.5">
+                <p className="font-bold flex items-center gap-1.5 text-gold font-mono">
+                  <Lightbulb className="w-4 h-4 text-gold" />
+                  <span>{t.planner.budgetTipPrefix}:</span>
                 </p>
                 {costResult.savingTips.map((tip, i) => (
-                  <p key={i} className="leading-relaxed pl-2">
+                  <p key={i} className="leading-relaxed pl-2 font-light">
                     • {tip}
                   </p>
                 ))}
@@ -479,17 +491,17 @@ export default function TripPage() {
             )}
 
             {/* ========================================================
-               20. КНОПКА "ЗАБРОНИРОВАТЬ" (ГЛАВНАЯ CTA)
+               20. КНОПКА "ЗАБРОНИРОВАТЬ" (ГЛАВНАЯ CTA - 1 FOCAL НА ЭКРАН)
                ======================================================== */}
             <div className="pt-4 text-center">
               <button
                 type="button"
                 onClick={handleOpenBooking}
-                className="w-full sm:w-auto px-10 py-4 bg-clay hover:bg-clay/90 text-plaster font-bold text-base sm:text-lg rounded-2xl transition-all shadow-lg hover:shadow-xl uppercase tracking-wider flex items-center justify-center gap-3 mx-auto"
+                className="w-full sm:w-auto px-10 py-4 bg-brick hover:bg-brick/90 text-paper font-semibold text-base sm:text-lg rounded-2xl transition-all shadow-lg hover:shadow-brick/30 hover:scale-102 flex items-center justify-center gap-3 mx-auto"
               >
                 <span>{t.trip.bookTripCta} (${costResult.totalCostUsd})</span>
               </button>
-              <p className="text-[11px] text-night/50 mt-2">
+              <p className="text-[11px] text-night/50 mt-2 font-light">
                 Мгновенное оформление · Персональный менеджер свяжется с вами в Telegram/WhatsApp
               </p>
             </div>
@@ -497,15 +509,15 @@ export default function TripPage() {
 
           {/* Solo traveler recommendation */}
           {plan.preferences.soloTraveler && (
-            <div className="mt-8 border border-registan/40 bg-registan/10 rounded-2xl p-5 text-sm text-ink flex items-start gap-3">
-              <span className="text-2xl shrink-0">🛡️</span>
+            <div className="mt-8 border border-majolica/30 bg-majolica/10 rounded-2xl p-5 text-sm text-night flex items-start gap-3">
+              <ShieldCheck className="w-6 h-6 text-majolica shrink-0 mt-0.5" />
               <div>
-                <p className="font-bold mb-1 text-ink">Режим соло-путешественника (Безопасность)</p>
-                <p className="text-xs sm:text-sm text-night/80 leading-relaxed">
+                <p className="font-bold mb-1 text-night">Режим соло-путешественника (Безопасность)</p>
+                <p className="text-xs sm:text-sm text-night/80 leading-relaxed font-light">
                   {t.trip.soloNotice}{" "}
                   <Link
                     href={`/guides?region=${plan.preferences.region}&interests=${interestsQuery}`}
-                    className="text-registan font-bold hover:underline"
+                    className="text-majolica font-bold hover:underline"
                   >
                     {t.trip.findGuidesForRoute} →
                   </Link>
@@ -514,17 +526,17 @@ export default function TripPage() {
             </div>
           )}
 
-          {/* Guide matcher CTA */}
+          {/* Guide matcher CTA: Primary vs Secondary */}
           <div className="mt-8 flex flex-wrap gap-4">
             <Link
               href={`/guides?region=${plan.preferences.region}&interests=${interestsQuery}`}
-              className="bg-ink text-plaster font-bold px-7 py-3.5 rounded-xl hover:bg-ink/90 transition-all shadow-md text-xs sm:text-sm uppercase tracking-wider"
+              className="bg-majolica hover:bg-majolica/90 text-paper font-bold px-7 py-3.5 rounded-xl transition-all shadow-md text-xs sm:text-sm tracking-wider hover:scale-102"
             >
               {t.trip.findGuidesForRoute}
             </Link>
             <Link
               href="/"
-              className="border border-sand bg-white px-7 py-3.5 rounded-xl text-ink font-semibold hover:border-ink transition-colors text-xs sm:text-sm"
+              className="border border-majolica/40 bg-paper px-7 py-3.5 rounded-xl text-night font-semibold hover:bg-majolica/10 transition-colors text-xs sm:text-sm"
             >
               {t.trip.recalculate}
             </Link>

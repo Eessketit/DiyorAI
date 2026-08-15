@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "@/lib/i18n";
-import { ICON_MAP } from "@/lib/iconMap";
 import { BudgetRangeModel } from "@/lib/types";
+import { Coins, Sparkles } from "lucide-react";
 
 interface BudgetRangeSliderProps {
   value: BudgetRangeModel;
@@ -62,20 +62,20 @@ export default function BudgetRangeSlider({
       {/* Header with Title & Current Value */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
         <div>
-          <label className="font-display text-base font-bold text-ink flex items-center gap-2">
-            <span>{ICON_MAP.budget}</span>
+          <label className="font-display text-base font-bold text-night flex items-center gap-2">
+            <Coins className="w-4 h-4 text-majolica" />
             <span>{title || t.planner.stepBudget}</span>
           </label>
-          <p className="text-xs text-night/60 mt-0.5">
+          <p className="text-xs text-night/60 mt-0.5 font-light">
             {subtitle || (language === "uz" ? "Xarajatlar ko'lamini belgilang" : language === "en" ? "Set your minimum and maximum spending range" : "Укажите минимальный и максимальный диапазон расходов")}
           </p>
         </div>
 
-        <div className="text-left sm:text-right shrink-0 bg-sand/20 border border-sand/60 px-3.5 py-1.5 rounded-xl">
-          <span className="text-[10px] text-night/50 uppercase tracking-wider font-bold block">
+        <div className="text-left sm:text-right shrink-0 bg-paper border border-sand px-3.5 py-1.5 rounded-xl">
+          <span className="text-[10px] text-night/50 uppercase font-mono font-bold block">
             {language === "uz" ? "Tanlangan byudjet" : language === "en" ? "Selected Range" : "Выбранный диапазон"}
           </span>
-          <span className="font-display font-black text-ink text-base sm:text-lg">
+          <span className="font-mono font-black text-night text-base sm:text-lg">
             ${min} — {isUnlimited ? (language === "uz" ? "$5,000+ (Cheklovsiz)" : language === "en" ? "$5,000+ (Unlimited)" : "$5,000+ (Без лимита)") : `$${max}`}
           </span>
         </div>
@@ -86,9 +86,9 @@ export default function BudgetRangeSlider({
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {/* Min Slider */}
           <div className="space-y-1.5">
-            <div className="flex justify-between text-xs font-semibold text-night/70">
+            <div className="flex justify-between text-xs font-mono font-semibold text-night/70">
               <span>{language === "uz" ? "Minimal byudjet:" : language === "en" ? "Minimum budget:" : "Минимум:"}</span>
-              <span className="font-bold text-ink">${min}</span>
+              <span className="font-bold text-night">${min}</span>
             </div>
             <input
               type="range"
@@ -98,16 +98,16 @@ export default function BudgetRangeSlider({
               value={min}
               onChange={handleMinChange}
               aria-label="Minimum budget"
-              className="w-full h-2 bg-sand/50 rounded-lg appearance-none cursor-pointer accent-clay focus:outline-hidden"
+              className="w-full h-2 bg-sand/50 rounded-lg appearance-none cursor-pointer accent-majolica focus:outline-hidden"
             />
           </div>
 
           {/* Max Slider */}
           <div className="space-y-1.5">
-            <div className="flex justify-between text-xs font-semibold text-night/70">
+            <div className="flex justify-between text-xs font-mono font-semibold text-night/70">
               <span>{language === "uz" ? "Maksimal byudjet:" : language === "en" ? "Maximum budget:" : "Максимум:"}</span>
-              <span className="font-bold text-registan">
-                {isUnlimited ? "$5,000+ 💎" : `$${max}`}
+              <span className="font-bold text-gold">
+                {isUnlimited ? "$5,000+ (Unlimited)" : `$${max}`}
               </span>
             </div>
             <input
@@ -118,7 +118,7 @@ export default function BudgetRangeSlider({
               value={isUnlimited ? 5000 : max}
               onChange={handleMaxChange}
               aria-label="Maximum budget"
-              className="w-full h-2 bg-sand/50 rounded-lg appearance-none cursor-pointer accent-registan focus:outline-hidden"
+              className="w-full h-2 bg-sand/50 rounded-lg appearance-none cursor-pointer accent-gold focus:outline-hidden"
             />
           </div>
         </div>
@@ -126,7 +126,7 @@ export default function BudgetRangeSlider({
         {/* Visual Track Representation */}
         <div className="w-full bg-sand/30 h-2 rounded-full overflow-hidden relative">
           <div
-            className="absolute top-0 bottom-0 bg-gradient-to-r from-clay to-registan rounded-full"
+            className="absolute top-0 bottom-0 bg-gradient-to-r from-majolica to-gold rounded-full"
             style={{
               left: `${Math.min(95, (min / 5000) * 100)}%`,
               right: `${isUnlimited ? 0 : Math.max(0, 100 - (max / 5000) * 100)}%`,
@@ -135,9 +135,9 @@ export default function BudgetRangeSlider({
         </div>
       </div>
 
-      {/* Quick Presets Pills */}
+      {/* Quick Presets Pills (Secondary Buttons) */}
       <div>
-        <span className="text-[10px] text-night/50 uppercase tracking-wider font-bold block mb-1.5">
+        <span className="text-[10px] text-night/50 font-mono uppercase tracking-wider font-bold block mb-1.5">
           {language === "uz" ? "Tezkor tanlov:" : language === "en" ? "Quick Presets:" : "Быстрые варианты:"}
         </span>
         <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none flex-wrap">
@@ -149,10 +149,10 @@ export default function BudgetRangeSlider({
                 key={idx}
                 type="button"
                 onClick={() => handleApplyPreset(p.min, p.max)}
-                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                className={`px-3 py-1.5 rounded-xl text-xs font-mono font-bold transition-all ${
                   isSelected
-                    ? "bg-registan text-white shadow-xs scale-102"
-                    : "bg-plaster border border-sand text-ink hover:bg-sand/40"
+                    ? "bg-majolica text-paper shadow-xs scale-102"
+                    : "bg-paper border border-majolica/30 text-night hover:bg-majolica/10"
                 }`}
               >
                 {p.label}

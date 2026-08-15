@@ -1,8 +1,9 @@
 import React from "react";
 import { SmartTrip, TravelersModel } from "@/lib/types";
 import { useTranslation } from "@/lib/i18n";
-import { ICON_MAP } from "@/lib/iconMap";
 import { calculateSmartTripGroupCost } from "@/lib/smartTrips";
+import { Target, Check, Plus, ArrowRight } from "lucide-react";
+import ExperienceIcon from "../common/ExperienceIcon";
 
 interface SmartTripCardProps {
   trip: SmartTrip;
@@ -30,67 +31,69 @@ export default function SmartTripCard({
   return (
     <div
       className={`bg-white border rounded-3xl p-5 flex flex-col justify-between shadow-xs hover:shadow-md transition-all group ${
-        isAdded ? "border-emerald-500 ring-2 ring-emerald-500/20 bg-emerald-50/10" : "border-sand hover:border-sand/90"
+        isAdded ? "border-majolica ring-2 ring-majolica/25 bg-paper/40" : "border-sand hover:border-majolica/70"
       }`}
     >
       <div>
         {/* Top Badges & Icon */}
         <div className="flex items-start justify-between gap-3 mb-3">
           <div className="flex items-center gap-3">
-            <div className="w-13 h-13 rounded-2xl bg-sand/30 border border-sand flex items-center justify-center text-3xl shrink-0 group-hover:scale-105 transition-transform">
-              {trip.image || "🏔"}
+            <div className="w-13 h-13 rounded-2xl bg-paper border border-sand flex items-center justify-center text-majolica shrink-0 group-hover:scale-105 transition-transform">
+              <ExperienceIcon name={trip.image} className="w-6 h-6 text-majolica" />
             </div>
             <div>
               <div className="flex items-center gap-1.5 flex-wrap">
                 {tag && (
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-registan/10 text-registan uppercase">
+                  <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-md bg-majolica/10 text-majolica uppercase">
                     {tag}
                   </span>
                 )}
                 {isAdded && (
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-800 flex items-center gap-1">
-                    ✓ {language === "uz" ? "Qo'shilgan" : language === "en" ? "Added" : "В маршруте"}
+                  <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-md bg-majolica/20 text-majolica flex items-center gap-1">
+                    <Check className="w-3 h-3" />
+                    <span>{language === "uz" ? "Qo'shilgan" : language === "en" ? "Added" : "В маршруте"}</span>
                   </span>
                 )}
               </div>
-              <h3 className="font-display font-bold text-ink text-base sm:text-lg leading-snug mt-1 group-hover:text-clay transition-colors">
+              <h3 className="font-display font-bold text-night text-base sm:text-lg leading-snug mt-1 group-hover:text-majolica transition-colors">
                 {title}
               </h3>
             </div>
           </div>
         </div>
 
-        {/* Price & Meta info */}
-        <div className="flex items-center justify-between gap-2 p-3 bg-plaster/60 rounded-2xl border border-sand/60 mb-3">
+        {/* Price & Meta info with IBM Plex Mono */}
+        <div className="flex items-center justify-between gap-2 p-3 bg-paper/70 rounded-2xl border border-sand/70 mb-3">
           <div>
             <div className="flex items-baseline gap-1">
-              <span className="font-display font-black text-lg text-ink">
+              <span className="font-mono font-black text-lg text-night">
                 ${trip.pricePerAdult}
               </span>
-              <span className="text-[10px] text-night/50 font-semibold">
+              <span className="text-[10px] text-night/60 font-mono">
                 / {t.trip.costPerPerson}
               </span>
             </div>
             {travelers && (
-              <span className="text-[10px] text-night/60 block">
-                {language === "uz" ? `Guruh uchun (${travelers.total} kishi):` : language === "en" ? `Group total (${travelers.total} pers):` : `На группу (${travelers.total} чел):`}{" "}
-                <strong className="text-ink font-black">${groupCost}</strong>
+              <span className="text-[10px] text-night/60 font-mono block">
+                {language === "uz" ? `Guruh (${travelers.total} kishi):` : language === "en" ? `Group (${travelers.total} pers):` : `Группа (${travelers.total} чел):`}{" "}
+                <strong className="text-night font-black font-mono">${groupCost}</strong>
               </span>
             )}
           </div>
 
           <div className="text-right border-l border-sand/80 pl-3 shrink-0">
-            <span className="text-xs font-black text-registan block leading-none">
-              🎯 {matchScore}%
+            <span className="text-xs font-mono font-bold text-gold flex items-center justify-end gap-1 leading-none">
+              <Target className="w-3 h-3 text-gold" />
+              <span>{matchScore}%</span>
             </span>
-            <span className="text-[9px] uppercase tracking-wider text-night/50 font-bold">
+            <span className="text-[9px] uppercase tracking-wider text-night/50 font-mono font-bold block mt-0.5">
               {t.guides.matchScoreLabel}
             </span>
           </div>
         </div>
 
         {/* Short description */}
-        <p className="text-xs text-night/70 line-clamp-2 leading-relaxed mb-3">
+        <p className="text-xs text-night/70 line-clamp-2 leading-relaxed mb-3 font-light">
           {description}
         </p>
 
@@ -98,33 +101,35 @@ export default function SmartTripCard({
         <div className="space-y-1 mb-4 text-[11px] text-night/80">
           {trip.highlights.slice(0, 2).map((h, idx) => (
             <div key={idx} className="flex items-center gap-1.5">
-              <span className="text-emerald-700 font-bold text-xs">✓</span>
+              <Check className="w-3.5 h-3.5 text-majolica shrink-0" />
               <span className="line-clamp-1">{h[language] || h.ru}</span>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Action Buttons */}
+      {/* Action Buttons: Secondary vs Primary */}
       <div className="grid grid-cols-2 gap-2 pt-3 border-t border-sand/60 mt-1">
+        {/* Secondary Button */}
         <button
           type="button"
           onClick={() => onViewDetails(trip)}
-          className="px-3 py-2 rounded-xl border border-sand bg-white hover:bg-sand/30 text-xs font-bold text-ink transition-colors text-center"
+          className="px-3 py-2 rounded-xl border border-majolica/40 bg-paper hover:bg-majolica/10 text-xs font-semibold text-night transition-colors text-center"
         >
           {language === "uz" ? "Batafsil" : language === "en" ? "Details" : "Подробнее"}
         </button>
 
+        {/* Primary CTA Button */}
         <button
           type="button"
           onClick={() => onToggleAdd(trip)}
           className={`px-3 py-2 rounded-xl text-xs font-bold transition-all shadow-xs text-center flex items-center justify-center gap-1.5 ${
             isAdded
-              ? "bg-emerald-700 hover:bg-emerald-800 text-white"
-              : "bg-registan hover:bg-registan/90 text-white"
+              ? "bg-night border border-majolica text-majolica"
+              : "bg-majolica hover:bg-majolica/90 text-paper"
           }`}
         >
-          <span>{isAdded ? "✓" : "+"}</span>
+          {isAdded ? <Check className="w-3.5 h-3.5" /> : <Plus className="w-3.5 h-3.5" />}
           <span>
             {isAdded
               ? (language === "uz" ? "Qo'shildi" : language === "en" ? "Added" : "Добавлено")

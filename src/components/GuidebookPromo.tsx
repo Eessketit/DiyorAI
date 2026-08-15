@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "@/lib/i18n";
 import { GUIDEBOOK_URL } from "@/lib/config";
-import { ICON_MAP } from "@/lib/iconMap";
+import { BookOpen, Compass, ArrowRight } from "lucide-react";
 
 export default function GuidebookPromo() {
   const { language } = useTranslation();
@@ -25,39 +25,41 @@ export default function GuidebookPromo() {
   };
 
   const ctaText = {
-    ru: "Открыть полный справочник →",
-    en: "Open Guidebook →",
-    uz: "Qo'llanmani ochish →",
+    ru: "Открыть полный справочник",
+    en: "Open Guidebook",
+    uz: "Qo'llanmani ochish",
   };
 
   return (
-    <div className="my-12 bg-gradient-to-r from-night via-ink to-night text-plaster rounded-3xl p-6 sm:p-8 shadow-xl border border-sand/30 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+    <div className="my-12 bg-night text-paper rounded-3xl p-6 sm:p-8 shadow-xl border border-majolica/30 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative overflow-hidden">
       <div className="space-y-2 max-w-2xl">
         <div className="flex items-center gap-2">
-          <span className="text-xl">{ICON_MAP.directory}</span>
-          <span className="text-[11px] uppercase tracking-[0.2em] text-sand/80 font-bold">
+          <Compass className="w-4 h-4 text-majolica" />
+          <span className="text-[11px] uppercase font-mono tracking-[0.2em] text-gold font-bold">
             Travel Guidebook · DiyorAI
           </span>
         </div>
-        <h3 className="font-display text-xl sm:text-2xl font-black text-plaster">
+        <h3 className="font-display text-xl sm:text-2xl font-bold text-paper">
           {title[language]}
         </h3>
-        <p className="text-xs sm:text-sm font-semibold text-sand/90">
+        <p className="text-xs sm:text-sm font-semibold text-majolica font-mono">
           {subtitle[language]}
         </p>
-        <p className="text-xs text-plaster/70 leading-relaxed">
+        <p className="text-xs text-paper/75 leading-relaxed font-light">
           {description[language]}
         </p>
       </div>
 
+      {/* Primary CTA Button */}
       <a
         href={GUIDEBOOK_URL}
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-registan hover:bg-registan/90 text-white font-bold text-xs sm:text-sm transition-all shadow-lg hover:scale-102 shrink-0 self-start md:self-center"
+        className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-majolica hover:bg-majolica/90 text-paper font-bold text-xs sm:text-sm transition-all shadow-md hover:scale-102 shrink-0 self-start md:self-center"
       >
-        <span>📚</span>
+        <BookOpen className="w-4 h-4 text-paper" />
         <span>{ctaText[language]}</span>
+        <ArrowRight className="w-4 h-4" />
       </a>
     </div>
   );
