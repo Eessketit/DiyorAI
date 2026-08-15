@@ -41,8 +41,8 @@ export default function InterestChips({
             aria-pressed={active}
             className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold border transition-all ${
               active
-                ? "bg-majolica text-paper border-majolica shadow-xs scale-105"
-                : "bg-paper border-majolica/30 text-night hover:border-majolica hover:bg-majolica/10"
+                ? "bg-primary text-white border-primary shadow-xs scale-102"
+                : "bg-transparent border-sand-border text-ink hover:border-primary hover:bg-primary/5"
             }`}
           >
             {t.categories[cat] || cat}

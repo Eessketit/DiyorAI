@@ -97,9 +97,9 @@ export default function Home() {
                 <svg viewBox="0 0 400 220" className="w-full h-auto mt-2 overflow-visible">
                   <defs>
                     <linearGradient id="silkGrad" x1="0%" y1="100%" x2="100%" y2="0%">
-                      <stop offset="0%" stopColor="#C99A45" />
-                      <stop offset="50%" stopColor="#2FA89B" />
-                      <stop offset="100%" stopColor="#C99A45" />
+                      <stop offset="0%" stopColor="#2E4374" />
+                      <stop offset="50%" stopColor="#C1622E" />
+                      <stop offset="100%" stopColor="#2E4374" />
                     </linearGradient>
                   </defs>
 
@@ -115,34 +115,34 @@ export default function Home() {
 
                   {/* 1. Khiva */}
                   <g transform="translate(55, 175)">
-                    <circle r="10" className="fill-gold/25 silk-node-pulse" />
-                    <circle r="4.5" fill="#C99A45" />
+                    <circle r="10" className="fill-secondary/30 silk-node-pulse" />
+                    <circle r="4.5" fill="#2E4374" />
                     <text x="0" y="20" className="fill-paper font-mono text-[10px] font-bold" textAnchor="middle">Хива</text>
-                    <text x="0" y="30" className="fill-gold text-[8px] font-mono hidden sm:block" textAnchor="middle">Ичан-Кала</text>
+                    <text x="0" y="30" className="fill-paper/70 text-[8px] font-mono hidden sm:block" textAnchor="middle">Ичан-Кала</text>
                   </g>
 
                   {/* 2. Bukhara */}
                   <g transform="translate(155, 135)">
-                    <circle r="10" className="fill-majolica/30 silk-node-pulse" />
-                    <circle r="5" fill="#2FA89B" />
+                    <circle r="10" className="fill-primary/30 silk-node-pulse" />
+                    <circle r="5" fill="#C1622E" />
                     <text x="0" y="20" className="fill-paper font-mono text-[10px] font-bold" textAnchor="middle">Бухара</text>
-                    <text x="0" y="30" className="fill-majolica text-[8px] font-mono hidden sm:block" textAnchor="middle">Пои-Калян</text>
+                    <text x="0" y="30" className="fill-paper/70 text-[8px] font-mono hidden sm:block" textAnchor="middle">Пои-Калян</text>
                   </g>
 
                   {/* 3. Samarkand */}
                   <g transform="translate(245, 95)">
-                    <circle r="13" className="fill-gold/35 silk-node-pulse" />
-                    <circle r="6" fill="#C99A45" />
+                    <circle r="13" className="fill-primary/40 silk-node-pulse" />
+                    <circle r="6" fill="#C1622E" />
                     <text x="0" y="-12" className="fill-paper font-display text-[11px] font-bold" textAnchor="middle">Самарканд</text>
-                    <text x="0" y="20" className="fill-gold text-[8px] font-mono hidden sm:block" textAnchor="middle">Регистан 360°</text>
+                    <text x="0" y="20" className="fill-primary text-[8px] font-mono hidden sm:block" textAnchor="middle">Регистан 360°</text>
                   </g>
 
                   {/* 4. Tashkent */}
                   <g transform="translate(340, 45)">
-                    <circle r="10" className="fill-majolica/30 silk-node-pulse" />
-                    <circle r="5" fill="#2FA89B" />
+                    <circle r="10" className="fill-secondary/30 silk-node-pulse" />
+                    <circle r="5" fill="#2E4374" />
                     <text x="0" y="-10" className="fill-paper font-mono text-[10px] font-bold" textAnchor="middle">Ташкент</text>
-                    <text x="0" y="18" className="fill-majolica text-[8px] font-mono hidden sm:block" textAnchor="middle">Хаб & Чорсу</text>
+                    <text x="0" y="18" className="fill-paper/70 text-[8px] font-mono hidden sm:block" textAnchor="middle">Хаб & Чорсу</text>
                   </g>
                 </svg>
 

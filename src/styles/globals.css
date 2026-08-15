@@ -6,11 +6,22 @@
   --font-display: "Spectral", serif;
   --font-body: "Manrope", sans-serif;
   --font-utility: "IBM Plex Mono", monospace;
-  --night: #151C2C;
-  --majolica: #2FA89B;
-  --gold: #C99A45;
-  --paper: #F3EFE3;
-  --brick: #A34B32;
+
+  /* Silk Road Theme ("Шёлковый путь") */
+  --color-primary: #C1622E;
+  --color-primary-hover: #A8531F;
+  --color-secondary: #2E4374;
+  --color-secondary-hover: #253658;
+  --color-bg-neutral: #F2E9DA;
+  --color-border: #DDCBAF;
+  --color-ink: #241C15;
+  --color-ink-muted: #6B5D4F;
+
+  --night: #241C15;
+  --majolica: #C1622E;
+  --gold: #2E4374;
+  --paper: #F2E9DA;
+  --brick: #C1622E;
 }
 
 html {
@@ -18,23 +29,23 @@ html {
 }
 
 body {
-  background-color: #F3EFE3;
-  color: #151C2C;
+  background-color: #F2E9DA;
+  color: #241C15;
   font-feature-settings: "cv02", "cv03", "cv04", "cv11";
 }
 
 ::selection {
-  background-color: #2FA89B;
-  color: #F3EFE3;
+  background-color: #C1622E;
+  color: #FFFFFF;
 }
 
-/* Accessible focus ring in brick */
+/* Accessible focus ring in terracotta */
 a:focus-visible,
 button:focus-visible,
 input:focus-visible,
 select:focus-visible,
 textarea:focus-visible {
-  outline: 2px solid #A34B32;
+  outline: 2px solid #C1622E;
   outline-offset: 3px;
 }
 
@@ -59,12 +70,12 @@ textarea:focus-visible {
   width: 100%;
   background: repeating-linear-gradient(
     -45deg,
-    #2FA89B 0,
-    #2FA89B 4px,
+    #C1622E 0,
+    #C1622E 4px,
     transparent 4px,
     transparent 8px,
-    #C99A45 8px,
-    #C99A45 12px,
+    #2E4374 8px,
+    #2E4374 12px,
     transparent 12px,
     transparent 16px
   );

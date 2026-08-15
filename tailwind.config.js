@@ -4,23 +4,51 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Authentic Uzbekistan Color Palette
-        night: "#151C2C",       // deep dome indigo — hero background, primary dark
-        majolica: "#2FA89B",    // Registan turquoise tile — primary accent
-        gold: "#C99A45",        // Timurid gold — secondary accent, numbers, scores
-        paper: "#F3EFE3",       // Samarkand paper parchment — warm light surfaces
-        brick: "#A34B32",       // Burnt brick — focused CTA buttons
+        // Silk Road Authentic Palette ("Шёлковый путь")
+        primary: {
+          DEFAULT: "#C1622E",   // Terracotta primary
+          hover: "#A8531F",
+        },
+        secondary: {
+          DEFAULT: "#2E4374",   // Indigo secondary
+          hover: "#253658",
+        },
+        terracotta: {
+          DEFAULT: "#C1622E",
+          hover: "#A8531F",
+          dark: "#A8531F",
+        },
+        indigo: {
+          DEFAULT: "#2E4374",
+          hover: "#253658",
+          dark: "#1E2C4D",
+        },
+        sand: {
+          DEFAULT: "#F2E9DA",   // Warm neutral parchment
+          border: "#DDCBAF",
+        },
+        ink: {
+          DEFAULT: "#241C15",   // Deep warm ink text
+          muted: "#6B5D4F",
+        },
 
-        // Compatibility aliases to ensure seamless existing component rendering
-        ink: "#151C2C",
-        registan: "#2FA89B",
-        plaster: "#F3EFE3",
-        clay: "#A34B32",
-        sand: "#E2D9C8",
+        // Theme alias mappings
+        majolica: {
+          DEFAULT: "#C1622E",   // Mapped to Terracotta primary
+          hover: "#A8531F",
+        },
+        gold: {
+          DEFAULT: "#2E4374",   // Mapped to Indigo secondary
+          dark: "#253658",
+        },
+        paper: "#F2E9DA",
+        night: "#241C15",
+        brick: "#C1622E",
+
         trust: {
-          high: "#237A57",
-          medium: "#C99A45",
-          low: "#A34B32",
+          high: "#2E4374",
+          medium: "#C1622E",
+          low: "#A8531F",
         },
       },
       fontFamily: {
@@ -30,7 +58,7 @@ module.exports = {
         utility: ["var(--font-utility)", "IBM Plex Mono", "monospace"],
       },
       backgroundImage: {
-        girih: "radial-gradient(circle at 1px 1px, rgba(47,168,155,0.12) 1px, transparent 0)",
+        girih: "radial-gradient(circle at 1px 1px, rgba(193,98,46,0.12) 1px, transparent 0)",
       },
     },
   },

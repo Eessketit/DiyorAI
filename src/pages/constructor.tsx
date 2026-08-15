@@ -227,39 +227,19 @@ export default function ConstructorPage() {
     }
   };
 
-  // Active / Rest Days Controls
+  // Active / Rest Days Controls with Auto-Balancing
   const handleActiveDaysChange = (delta: number) => {
-    const nextActive = activeDays + delta;
-    if (nextActive < 1) return;
-    if (nextActive + restDays > totalDays) {
-      setError(
-        language === "uz"
-          ? "Faol kunlar va dam olish kunlari jami kunlar sonidan oshmasligi kerak."
-          : language === "en"
-          ? "Active days and rest days cannot exceed total trip days."
-          : "Сумма активных дней и дней отдыха не может превышать общую длительность поездки."
-      );
-      return;
-    }
-    setError(null);
+    const nextActive = Math.max(1, Math.min(totalDays, activeDays + delta));
     setActiveDays(nextActive);
+    setRestDays(totalDays - nextActive);
+    setError(null);
   };
 
   const handleRestDaysChange = (delta: number) => {
-    const nextRest = restDays + delta;
-    if (nextRest < 0) return;
-    if (activeDays + nextRest > totalDays) {
-      setError(
-        language === "uz"
-          ? "Faol kunlar va dam olish kunlari jami kunlar sonidan oshmasligi kerak."
-          : language === "en"
-          ? "Active days and rest days cannot exceed total trip days."
-          : "Сумма активных дней и дней отдыха не может превышать общую длительность поездки."
-      );
-      return;
-    }
-    setError(null);
+    const nextRest = Math.max(0, Math.min(totalDays - 1, restDays + delta));
     setRestDays(nextRest);
+    setActiveDays(totalDays - nextRest);
+    setError(null);
   };
 
   // Adults and Children Controls
@@ -528,7 +508,7 @@ export default function ConstructorPage() {
               <div className="flex items-center justify-between p-3 bg-white rounded-xl border border-majolica/15">
                 <div>
                   <span className="text-xs font-bold text-night block">
-                    {language === "uz" ? "Bolalar (0–17)" : language === "en" ? "Children (0–17)" : "Дети (0–17)"}
+                    {language === "uz" ? "Bolalar (14 yoshgacha)" : language === "en" ? "Children (under 14)" : "Дети (до 14 лет)"}
                   </span>
                   <span className="text-[10px] text-night/50 font-mono">
                     {language === "uz" ? "Chegirmali chiptalar" : language === "en" ? "Discounted rates" : "Скидки на билеты и отели"}
@@ -683,13 +663,13 @@ export default function ConstructorPage() {
 
             {/* Departure City */}
             <div className="mb-4">
-              <span className="text-xs text-night/70 font-mono block mb-1.5">
-                {language === "uz" ? "Qayerdan jo'naysiz?" : language === "en" ? "Departure City" : "Откуда вы отправляетесь?"}
+              <span className="text-xs text-night/70 font-mono font-bold block mb-1.5">
+                {language === "uz" ? "Qayerdan jo'naysiz?" : language === "en" ? "Where are you departing from?" : "Откуда вы отправляетесь?"}
               </span>
               <select
                 value={departureCity}
                 onChange={(e) => setDepartureCity(e.target.value)}
-                className="w-full sm:w-80 p-3 rounded-xl border border-majolica/25 bg-white text-xs font-mono font-bold text-night outline-none focus:border-majolica"
+                className="w-full sm:w-80 p-3 rounded-xl border border-sand-border bg-white text-xs font-mono font-bold text-night outline-none focus:border-primary"
               >
                 {DEPARTURE_CITIES.map((city) => (
                   <option key={city} value={city}>
@@ -699,7 +679,13 @@ export default function ConstructorPage() {
               </select>
             </div>
 
-            {/* Destination Region */}
+            {/* Destination Region Question & Selector */}
+            <div className="mb-2">
+              <span className="text-xs text-night/70 font-mono font-bold block mb-2">
+                {language === "uz" ? "Qayerga bormoqchisiz? (O'zbekiston hududini tanlang)" : language === "en" ? "Where do you want to go? (Select Uzbekistan region)" : "Куда вы направляетесь? (Выберите регион Узбекистана)"}
+              </span>
+            </div>
+
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
               {REGIONS.map((r) => {
                 const active = region === r;
@@ -710,8 +696,8 @@ export default function ConstructorPage() {
                     onClick={() => setRegion(r)}
                     className={`p-3.5 rounded-2xl text-left border transition-all ${
                       active
-                        ? "border-majolica bg-majolica/10 shadow-xs ring-2 ring-majolica/30"
-                        : "border-majolica/20 bg-paper/60 hover:bg-majolica/5"
+                        ? "border-primary bg-primary/10 shadow-xs ring-2 ring-primary/30"
+                        : "border-sand-border bg-white/70 hover:bg-primary/5 text-ink"
                     }`}
                   >
                     <span className="text-xs font-bold text-night block mb-0.5">
@@ -758,8 +744,8 @@ export default function ConstructorPage() {
                     onClick={() => setPace(p)}
                     className={`p-3 rounded-xl border text-xs font-mono font-bold transition-all ${
                       active
-                        ? "bg-majolica text-paper border-majolica shadow-xs"
-                        : "bg-paper text-night/70 hover:bg-majolica/10 border-majolica/20"
+                        ? "bg-primary text-white border-primary shadow-xs"
+                        : "bg-white/80 text-ink hover:bg-primary/10 border-sand-border"
                     }`}
                   >
                     {PACE_LABELS[p]}
@@ -770,10 +756,10 @@ export default function ConstructorPage() {
           </div>
 
           {/* CTA: Next to Logistics & Stays */}
-          <div className="pt-6 border-t border-majolica/15 flex items-center justify-between gap-4 flex-wrap">
+          <div className="pt-6 border-t border-sand-border flex items-center justify-between gap-4 flex-wrap">
             <Link
               href="/"
-              className="px-6 py-3 rounded-xl border border-majolica/30 text-xs font-semibold text-night hover:bg-majolica/10 transition-colors"
+              className="px-6 py-3 rounded-xl border border-sand-border text-xs font-semibold text-ink bg-white/80 hover:bg-sand transition-colors"
             >
               {language === "uz" ? "Bosh sahifaga qaytish" : language === "en" ? "Back to Home" : "На главную"}
             </Link>
@@ -781,7 +767,7 @@ export default function ConstructorPage() {
             <button
               type="button"
               onClick={() => setActiveStep(1)}
-              className="px-8 py-3.5 rounded-2xl bg-majolica hover:bg-majolica/90 text-paper font-bold text-xs sm:text-sm transition-all shadow-md flex items-center gap-2"
+              className="px-8 py-3.5 rounded-2xl bg-secondary hover:bg-secondary-hover text-white font-bold text-xs sm:text-sm transition-all shadow-md flex items-center gap-2 cursor-pointer"
             >
               <span>{language === "uz" ? "Keyingi: Transport va Logistika" : language === "en" ? "Next: Transport & Stays" : "Далее: Выбор транспорта и отеля"}</span>
               <ArrowRight className="w-4 h-4" />
