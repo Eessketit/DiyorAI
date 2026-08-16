@@ -3,6 +3,7 @@ import { Language } from "./i18n";
 export interface ChatMessage {
   role: "user" | "assistant" | "system";
   text: string;
+  tripProposal?: any;
 }
 
 export interface UserPageContext {

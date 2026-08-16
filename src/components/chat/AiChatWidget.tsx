@@ -104,7 +104,11 @@ export default function AiChatWidget() {
       const data = await res.json();
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", text: data.reply || "Извините, ответ временно недоступен." },
+        {
+          role: "assistant",
+          text: data.reply || "Извините, ответ временно недоступен.",
+          tripProposal: data.tripProposal,
+        },
       ]);
     } catch {
       setMessages((prev) => [
@@ -120,6 +124,16 @@ export default function AiChatWidget() {
       ]);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleOpenGeneratedTrip = (tripPlan: any) => {
+    try {
+      sessionStorage.setItem("diyorai-trip", JSON.stringify(tripPlan));
+      setIsOpen(false);
+      router.push("/trip?review=true");
+    } catch (e) {
+      console.error("Failed to store generated trip:", e);
     }
   };
 
@@ -201,7 +215,7 @@ export default function AiChatWidget() {
 
         {/* Collapsible Chat Window */}
         {isOpen && (
-          <div className="w-[calc(100vw-2.5rem)] sm:w-[410px] h-[540px] max-h-[85vh] bg-white border border-indigo-200 rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-scale-up z-50">
+          <div className="w-[calc(100vw-2.5rem)] sm:w-[420px] h-[560px] max-h-[85vh] bg-white border border-indigo-200 rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-scale-up z-50">
             {/* Window Header */}
             <div className="p-4 bg-gradient-to-r from-[#131E3A] to-[#1E3A8A] text-white border-b border-indigo-900 flex items-center justify-between gap-2 shrink-0">
               <div className="flex items-center gap-2.5">
@@ -228,7 +242,7 @@ export default function AiChatWidget() {
                 <button
                   type="button"
                   onClick={handleClearChat}
-                  className="p-1.5 rounded-lg text-white/70 hover:text-white hover:bg-white/15 transition-colors"
+                  className="p-1.5 rounded-lg text-white/70 hover:text-white hover:bg-white/15 transition-colors cursor-pointer"
                   title="Очистить диалог"
                 >
                   <Trash2 className="w-4 h-4" />
@@ -236,7 +250,7 @@ export default function AiChatWidget() {
                 <button
                   type="button"
                   onClick={() => setIsOpen(false)}
-                  className="p-1.5 rounded-lg text-white/70 hover:text-white hover:bg-white/15 transition-colors"
+                  className="p-1.5 rounded-lg text-white/70 hover:text-white hover:bg-white/15 transition-colors cursor-pointer"
                   title="Свернуть окно"
                 >
                   <X className="w-4 h-4" />
@@ -264,13 +278,62 @@ export default function AiChatWidget() {
                     </div>
 
                     <div
-                      className={`p-3.5 rounded-2xl max-w-[85%] text-xs sm:text-sm leading-relaxed ${
+                      className={`p-3.5 rounded-2xl max-w-[85%] text-xs sm:text-sm leading-relaxed space-y-2.5 ${
                         isUser
                           ? "bg-[#1E3A8A] text-white rounded-tr-xs shadow-xs"
                           : "bg-white text-slate-800 border border-slate-200/80 rounded-tl-xs shadow-xs"
                       }`}
                     >
                       {formatMessageText(msg.text)}
+
+                      {/* Interactive Trip Proposal Card */}
+                      {msg.tripProposal && (
+                        <div className="mt-3 p-3.5 rounded-2xl bg-gradient-to-br from-indigo-50/90 to-blue-50/90 border border-indigo-200 space-y-2 text-slate-800 animate-fade-in shadow-2xs">
+                          <div className="flex items-center gap-1.5 text-xs font-mono font-bold text-[#1E3A8A]">
+                            <Sparkles className="w-3.5 h-3.5 text-[#2563EB]" />
+                            <span>
+                              {language === "uz"
+                                ? "Shaxsiy tur rejasi tayyor!"
+                                : language === "en"
+                                ? "Tailor-Made Tour Generated!"
+                                : "Индивидуальный тур сформирован!"}
+                            </span>
+                          </div>
+
+                          <div className="text-[11px] font-mono space-y-1 text-slate-600">
+                            <div>
+                              <span className="font-semibold text-night">
+                                {msg.tripProposal.preferences?.duration?.totalDays || 3} {language === "uz" ? "kun" : language === "en" ? "days" : "дней"}
+                              </span>{" "}
+                              ({msg.tripProposal.preferences?.duration?.activeDays || 3} {language === "uz" ? "faol" : "активных"}
+                              {(msg.tripProposal.preferences?.duration?.restDays || 0) > 0
+                                ? ` + ${msg.tripProposal.preferences.duration.restDays} ${language === "uz" ? "dam" : "отдых"}`
+                                : ""}) ·{" "}
+                              <span className="font-semibold text-night">
+                                {msg.tripProposal.preferences?.travelers?.total || 2} {language === "uz" ? "kishi" : "чел."}
+                              </span>
+                            </div>
+                            <div className="text-emerald-700 font-bold">
+                              {language === "uz" ? "Byudjet:" : "Бюджет:"} ${typeof msg.tripProposal.preferences?.budget === "object" ? msg.tripProposal.preferences.budget.maxAmount : 1200}
+                            </div>
+                          </div>
+
+                          <button
+                            type="button"
+                            onClick={() => handleOpenGeneratedTrip(msg.tripProposal)}
+                            className="w-full mt-1.5 px-3 py-2 rounded-xl bg-gradient-to-r from-[#1E3A8A] to-[#2563EB] hover:from-[#152a65] hover:to-[#1d4ed8] text-white text-xs font-bold transition-all shadow-md flex items-center justify-center gap-1.5 cursor-pointer hover:scale-102"
+                          >
+                            <span>🚀</span>
+                            <span>
+                              {language === "uz"
+                                ? "Rejani va xaritani ochish →"
+                                : language === "en"
+                                ? "Open Interactive Tour Plan →"
+                                : "Открыть интерактивный план и итоги →"}
+                            </span>
+                          </button>
+                        </div>
+                      )}
                     </div>
                   </div>
                 );

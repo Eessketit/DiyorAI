@@ -1,5 +1,6 @@
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Guide, PayerSplitMode, TripPlan, TourismObject } from "@/lib/types";
 import { useTranslation } from "@/lib/i18n";
@@ -8,6 +9,7 @@ import WeatherWidget from "@/components/WeatherWidget";
 import DayTimeline from "@/components/DayTimeline";
 import SurvivalGuideModal from "@/components/SurvivalGuideModal";
 import BookingModal from "@/components/BookingModal";
+import TripSummaryModal from "@/components/TripSummaryModal";
 import GuideCard from "@/components/guides/GuideCard";
 import GuideProfileModal from "@/components/guides/GuideProfileModal";
 import GuideBookingModal from "@/components/guides/GuideBookingModal";
@@ -30,6 +32,7 @@ import {
   ArrowRight,
   UserCheck,
   RefreshCw,
+  Sliders,
 } from "lucide-react";
 
 import { TRIP_PRESETS } from "@/data/presets";
@@ -37,6 +40,7 @@ import { TRIP_PRESETS } from "@/data/presets";
 const MapView = dynamic(() => import("@/components/MapView"), { ssr: false });
 
 export default function TripPage() {
+  const router = useRouter();
   const { t, language } = useTranslation();
   const [plan, setPlan] = useState<TripPlan | null>(null);
   const [activeDay, setActiveDay] = useState(1);
@@ -51,12 +55,21 @@ export default function TripPage() {
   // Booking Modal State
   const [isBookingOpen, setIsBookingOpen] = useState(false);
 
+  // Summary Review Modal State
+  const [isSummaryModalOpen, setIsSummaryModalOpen] = useState(false);
+
   // Guide Modals State
   const [selectedGuideForProfile, setSelectedGuideForProfile] = useState<Guide | null>(null);
   const [selectedGuideForBooking, setSelectedGuideForBooking] = useState<Guide | null>(null);
 
   // Cost Split Mode
   const [splitMode, setSplitMode] = useState<PayerSplitMode>("equal");
+
+  useEffect(() => {
+    if (router.query.review === "true") {
+      setIsSummaryModalOpen(true);
+    }
+  }, [router.query.review]);
 
   useEffect(() => {
     const raw = sessionStorage.getItem("diyorai-trip");
@@ -221,6 +234,17 @@ export default function TripPage() {
         </div>
 
         <div className="flex items-center gap-2 flex-wrap">
+          <button
+            type="button"
+            onClick={() => setIsSummaryModalOpen(true)}
+            className="px-3.5 py-1.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-xs font-bold text-[#1E3A8A] flex items-center gap-1.5 shadow-2xs transition-all cursor-pointer"
+            title="Посмотреть итоги и параметры сформированного тура"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-[#2563EB]" />
+            <span>
+              {language === "uz" ? "Sayohat xulosasi" : language === "en" ? "Trip Summary" : "Итоги тура / Сводка"}
+            </span>
+          </button>
           <button
             onClick={handleExportPdf}
             className="px-3 py-1.5 rounded-lg border border-majolica/40 bg-paper hover:bg-majolica/10 text-xs font-bold text-night flex items-center gap-1.5 shadow-xs transition-colors"
@@ -625,11 +649,18 @@ export default function TripPage() {
 
       {/* Booking Modals */}
       {plan && (
-        <BookingModal
-          isOpen={isBookingOpen}
-          onClose={() => setIsBookingOpen(false)}
-          plan={plan}
-        />
+        <>
+          <BookingModal
+            isOpen={isBookingOpen}
+            onClose={() => setIsBookingOpen(false)}
+            plan={plan}
+          />
+          <TripSummaryModal
+            plan={plan}
+            isOpen={isSummaryModalOpen}
+            onClose={() => setIsSummaryModalOpen(false)}
+          />
+        </>
       )}
 
       {/* Guide Modals */}

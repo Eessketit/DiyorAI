@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import OpenAI from "openai";
 import { buildSystemPrompt, ChatMessage, UserPageContext } from "@/lib/aiPrompts";
+import { extractTripIntentFromText, generateAiTripPlan } from "@/lib/aiTripExtractor";
 
 interface AiChatRequestBody {
   messages: ChatMessage[];
@@ -24,15 +25,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const promptId = process.env.YANDEX_PROMPT_ID || "fvtr09ofbgji99u1j62k";
   const modelUri = process.env.YANDEX_MODEL_URI || (folderId ? `gpt://${folderId}/yandexgpt/latest` : undefined);
 
-  // If credentials are missing, return structured fallback
+  const lastUserMessage = messages[messages.length - 1]?.text || "";
+
+  // Extract structured plan intent if user asks for tour/itinerary
+  const tripIntent = extractTripIntentFromText(lastUserMessage);
+  const tripProposal = tripIntent ? generateAiTripPlan(tripIntent) : undefined;
+
+  // If credentials are missing, return structured fallback with proposal if available
   if (!apiKey) {
     return res.status(200).json({
-      reply: "✨ Здравствуйте! Я DiyorAI — ваш персональный AI-помощник по Узбекистану. Чем я могу помочь?",
+      reply: "✨ Здравствуйте! Я DiyorAI — ваш персональный AI-помощник по Узбекистану. Я составил для вас отличный персонализированный тур!",
+      tripProposal,
       isDemo: true,
     });
   }
-
-  const lastUserMessage = messages[messages.length - 1]?.text || "";
 
   // 1. Try Yandex AI Studio Responses API (Custom Prompt with Alice AI LLM)
   if (apiKey && folderId && promptId) {
@@ -62,6 +68,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       if (replyText) {
         return res.status(200).json({
           reply: replyText,
+          tripProposal,
           isDemo: false,
           source: "yandex_studio_prompt",
         });
@@ -121,6 +128,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     return res.status(200).json({
       reply: assistantText,
+      tripProposal,
       isDemo: false,
       source: "yandex_foundation_models",
       usage: data?.result?.usage,
