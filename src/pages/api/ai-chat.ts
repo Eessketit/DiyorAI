@@ -27,14 +27,33 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const lastUserMessage = messages[messages.length - 1]?.text || "";
 
+  // Detect language of the query or fallback to interface language
+  const lowerText = lastUserMessage.toLowerCase();
+  let targetLang = language;
+
+  const isUzbekText = /([a-z]'|[a-z]‘|[a-z]’|salom|qayerda|sayohat|bizga|kerak|kun|byudjet|reja|borish|bormoqchiman|oila|qancha|tatib|shahar|poyezd|yordam|rahmat|assalomu|aleykum)/i.test(lowerText);
+  const isEnglishText = /\b(hello|hi|where|how|trip|plan|tour|itinerary|days|budget|family|travel|vacation|uzbekistan|please|tell|what)\b/i.test(lowerText);
+
+  if (isUzbekText) {
+    targetLang = "uz";
+  } else if (isEnglishText && !/[а-яё]/i.test(lowerText)) {
+    targetLang = "en";
+  }
+
   // Extract structured plan intent if user asks for tour/itinerary
   const tripIntent = extractTripIntentFromText(lastUserMessage);
   const tripProposal = tripIntent ? generateAiTripPlan(tripIntent) : undefined;
 
   // If credentials are missing, return structured fallback with proposal if available
   if (!apiKey) {
+    const fallbackGreeting = targetLang === "uz"
+      ? "✨ Assalomu alaykum! Men DiyorAI — sizning O'zbekiston bo'yicha shaxsiy AI-yordamchingizman. Siz uchun ajoyib sayohat rejasini tuzdim!"
+      : targetLang === "en"
+      ? "✨ Hello! I am DiyorAI, your personal Uzbekistan AI travel concierge. I have crafted a great tailor-made itinerary for you!"
+      : "✨ Здравствуйте! Я DiyorAI — ваш персональный AI-помощник по Узбекистану. Я составил для вас отличный персонализированный тур!";
+
     return res.status(200).json({
-      reply: "✨ Здравствуйте! Я DiyorAI — ваш персональный AI-помощник по Узбекистану. Я составил для вас отличный персонализированный тур!",
+      reply: fallbackGreeting,
       tripProposal,
       isDemo: true,
     });
@@ -51,10 +70,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         },
       });
 
+      const langPrefix = targetLang === "uz"
+        ? `[TIZIM KO'RSATMASI: Javobingizni FAQAT O'ZBEK TILIDA (lotin yozuvida) yozing! Hech qanday ruscha so'z ishlatmang!]`
+        : targetLang === "en"
+        ? `[SYSTEM INSTRUCTION: Answer EXCLUSIVELY IN ENGLISH! Do not use Russian!]`
+        : `[ИНСТРУКЦИЯ: Отвечай на русском языке]`;
+
       // Assemble contextual input
-      let inputWithContext = lastUserMessage;
+      let inputWithContext = `${langPrefix}\n\nFoydalanuvchi savoli: ${lastUserMessage}`;
       if (pageContext?.region || pageContext?.totalDays || pageContext?.budgetMaxUsd) {
-        inputWithContext = `[Контекст: Направление: ${pageContext.region || "Узбекистан"}, Дней: ${pageContext.totalDays || "не указано"}, Бюджет: $${pageContext.budgetMaxUsd || "не указан"}]\n\nВопрос: ${lastUserMessage}`;
+        inputWithContext = `${langPrefix}\n[Kontekst: Hudud: ${pageContext.region || "O'zbekiston"}, Kunlar: ${pageContext.totalDays || "ko'rsatilmagan"}, Byudjet: $${pageContext.budgetMaxUsd || "ko'rsatilmagan"}]\n\nSavol: ${lastUserMessage}`;
       }
 
       const response: any = await (client as any).responses.create({
@@ -81,7 +106,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   // 2. Fallback to Foundation Models Completions API
   try {
     const yandexUrl = "https://llm.api.cloud.yandex.net/foundationModels/v1/completion";
-    const systemPromptText = buildSystemPrompt(language, pageContext);
+    const systemPromptText = buildSystemPrompt(targetLang, pageContext);
 
     const yandexMessages = [
       { role: "system", text: systemPromptText },
