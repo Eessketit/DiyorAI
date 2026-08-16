@@ -12,7 +12,7 @@ import GuideCard from "@/components/guides/GuideCard";
 import GuideProfileModal from "@/components/guides/GuideProfileModal";
 import GuideBookingModal from "@/components/guides/GuideBookingModal";
 import { calculateTripCost } from "@/lib/costCalculator";
-import { scoreGuides } from "@/lib/tripPlanner";
+import { planTrip, scoreGuides } from "@/lib/tripPlanner";
 import { trackEvent } from "@/lib/analytics";
 import ExperienceIcon from "@/components/common/ExperienceIcon";
 import CategoryBadge from "@/components/common/CategoryBadge";
@@ -74,8 +74,17 @@ export default function TripPage() {
     }
     try {
       const parsedPlan: TripPlan = JSON.parse(raw);
+      // Ensure plan has days
+      if (!parsedPlan.days || parsedPlan.days.length === 0) {
+        const fullPlan = planTrip(parsedPlan.preferences, {
+          transport: parsedPlan.transport,
+          transfer: parsedPlan.transfer,
+          hotel: parsedPlan.hotel,
+        });
+        parsedPlan.days = fullPlan.days;
+      }
       setPlan(parsedPlan);
-      if (parsedPlan.preferences.travelers?.type === "family") {
+      if (parsedPlan.preferences?.travelers?.type === "family") {
         setSplitMode("family_share");
       }
     } catch {
@@ -147,14 +156,15 @@ export default function TripPage() {
     splitMode,
   });
 
-  const allStops = plan.days.flatMap((d) =>
-    d.stops.map((s, idx) => ({ ...s, order: idx + 1, dayNumber: d.dayNumber }))
+  const planDays = (plan.days && plan.days.length > 0) ? plan.days : planTrip(plan.preferences).days;
+  const allStops = planDays.flatMap((d) =>
+    (d.stops || []).map((s, idx) => ({ ...s, order: idx + 1, dayNumber: d.dayNumber }))
   );
-  const currentDay = plan.days.find((d) => d.dayNumber === activeDay) ?? plan.days[0];
-  const interestsQuery = plan.preferences.interests.join(",");
+  const currentDay = planDays.find((d) => d.dayNumber === activeDay) ?? planDays[0] ?? { dayNumber: 1, stops: [] };
+  const interestsQuery = (plan.preferences.interests || []).join(",");
 
   // Guides matching directly for this trip
-  const matchedGuides = scoreGuides(plan.preferences.region, plan.preferences.interests, {
+  const matchedGuides = scoreGuides(plan.preferences.region, plan.preferences.interests || ["history"], {
     travelerType: travelers.type,
     language: language === "uz" ? "uz" : language === "en" ? "en" : "ru",
   }).slice(0, 3);
