@@ -17,15 +17,28 @@ declare global {
   }
 }
 
-export default function MapView({ stops }: { stops: Stop[] }) {
+interface MapViewProps {
+  stops: Stop[];
+  activeDay?: number;
+}
+
+export default function MapView({ stops, activeDay }: MapViewProps) {
   const { language } = useTranslation();
-  const [engine, setEngine] = useState<"osm" | "yandex">("osm"); // default to OSM for instant reliable zero-block rendering
+  const [engine, setEngine] = useState<"osm" | "yandex">("osm");
+  const [selectedDayFilter, setSelectedDayFilter] = useState<number | "all">(activeDay || "all");
   const [loading, setLoading] = useState(false);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const ymapsInstanceRef = useRef<any>(null);
   const leafletMapRef = useRef<any>(null);
 
-  // Initialize Map based on selected engine
+  // Sync with activeDay if prop changes
+  useEffect(() => {
+    if (activeDay !== undefined) {
+      setSelectedDayFilter(activeDay);
+    }
+  }, [activeDay]);
+
+  // Initialize Map based on selected engine and day filter
   useEffect(() => {
     let cancelled = false;
 
@@ -49,7 +62,15 @@ export default function MapView({ stops }: { stops: Stop[] }) {
       }
       containerRef.current.innerHTML = "";
 
-      const validStops = stops.filter((s) => s.lat && s.lon && !isNaN(s.lat) && !isNaN(s.lon));
+      // Filter stops by selected day if specific day is chosen
+      const filteredStops = selectedDayFilter === "all"
+        ? stops
+        : stops.filter((s) => s.dayNumber === selectedDayFilter);
+
+      const validStops = (filteredStops.length > 0 ? filteredStops : stops).filter(
+        (s) => s.lat && s.lon && !isNaN(s.lat) && !isNaN(s.lon)
+      );
+
       if (validStops.length === 0) {
         setLoading(false);
         return;
@@ -234,37 +255,71 @@ export default function MapView({ stops }: { stops: Stop[] }) {
         leafletMapRef.current = null;
       }
     };
-  }, [stops, engine, language]);
+  }, [stops, engine, language, selectedDayFilter]);
+
+  const uniqueDays = Array.from(new Set(stops.map((s) => s.dayNumber))).sort((a, b) => a - b);
 
   return (
     <div className="relative w-full rounded-3xl overflow-hidden border border-slate-200 shadow-md bg-white">
-      {/* Map Header / Layer Switcher */}
+      {/* Map Top Bar Controls */}
+      <div className="absolute top-3 left-3 z-[400] flex items-center gap-1.5 flex-wrap">
+        {/* Day Scope Selector */}
+        <div className="bg-white/95 backdrop-blur-md border border-slate-200 p-1 rounded-2xl shadow-lg flex items-center gap-1 text-xs font-mono">
+          <button
+            type="button"
+            onClick={() => setSelectedDayFilter("all")}
+            className={`px-2.5 py-1 rounded-xl transition-all font-semibold cursor-pointer ${
+              selectedDayFilter === "all"
+                ? "bg-slate-900 text-white shadow-xs"
+                : "text-slate-700 hover:bg-slate-100"
+            }`}
+          >
+            {language === "uz" ? "Barcha kunlar" : language === "en" ? "All Days" : "Все дни"}
+          </button>
+          {uniqueDays.map((d) => (
+            <button
+              key={d}
+              type="button"
+              onClick={() => setSelectedDayFilter(d)}
+              className={`px-2.5 py-1 rounded-xl transition-all font-semibold cursor-pointer ${
+                selectedDayFilter === d
+                  ? "bg-gradient-to-r from-[#1E3A8A] to-[#2563EB] text-white shadow-xs"
+                  : "text-slate-700 hover:bg-slate-100"
+              }`}
+            >
+              {language === "uz" ? `${d}-kun` : language === "en" ? `Day ${d}` : `День ${d}`}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Layer Switcher (Top Right) */}
       <div className="absolute top-3 right-3 z-[400] bg-white/95 backdrop-blur-md border border-slate-200 px-2 py-1.5 rounded-2xl shadow-lg flex items-center gap-1.5 text-xs font-mono">
         <span className="text-slate-500 text-[11px] px-1 hidden sm:inline">
-          {language === "uz" ? "Xarita:" : language === "en" ? "Map Engine:" : "Провайдер:"}
+          {language === "uz" ? "Xarita:" : language === "en" ? "Map:" : "Провайдер:"}
         </span>
         <button
           type="button"
           onClick={() => setEngine("osm")}
-          className={`px-3 py-1.5 rounded-xl transition-all flex items-center gap-1.5 cursor-pointer ${
+          className={`px-2.5 py-1 rounded-xl transition-all flex items-center gap-1 cursor-pointer ${
             engine === "osm"
               ? "bg-[#1E3A8A] text-white font-bold shadow-xs scale-102"
               : "text-slate-700 hover:bg-slate-100"
           }`}
         >
-          <span>🌐</span> OpenStreetMap
+          <span>🌐</span> OSM
         </button>
         <button
           type="button"
           onClick={() => setEngine("yandex")}
-          className={`px-3 py-1.5 rounded-xl transition-all flex items-center gap-1.5 cursor-pointer ${
+          className={`px-2.5 py-1 rounded-xl transition-all flex items-center gap-1 cursor-pointer ${
             engine === "yandex"
               ? "bg-amber-400 text-slate-900 font-bold shadow-xs scale-102"
               : "text-slate-700 hover:bg-slate-100"
           }`}
           title="Яндекс Карты"
         >
-          <span>🟡</span> Яндекс Карты
+          <span>🟡</span> Яндекс
         </button>
       </div>
 

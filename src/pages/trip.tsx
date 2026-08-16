@@ -377,7 +377,7 @@ export default function TripPage() {
 
       {/* Main Map and Timeline */}
       <div className="space-y-6">
-        <MapView stops={allStops} />
+        <MapView stops={allStops} activeDay={activeDay} />
 
         {/* Day tabs */}
         <div className="flex gap-2 border-b border-slate-200 pb-3 overflow-x-auto scrollbar-none">
