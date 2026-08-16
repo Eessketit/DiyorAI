@@ -142,8 +142,11 @@ export function extractTripIntentFromText(text: string): ParsedTripIntent | null
   const hasWifeOrHusband = lower.includes("жена") || lower.includes("муж") || lower.includes("супруг") ||
                            lower.includes("семь") || lower.includes("family") || lower.includes("oila");
 
+  const isFriendsGroup = lower.includes("друг") || lower.includes("друз") || lower.includes("friend") ||
+                         lower.includes("do'st") || lower.includes("коллег") || lower.includes("компани");
+
   // People count matches
-  const peopleMatch = lower.match(/(\d+)\s*(?:человек|чел|людей|people|kishi|pers)/i);
+  const peopleMatch = lower.match(/(\d+)\s*(?:человек|чел|людей|друзей|друга|взрослых|гостей|туристов|пассажиров|people|persons|friends|guests|travelers|kishi|odam|do'st)/i);
   if (peopleMatch) {
     const count = parseInt(peopleMatch[1], 10);
     if (hasChild) {
@@ -161,18 +164,19 @@ export function extractTripIntentFromText(text: string): ParsedTripIntent | null
   if (hasChild || (hasWifeOrHusband && adults >= 2)) {
     travelerType = "family";
     if (children === 0 && hasChild) children = 1;
+  } else if (isFriendsGroup || adults > 2) {
+    travelerType = adults > 5 ? "group" : "friends";
   } else if (adults === 2 && children === 0) {
     travelerType = "couple";
-  } else if (adults > 2) {
-    travelerType = "friends";
   }
 
   const totalTravelers = adults + children;
 
   // 4. Budget
   let budgetMaxUsd = 600;
-  const budgetMatch = lower.match(/(?:\$|доллар\w*|usd|бюджет\w*|budget\w*)\s*(\d+)/i) ||
-                      lower.match(/(\d+)\s*(?:\$|usd|доллар|дол)/i);
+  const budgetMatch = lower.match(/(?:бюджет\w*|budget\w*|byudjet\w*)\s*(?:до|около|примерно|—|-|:)?\s*(\d+)/i) ||
+                      lower.match(/(\d+)\s*(?:\$|usd|доллар|дол|dollar)/i) ||
+                      lower.match(/(?:\$|usd)\s*(\d+)/i);
   if (budgetMatch) {
     const val = parseInt(budgetMatch[1], 10);
     if (val >= 50 && val <= 50000) budgetMaxUsd = val;

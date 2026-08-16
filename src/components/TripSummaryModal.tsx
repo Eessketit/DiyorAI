@@ -72,7 +72,12 @@ export default function TripSummaryModal({
 
   const handleEditInConstructor = () => {
     onClose();
-    router.push("/constructor");
+    try {
+      sessionStorage.setItem("diyorai-trip", JSON.stringify(plan));
+    } catch (e) {
+      console.warn("Failed to set sessionStorage", e);
+    }
+    router.push("/constructor?sync=true");
   };
 
   const handleConfirm = () => {

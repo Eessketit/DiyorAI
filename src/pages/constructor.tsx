@@ -291,7 +291,7 @@ export default function ConstructorPage() {
       if (saved.transfer) setSelectedTransfer(saved.transfer);
       if (saved.hotel) setSelectedHotel(saved.hotel);
     }
-  }, []);
+  }, [router.query]);
 
   // Update total days when start or end date changes
   const handleStartDateChange = (newStart: string) => {

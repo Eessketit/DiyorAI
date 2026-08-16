@@ -220,6 +220,18 @@ export default function TripPage() {
     setIsBookingOpen(true);
   };
 
+  const handleNavigateToConstructor = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (plan) {
+      try {
+        sessionStorage.setItem("diyorai-trip", JSON.stringify(plan));
+      } catch (err) {
+        console.warn("Failed to set sessionStorage", err);
+      }
+    }
+    router.push("/constructor?sync=true");
+  };
+
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
       {/* Top action bar */}
@@ -258,12 +270,13 @@ export default function TripPage() {
           >
             <span>✈️</span> В Telegram
           </button>
-          <Link
-            href="/constructor"
-            className="text-xs font-bold text-majolica hover:underline uppercase tracking-wider ml-2 font-mono"
+          <button
+            type="button"
+            onClick={handleNavigateToConstructor}
+            className="text-xs font-bold text-majolica hover:underline uppercase tracking-wider ml-2 font-mono cursor-pointer"
           >
             ← {t.trip.recalculate}
-          </Link>
+          </button>
         </div>
       </div>
 
@@ -637,13 +650,14 @@ export default function TripPage() {
 
       {/* Recalculate CTA Bar */}
       <div className="mt-8 flex flex-wrap gap-4">
-        <Link
-          href="/constructor"
-          className="bg-majolica hover:bg-majolica/90 text-paper font-bold px-7 py-3.5 rounded-xl transition-all shadow-md text-xs sm:text-sm tracking-wider hover:scale-102 flex items-center gap-2"
+        <button
+          type="button"
+          onClick={handleNavigateToConstructor}
+          className="bg-majolica hover:bg-majolica/90 text-paper font-bold px-7 py-3.5 rounded-xl transition-all shadow-md text-xs sm:text-sm tracking-wider hover:scale-102 flex items-center gap-2 cursor-pointer"
         >
           <RefreshCw className="w-4 h-4" />
           <span>{language === "uz" ? "Parametrlarni o'zgartirish" : language === "en" ? "Edit Trip in Constructor" : "Изменить параметры в конструкторе"}</span>
-        </Link>
+        </button>
         <SurvivalGuideModal />
       </div>
 
