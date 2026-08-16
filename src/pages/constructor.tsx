@@ -218,8 +218,56 @@ export default function ConstructorPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Load saved state from localStorage on initial mount
+  // Load saved state from sessionStorage (active AI/generated trip) or localStorage on mount
   useEffect(() => {
+    // 1. Priority: check active trip from sessionStorage (e.g. from AI Concierge or Preset)
+    try {
+      const sessionTripRaw = sessionStorage.getItem("diyorai-trip");
+      if (sessionTripRaw) {
+        const tripFromSession: TripPlan = JSON.parse(sessionTripRaw);
+        if (tripFromSession?.preferences) {
+          const prefs = tripFromSession.preferences;
+          if (prefs.region) setRegion(prefs.region);
+          if (prefs.travelers) {
+            setTravelerType(prefs.travelers.type);
+            setAdults(prefs.travelers.adults);
+            setChildrenCount(prefs.travelers.children);
+          }
+          if (prefs.duration) {
+            const total = prefs.duration.totalDays || prefs.days || 3;
+            const active = prefs.duration.activeDays || total;
+            const rest = prefs.duration.restDays || 0;
+            setTotalDays(total);
+            setActiveDays(active);
+            setRestDays(rest);
+            if (prefs.duration.startDate) setStartDate(prefs.duration.startDate);
+            if (prefs.duration.endDate) setEndDate(prefs.duration.endDate);
+          } else if (prefs.days) {
+            setTotalDays(prefs.days);
+            setActiveDays(prefs.days);
+            setRestDays(0);
+          }
+          if (prefs.pace) setPace(prefs.pace);
+          if (prefs.interests && prefs.interests.length > 0) {
+            setInterests(prefs.interests as Category[]);
+          }
+          const depCity = (prefs as any).departureCity || tripFromSession.transport?.departureCity;
+          if (depCity) setDepartureCity(depCity);
+
+          const maxBud = typeof prefs.budget === "object" ? prefs.budget.maxAmount : 600;
+          setBudgetRange({ minBudget: 50, maxBudget: maxBud || 600 });
+
+          if (tripFromSession.transport) setSelectedTransport(tripFromSession.transport);
+          if (tripFromSession.transfer) setSelectedTransfer(tripFromSession.transfer);
+          if (tripFromSession.hotel) setSelectedHotel(tripFromSession.hotel);
+          return;
+        }
+      }
+    } catch (e) {
+      console.warn("Could not parse sessionStorage trip in constructor:", e);
+    }
+
+    // 2. Fallback to localStorage saved constructor state
     const saved = loadConstructorState();
     if (saved) {
       if (saved.travelers) {
